@@ -1,0 +1,29 @@
+name: Deploy to Firebase Hosting
+on:
+  push:
+    branches:
+      - main  # Pastikan ini nama branch utama kamu (main atau master)
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Langkah 1: Mengambil kode dari repositori GitHub
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      # Langkah 2: Proses pengiriman ke Firebase
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          # Token standar GitHub (sudah otomatis ada)
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          
+          # Memanggil isi file JSON yang kamu simpan di Secrets tadi
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KAMU }}'
+          
+          # Menentukan target pengiriman (Live = Website aktif)
+          channelId: live
+          
+          # GANTI ini dengan 'project_id' yang ada di file JSON kamu
+          projectId: nama-proyek-kamu
