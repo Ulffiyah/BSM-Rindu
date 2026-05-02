@@ -1,6 +1,6 @@
 {
-  "name": "BSM Rindu Al Ihya",
-  "description": "Website resmi Bank Sampah Mandiri (BSM Rindu Al Ihya) - Program pengelolaan sampah berbasis pesantren di Pondok Pesantren Al-Ihya untuk lingkungan yang bersih dan santri yang kreatif.",
+  "name": "BSN Rindu Al Ihya",
+  "description": "Website resmi BSN Rindu Al Ihya - Program pengelolaan sampah berbasis pesantren di Pondok Pesantren Al-Ihya untuk lingkungan yang bersih dan santri yang kreatif.",
   "requestFramePermissions": [
     "geolocation"
   ],
