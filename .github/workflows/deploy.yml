@@ -7,11 +7,8 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    
-    # TAMBAHKAN BARIS INI UNTUK MENGHILANGKAN WARNING
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
