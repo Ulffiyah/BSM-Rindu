@@ -36,9 +36,13 @@ import {
   FileText,
   PlusCircle,
   CreditCard,
+  DollarSign,
   Send,
   Clock,
-  LogOut
+  LogOut,
+  Bell,
+  Pencil,
+  TrendingUp
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { APP_CONFIG, STATISTICS, WASTE_PRICES, SERVICES, INNOVATIONS, EDUCATION_CLASSES, PRODUCTS, NEWS, MATERIALS } from "./constants";
@@ -74,8 +78,8 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
           <div className="bg-emerald-600 p-1.5 rounded-lg text-white">
             <Recycle size={24} />
           </div>
-          <span className={`font-bold text-xl tracking-tight ${isScrolled ? "text-slate-800" : "text-white"}`}>
-            BSN RINDU <span className="text-emerald-500">AL-IHYA</span>
+          <span className={`font-display font-black text-xl tracking-tight ${isScrolled ? "text-slate-800" : "text-white"}`}>
+            RINDU BSN <span className="text-emerald-500">AL-IHYA</span>
           </span>
         </div>
 
@@ -85,32 +89,37 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
             <a 
               key={link.name} 
               href={link.href} 
-              className={`text-sm font-medium transition-colors hover:text-emerald-500 ${isScrolled ? "text-slate-600" : "text-white/90"}`}
+              className={`text-xs uppercase tracking-widest font-bold transition-all relative group ${isScrolled ? "text-slate-600" : "text-white/90"}`}
             >
               {link.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-500 transition-all group-hover:w-full"></span>
             </a>
           ))}
           <div className="flex items-center gap-3 ml-4">
             <button 
               onClick={onOpenCart}
-              className={`relative p-2 transition-colors ${isScrolled ? "text-slate-700" : "text-white"}`}
+              className={`relative p-2 transition-all hover:scale-110 ${isScrolled ? "text-slate-700" : "text-white"}`}
             >
               <ShoppingCart size={22} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white"
+                >
                   {cartCount}
-                </span>
+                </motion.span>
               )}
             </button>
             <button 
               onClick={onOpenLogin}
-              className={`text-sm font-bold flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${isScrolled ? "text-slate-700 border-slate-200 hover:bg-slate-50" : "text-white border-white/20 hover:bg-white/10"}`}
+              className={`text-xs uppercase tracking-widest font-extrabold flex items-center gap-2 px-6 py-2.5 rounded-full border transition-all ${isScrolled ? "text-slate-700 border-slate-200 hover:bg-slate-50" : "text-white border-white/20 hover:bg-white/10"}`}
             >
               <LogIn size={16} /> {isLoggedIn ? "Profil Saya" : "Masuk Akun"}
             </button>
             <button 
               onClick={onOpenModal}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-lg active:scale-95"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-black transition-all shadow-[0_8px_20px_rgba(16,185,129,0.3)] active:scale-95"
             >
               Setor Sampah
             </button>
@@ -164,106 +173,140 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
 
 const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenModal: () => void, isLoggedIn: boolean, userProfile: any, onOpenProfile: () => void }) => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-emerald-950">
+      {/* Decorative Blobs */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full animate-pulse"></div>
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-emerald-400/10 blur-[100px] rounded-full animate-pulse delay-700"></div>
+
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=2000" 
-          alt="Recycling Environment"
-          className="w-full h-full object-cover"
+          src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=2000" 
+          alt="Recycling Workshop"
+          className="w-full h-full object-cover opacity-30 scale-105"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/70 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950 via-emerald-950/90 to-emerald-900/10"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full py-20 lg:py-0">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-2xl"
           >
-            <div className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 px-4 py-2 rounded-full text-emerald-300 text-xs font-bold uppercase tracking-wider mb-6">
-              <Leaf size={14} className="animate-pulse" />
-              Pengelolaan Sampah Mandiri Berbasis Pesantren
-            </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6">
-              Pesantren Bersih <br /> 
-              <span className="text-emerald-400 font-serif italic text-4xl md:text-6xl">Santri Berdikari</span>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 px-5 py-2.5 rounded-full text-emerald-300 text-[10px] font-black uppercase tracking-[0.2em] mb-10"
+            >
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
+              Bank Sampah Niaga • Berbasis Pesantren
+            </motion.div>
+            <h1 className="text-6xl md:text-8xl font-display font-black text-white leading-[0.9] tracking-tighter mb-8">
+              Pesantren <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Terpadu & Bersih</span>
             </h1>
-            <p className="text-emerald-50/80 text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
-              Inisiatif {APP_CONFIG.name} hadir untuk mencuci bersih lingkungan pesantren dan mengolah limbah santri menjadi keberkahan ekonomi.
+            <p className="text-emerald-50/60 text-lg md:text-xl mb-12 max-w-lg leading-relaxed font-medium">
+              Inisiatif <span className="text-emerald-300">{APP_CONFIG.name}</span> membangun ekosistem sirkular, mengelola limbah menjadi berkah dari bilik santri.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-5">
               <button 
                 onClick={onOpenModal}
-                className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-8 py-4 rounded-2xl font-bold transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2 group"
+                className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-10 py-5 rounded-[2rem] font-display font-black text-sm uppercase tracking-widest transition-all shadow-[0_20px_50px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3 group active:scale-95"
               >
-                Setor Sampah Sekarang <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                Setor Sampah <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <a 
                 href="#shop"
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2"
+                className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white border border-white/10 px-10 py-5 rounded-[2rem] font-display font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-3 active:scale-95"
               >
                 Jelajahi Produk
               </a>
             </div>
           </motion.div>
 
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
               className="lg:flex justify-end hidden"
             >
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[3rem] w-full max-w-sm text-white shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <User size={120} />
+              <div className="bg-white/5 backdrop-blur-3xl border border-white/10 p-10 rounded-[4rem] w-full max-w-md text-white shadow-[0_50px_80px_rgba(0,0,0,0.4)] relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
+                  <Recycle size={200} />
                 </div>
                 <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center font-black text-2xl shadow-lg border-2 border-emerald-400">
+                  <div className="flex items-center gap-6 mb-10">
+                    <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-3xl flex items-center justify-center font-display font-black text-3xl shadow-2xl border-4 border-white/20">
                       {userProfile.name.substring(0, 1)}
                     </div>
                     <div>
-                      <p className="text-xs font-black uppercase text-emerald-400 tracking-widest mb-0.5">Ahlan wa Sahlan,</p>
-                      <h4 className="text-xl font-black">{userProfile.name}</h4>
+                      <p className="text-[10px] font-black uppercase text-emerald-400 tracking-[0.3em] mb-1">Status Mudabbir</p>
+                      <h4 className="text-2xl font-display font-black tracking-tighter leading-none">{userProfile.name}</h4>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mb-8">
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-                      <p className="text-[10px] uppercase font-black text-emerald-300 mb-1">Saldo Tabungan</p>
-                      <p className="text-lg font-black">Rp {userProfile.balance.toLocaleString("id-ID")}</p>
+                  <div className="grid grid-cols-2 gap-4 mb-10">
+                    <div className="bg-white/5 p-6 rounded-[2rem] border border-white/10 hover:bg-white/10 transition-colors">
+                      <p className="text-[9px] uppercase font-black text-emerald-400 tracking-widest mb-2 opacity-60">Tabungan</p>
+                      <p className="text-xl font-display font-black leading-none">Rp {userProfile.balance.toLocaleString("id-ID")}</p>
                     </div>
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-                      <p className="text-[10px] uppercase font-black text-emerald-300 mb-1">Total Setoran</p>
-                      <p className="text-lg font-black">{userProfile.wasteTotal} Kg</p>
+                    <div className="bg-white/5 p-6 rounded-[2rem] border border-white/10 hover:bg-white/10 transition-colors">
+                      <p className="text-[9px] uppercase font-black text-emerald-400 tracking-widest mb-2 opacity-60">Setoran</p>
+                      <p className="text-xl font-display font-black leading-none">{userProfile.wasteTotal} <span className="text-xs">kg</span></p>
                     </div>
                   </div>
 
                   <button 
                     onClick={onOpenProfile}
-                    className="w-full bg-white text-emerald-950 py-4 rounded-2xl font-black text-sm hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 shadow-xl"
+                    className="w-full bg-white text-emerald-950 py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-[0.2em] hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 shadow-2xl active:scale-95"
                   >
-                    Lihat Profil Lengkap <ArrowRight size={18} />
+                    Dashboard Profil <ArrowRight size={18} />
                   </button>
                 </div>
               </div>
             </motion.div>
+          ) : (
+            <div className="hidden lg:flex justify-end">
+               <motion.div 
+                 animate={{ y: [0, -20, 0] }}
+                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                 className="relative"
+               >
+                  <div className="w-80 h-80 rounded-[4rem] border-4 border-emerald-500/30 overflow-hidden p-4 rotate-6 shadow-2xl">
+                    <img 
+                      src="https://images.unsplash.com/photo-1593113503873-e4f1bc3c5747?auto=format&fit=crop&q=80&w=800" 
+                      className="w-full h-full object-cover rounded-[3rem]"
+                    />
+                  </div>
+                  <div className="absolute -bottom-10 -left-20 bg-white p-6 rounded-[3rem] shadow-2xl border border-slate-100">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600">
+                        <Coins size={24} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sampah Jadi Uang</p>
+                        <p className="text-lg font-display font-black text-slate-800">Cairkan Instan!</p>
+                      </div>
+                    </div>
+                  </div>
+               </motion.div>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Hero Bottom Decor */}
-      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent"></div>
     </section>
   );
 };
 
-const AboutSection = () => {
+const AboutSection = ({ onSeeProfile }: { onSeeProfile: () => void }) => {
   return (
     <section id="about" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -276,7 +319,7 @@ const AboutSection = () => {
           >
             <div className="relative z-10 rounded-[3rem] overflow-hidden border-8 border-emerald-50 shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1516216628859-9bccecab13ca?auto=format&fit=crop&q=80&w=1000" 
+                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1000" 
                 alt="Pesantren Environment" 
                 className="w-full aspect-[4/5] object-cover"
                 referrerPolicy="no-referrer"
@@ -289,35 +332,39 @@ const AboutSection = () => {
             </div>
           </motion.div>
           
-          <div>
-            <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-4">Mengenal BSN Rindu Al-Ihya</h2>
-            <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">
-              Membangun Peradaban Hijau Dari <span className="text-emerald-500">Bilik Pesantren</span>
+          <div className="lg:pl-10">
+            <h2 className="text-emerald-600 font-display font-black uppercase tracking-[0.2em] text-xs mb-4">Mengenal Rindu BSN Al-Ihya</h2>
+            <h3 className="text-5xl md:text-6xl font-display font-black text-slate-900 mb-8 leading-[0.95] tracking-tighter">
+              Membangun Peradaban <br /> 
+              <span className="text-emerald-500">Hijau Dari Bilik Santri</span>
             </h3>
-            <p className="text-slate-600 text-lg leading-relaxed mb-6">
-              BSN Rindu Al Ihya dikelola sepenuhnya oleh santri. Kami mengambil tanggung jawab penuh untuk menjemput sampah dari setiap asrama, memilahnya, dan mengolahnya menjadi produk bernilai ekonomi.
+            <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium italic border-l-4 border-emerald-500 pl-6">
+              "Rindu BSN Al-Ihya dikelola sepenuhnya oleh santri. Kami mengambil tanggung jawab penuh untuk menjemput sampah, memilahnya, and mengolahnya menjadi berkah ekonomi."
             </p>
             <div className="space-y-6 mb-10">
-              <div className="flex gap-4 items-start">
-                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
-                  <Heart size={24} />
+              <div className="flex gap-5 items-start p-6 rounded-[2rem] bg-slate-50 hover:bg-white hover:shadow-xl transition-all border border-transparent hover:border-slate-100 group">
+                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-emerald-600 shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+                  <Heart size={28} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg text-slate-800">Khidmat Lingkungan</h4>
-                  <p className="text-slate-500 text-sm">Menjaga kebersihan pesantren adalah bagian dari iman dan khidmat santri kepada alam.</p>
+                  <h4 className="font-display font-black text-xl text-slate-800 mb-1">Khidmat Lingkungan</h4>
+                  <p className="text-slate-500 text-sm leading-relaxed">Menjaga kebersihan pesantren adalah bagian dari iman dan khidmat santri kepada alam.</p>
                 </div>
               </div>
-              <div className="flex gap-4 items-start">
-                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
-                  <Lightbulb size={24} />
+              <div className="flex gap-5 items-start p-6 rounded-[2rem] bg-slate-50 hover:bg-white hover:shadow-xl transition-all border border-transparent hover:border-slate-100 group">
+                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-emerald-600 shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+                  <Lightbulb size={28} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg text-slate-800">Inovasi Berkelanjutan</h4>
-                  <p className="text-slate-500 text-sm">Sampah bukan akhir, melainkan awal dari produk inovatif yang membantu operasional pesantren.</p>
+                  <h4 className="font-display font-black text-xl text-slate-800 mb-1">Inovasi Berkelanjutan</h4>
+                  <p className="text-slate-500 text-sm leading-relaxed">Sampah bukan akhir, melainkan awal dari produk inovatif yang membantu operasional pesantren.</p>
                 </div>
               </div>
             </div>
-            <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all active:scale-95">
+            <button 
+              onClick={onSeeProfile}
+              className="bg-slate-900 text-white px-10 py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-emerald-600 transition-all active:scale-95 shadow-xl"
+            >
               Lihat Profil Lengkap <ChevronRight size={18} />
             </button>
           </div>
@@ -336,9 +383,9 @@ const StatsSection = () => {
   };
 
   return (
-    <section className="py-12 bg-white relative">
+    <section className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {STATISTICS.map((stat, i) => {
             const Icon = IconMap[stat.icon];
             return (
@@ -348,13 +395,14 @@ const StatsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center text-center p-6 rounded-3xl bg-emerald-50/50 border border-emerald-100/50 hover:border-emerald-200 transition-colors"
+                className="group relative flex flex-col p-8 rounded-[3rem] bg-slate-50 hover:bg-emerald-600 transition-all duration-500 overflow-hidden"
               >
-                <div className="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg shadow-emerald-200">
-                  <Icon size={28} />
+                <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-black/10 transition-colors"></div>
+                <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-emerald-600 mb-8 shadow-xl shadow-slate-200 group-hover:scale-110 group-hover:rotate-6 transition-all">
+                  <Icon size={30} />
                 </div>
-                <div className="text-3xl font-black text-slate-800 mb-1">{stat.value}</div>
-                <div className="text-sm font-medium text-slate-500 uppercase tracking-wide">{stat.label}</div>
+                <div className="text-4xl font-display font-black text-slate-800 mb-2 group-hover:text-white transition-colors">{stat.value}</div>
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] group-hover:text-emerald-100 transition-colors">{stat.label}</div>
               </motion.div>
             );
           })}
@@ -364,7 +412,7 @@ const StatsSection = () => {
   );
 };
 
-const ServicesSection = () => {
+const ServicesSection = ({ onLearnMore }: { onLearnMore: (serviceTitle: string) => void }) => {
   return (
     <section id="services" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -404,9 +452,12 @@ const ServicesSection = () => {
                 <p className="text-slate-600 leading-relaxed mb-6">
                   {service.description}
                 </p>
-                <div className="flex items-center gap-2 text-emerald-600 font-bold group-hover:gap-4 transition-all">
+                <button 
+                  onClick={() => onLearnMore(service.title)}
+                  className="flex items-center gap-2 text-emerald-600 font-bold group-hover:gap-4 transition-all"
+                >
                   Pelajari Lebih Lanjut <ChevronRight size={18} />
-                </div>
+                </button>
               </div>
             </motion.div>
           ))}
@@ -416,76 +467,8 @@ const ServicesSection = () => {
   );
 };
 
-const PriceDisplay = ({ onAction }: { onAction: () => void }) => {
-  const [activeCategory, setActiveCategory] = useState(WASTE_PRICES[0].category);
 
-  return (
-    <>
-      <div className="flex flex-wrap justify-center gap-4 mb-12">
-        {WASTE_PRICES.map((cat) => (
-          <button
-            key={cat.category}
-            onClick={() => setActiveCategory(cat.category)}
-            className={`px-8 py-3 rounded-full font-bold transition-all ${
-              activeCategory === cat.category 
-                ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200" 
-                : "bg-slate-100 text-slate-600 hover:bg-emerald-50"
-            }`}
-          >
-            {cat.category}
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-slate-50 rounded-[2.5rem] p-8 md:p-12 border border-slate-100 max-w-4xl mx-auto overflow-hidden">
-        <div className="space-y-4">
-          {WASTE_PRICES.find(c => c.category === activeCategory)?.items.map((item, i) => (
-            <motion.div 
-              key={item.name}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="flex items-center justify-between p-5 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow group"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 font-bold">
-                  {i + 1}
-                </div>
-                <span className="font-bold text-slate-700 text-lg">{item.name}</span>
-              </div>
-              <div className="text-right">
-                <span className="text-2xl font-black text-emerald-600">
-                  {item.price === 0 ? "Bantu Olah" : `Rp ${item.price.toLocaleString("id-ID")}`}
-                </span>
-                <span className="text-slate-400 text-sm font-medium ml-2">/ {item.unit}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        
-        <div className="mt-12 p-6 bg-emerald-600 rounded-3xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="bg-white/20 p-3 rounded-2xl">
-              <Coins size={32} />
-            </div>
-            <div>
-              <p className="font-bold text-xl">Sampah Asrama Sudah Penuh?</p>
-              <p className="text-white/80">Laporkan setoran sampah sekarang untuk dijemput.</p>
-            </div>
-          </div>
-          <button 
-            onClick={onAction}
-            className="bg-white text-emerald-700 px-8 py-3 rounded-2xl font-black shadow-lg hover:bg-emerald-50 transition-colors whitespace-nowrap"
-          >
-            Lapor Setoran
-          </button>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const InnovationSection = () => {
+const InnovationSection = ({ onContactFounder }: { onContactFounder: () => void }) => {
   return (
     <section id="innovation" className="py-24 bg-emerald-950 text-white overflow-hidden relative">
       <div className="absolute top-0 right-0 w-1/3 h-full bg-emerald-900/30 blur-3xl -skew-x-12"></div>
@@ -529,24 +512,32 @@ const InnovationSection = () => {
           <div className="relative">
             <div className="relative aspect-square rounded-[3rem] overflow-hidden border-8 border-white/10 shadow-3xl">
               <img 
-                src="https://images.unsplash.com/photo-1591193680689-d4e5d6d510d9?auto=format&fit=crop&q=80&w=1000" 
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000" 
                 alt="Innovation" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-transparent to-transparent"></div>
-              <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20">
+              <button 
+                onClick={onContactFounder}
+                className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 text-left hover:bg-white/20 transition-all group"
+              >
                 <p className="italic text-emerald-200 mb-4 font-serif">
                   "Inovasi paving block dari plastik residu kami kini telah digunakan di taman-taman warga sebagai uji coba keberlanjutan."
                 </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold">IH</div>
-                  <div className="text-sm">
-                    <p className="font-bold">Ihya Ulumudin</p>
-                    <p className="text-white/40">Founder BSN Rindu Al-Ihya</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold">IH</div>
+                    <div className="text-sm">
+                      <p className="font-bold">Ihya Ulumudin</p>
+                      <p className="text-white/40">Founder Rindu BSN Al-Ihya</p>
+                    </div>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500 transition-colors">
+                    <MessageCircle size={18} />
                   </div>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -555,69 +546,79 @@ const InnovationSection = () => {
   );
 };
 
-const EducationSection = ({ onRegister }: { onRegister: (className: string) => void }) => {
+const EducationSection = ({ classes, onRegister }: { classes: any[], onRegister: (className: string) => void }) => {
   return (
     <section id="education" className="py-24 bg-white relative overflow-hidden">
       <div className="absolute top-0 right-0 w-full h-full bg-emerald-50/30 -skew-y-6 origin-top-right"></div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
           <div className="max-w-xl">
-            <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-4">Kelas Kreatif Santri</h2>
-            <h3 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
-              Tingkatkan <span className="text-emerald-600 italic font-serif">Skill & Taqwa</span> Lewat Alam
+            <h2 className="text-emerald-600 font-display font-black uppercase tracking-[0.2em] text-xs mb-4">Kelas Kreatif Santri</h2>
+            <h3 className="text-5xl font-display font-black text-slate-900 leading-[0.9] tracking-tighter">
+              Tingkatkan <br />
+              <span className="text-emerald-600 italic font-serif">Skill & Taqwa</span>
             </h3>
           </div>
-          <p className="text-slate-500 max-w-sm text-lg border-l-4 border-emerald-500 pl-6">
-            Program beasiswa pelatihan untuk santri terpilih yang ingin berkontribusi aktif dalam program kemandirian pesantren.
+          <p className="text-slate-500 max-w-sm text-lg border-l-4 border-emerald-500 pl-8 font-medium">
+            Program beasiswa pelatihan untuk santri terpilih yang ingin berkontribusi aktif dalam kemandirian pesantren.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {EDUCATION_CLASSES.map((cls, i) => (
+        <div className="grid md:grid-cols-3 gap-10">
+          {classes.map((cls, i) => (
             <motion.div 
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:-translate-y-2 transition-all p-4 group"
+              className="bg-white rounded-[4rem] border border-slate-100 shadow-[0_20px_60px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] hover:-translate-y-3 transition-all p-5 group flex flex-col h-full"
             >
-              <div className="relative h-56 rounded-[2.5rem] overflow-hidden mb-8">
+              <div className="relative h-64 rounded-[3rem] overflow-hidden mb-8">
                 <img 
                   src={cls.image} 
                   alt={cls.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                <div className="absolute top-4 right-4 px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-wider rounded-full">
-                  {cls.category}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                <div className="absolute top-6 right-6 flex flex-col gap-2 items-end">
+                  {cls.isNew && (
+                    <div className="px-3 py-1 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-widest rounded-full shadow-lg animate-pulse">
+                      BUKA BARU
+                    </div>
+                  )}
+                  <div className="px-5 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-full">
+                    {cls.category}
+                  </div>
                 </div>
-                <div className="absolute bottom-4 left-6 text-white">
-                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-300 mb-1">
+                <div className="absolute bottom-6 left-8 text-white">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-emerald-400">
                     <Calendar size={14} /> {cls.schedule}
                   </div>
                 </div>
               </div>
               
-              <div className="px-4 pb-4">
-                <h4 className="text-2xl font-black text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors leading-tight">{cls.title}</h4>
-                <p className="text-slate-500 text-sm mb-8 leading-relaxed line-clamp-3">
+              <div className="px-5 pb-5 flex-1 flex flex-col">
+                <h4 className="text-3xl font-display font-black text-slate-800 mb-4 group-hover:text-emerald-600 transition-colors leading-none tracking-tighter">{cls.title}</h4>
+                <p className="text-slate-500 text-sm mb-8 leading-relaxed line-clamp-3 font-medium">
                   {cls.desc}
                 </p>
-                <div className="flex items-center gap-3 text-xs font-bold text-slate-600 mb-8 bg-slate-50 p-3 rounded-2xl">
-                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center text-white text-[10px]">IH</div>
-                  <div>
-                    <p className="text-[10px] text-slate-400 uppercase">Mentor Utama</p>
-                    {cls.mentor}
+                <div className="mt-auto">
+                  <div className="flex items-center gap-4 text-xs font-bold text-slate-600 mb-8 bg-slate-50 p-4 rounded-3xl border border-slate-100">
+                    <div className="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-white font-black text-xs">IH</div>
+                    <div>
+                      <p className="text-[9px] text-slate-400 uppercase tracking-widest font-black">Mentor Utama</p>
+                      <p className="text-slate-800 font-bold">{cls.mentor}</p>
+                    </div>
                   </div>
+                  <button 
+                    onClick={() => onRegister(cls.title)}
+                    className="w-full py-5 rounded-[2rem] bg-slate-900 text-white font-display font-black text-xs uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center justify-center gap-3 shadow-xl active:scale-95"
+                  >
+                    Daftar Kelas <ArrowRight size={18} />
+                  </button>
                 </div>
-                <button 
-                  onClick={() => onRegister(cls.title)}
-                  className="w-full py-4 rounded-2xl bg-slate-900 text-white font-black text-sm hover:bg-emerald-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95"
-                >
-                  Daftar Kelas Sekarang <ArrowRight size={18} />
-                </button>
               </div>
             </motion.div>
           ))}
@@ -627,7 +628,7 @@ const EducationSection = ({ onRegister }: { onRegister: (className: string) => v
   );
 };
 
-const NewsSection = () => {
+const NewsSection = ({ news, onReadMore }: { news: any[], onReadMore: (newsTitle: string) => void }) => {
   return (
     <section id="news" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -637,7 +638,7 @@ const NewsSection = () => {
           <p className="text-slate-500">Informasi seputar aktivitas dan inovasi terbaru di pesantren Al-Ihya.</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8">
-          {NEWS.map((item, i) => (
+          {news.map((item, i) => (
             <motion.div 
               key={item.id}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -650,10 +651,20 @@ const NewsSection = () => {
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="md:w-2/3 flex flex-col justify-center">
-                <p className="text-emerald-600 text-xs font-bold mb-2 uppercase">{item.date}</p>
+                <div className="flex items-center gap-2 mb-2">
+                  <p className="text-emerald-600 text-xs font-black uppercase tracking-widest">{item.date}</p>
+                  {(item.date === "Hari Ini" || item.isNew) && (
+                    <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[8px] font-black uppercase animate-pulse">Terbaru</span>
+                  )}
+                </div>
                 <h4 className="text-xl font-black text-slate-800 mb-3">{item.title}</h4>
                 <p className="text-slate-500 text-sm mb-4 line-clamp-2">{item.excerpt}</p>
-                <button className="text-emerald-600 font-bold text-sm flex items-center gap-1">Baca Selengkapnya <ChevronRight size={16} /></button>
+                <button 
+                  onClick={() => onReadMore(item.title)}
+                  className="text-emerald-600 font-bold text-sm flex items-center gap-1 hover:gap-3 transition-all"
+                >
+                  Baca Selengkapnya <ChevronRight size={16} />
+                </button>
               </div>
             </motion.div>
           ))}
@@ -663,7 +674,11 @@ const NewsSection = () => {
   );
 };
 
-const MaterialsSection = () => {
+const MaterialsSection = ({ materials, onDownload, onRequest }: { 
+  materials: any[], 
+  onDownload: (mat: any) => void,
+  onRequest: () => void 
+}) => {
   return (
     <section id="materials" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
@@ -674,7 +689,7 @@ const MaterialsSection = () => {
               <h3 className="text-3xl font-black mb-6">Materi & Panduan Mandiri</h3>
               <p className="text-emerald-100/70 mb-8 max-w-md">Unduh berbagai materi edukasi pengelolaan bank sampah untuk diterapkan di rumah atau lingkungan Anda.</p>
               <div className="space-y-4">
-                {MATERIALS.map((mat) => (
+                {materials.map((mat) => (
                   <div key={mat.id} className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl group hover:bg-white/10 transition-all">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 bg-emerald-500/20 text-emerald-300 rounded-xl flex items-center justify-center">
@@ -685,7 +700,10 @@ const MaterialsSection = () => {
                         <p className="text-xs text-emerald-300">{mat.type} • {mat.size}</p>
                       </div>
                     </div>
-                    <button className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-emerald-500 transition-colors">
+                    <button 
+                      onClick={() => onDownload(mat)}
+                      className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-emerald-500 transition-colors"
+                    >
                       <ArrowRight size={18} />
                     </button>
                   </div>
@@ -695,7 +713,12 @@ const MaterialsSection = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20">
               <h4 className="text-xl font-bold mb-4">Request Materi Baru?</h4>
               <p className="text-sm text-emerald-100/60 mb-6">Punya topik menarik yang ingin dibahas? Kirimkan usulan materi Anda kepada tim pengajar kami.</p>
-              <button className="w-full bg-emerald-500 py-3 rounded-xl font-black hover:bg-emerald-400 transition-all">Hubungi Tim Edukasi</button>
+              <button 
+                onClick={onRequest}
+                className="w-full bg-emerald-500 py-3 rounded-xl font-black hover:bg-emerald-400 transition-all active:scale-95 shadow-lg"
+              >
+                Hubungi Tim Edukasi
+              </button>
             </div>
           </div>
         </div>
@@ -704,21 +727,32 @@ const MaterialsSection = () => {
   );
 };
 
-const FeedbackSection = () => {
+const FeedbackSection = ({ onSendFeedback }: { onSendFeedback: (name: string, message: string) => void }) => {
   return (
     <section className="py-24 bg-slate-50">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <h3 className="text-3xl font-black text-slate-800 mb-6">Kirim Saran & Feedback</h3>
         <p className="text-slate-500 mb-10">Bantu kami terus berbenah untuk menciptakan pesantren yang lebih hijau dan berkah.</p>
-        <form className="max-w-2xl mx-auto space-y-4" onSubmit={(e) => { e.preventDefault(); alert("Terima kasih! Saran Anda telah kami terima."); }}>
+        <form 
+          className="max-w-2xl mx-auto space-y-4" 
+          onSubmit={(e) => { 
+            e.preventDefault(); 
+            const formData = new FormData(e.currentTarget);
+            onSendFeedback(formData.get('name') as string, formData.get('message') as string);
+            e.currentTarget.reset();
+            alert("Terima kasih! Saran Anda telah kami terima."); 
+          }}
+        >
           <input 
             required
+            name="name"
             type="text" 
             placeholder="Nama Lengkap Anda" 
             className="w-full px-6 py-4 rounded-2xl border border-slate-200 outline-none focus:border-emerald-500 bg-white shadow-sm" 
           />
           <textarea 
             required
+            name="message"
             placeholder="Tuliskan saran atau masukan Anda di sini..." 
             className="w-full px-6 py-4 rounded-2xl border border-slate-200 outline-none focus:border-emerald-500 bg-white h-40 shadow-sm"
           ></textarea>
@@ -731,7 +765,8 @@ const FeedbackSection = () => {
   );
 };
 
-const ShopSection = ({ onAddToCart, onBuyNow, onSeeAll }: { 
+const ShopSection = ({ products, onAddToCart, onBuyNow, onSeeAll }: { 
+  products: any[],
   onAddToCart: (product: any) => void, 
   onBuyNow: (product: any) => void,
   onSeeAll: () => void 
@@ -741,19 +776,19 @@ const ShopSection = ({ onAddToCart, onBuyNow, onSeeAll }: {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
           <div className="text-center md:text-left">
-            <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-4">Galeri Kreativitas</h2>
-            <h3 className="text-4xl font-black text-slate-900 leading-tight">Produk Inovasi <br /> <span className="text-emerald-500">Karya Santri</span></h3>
+            <h2 className="text-emerald-600 font-display font-black uppercase tracking-[0.2em] text-xs mb-4">Galeri Kreativitas</h2>
+            <h3 className="text-5xl font-display font-black text-slate-900 leading-[0.9] tracking-tighter">Produk Inovasi <br /> <span className="text-emerald-500 italic">Karya Santri</span></h3>
           </div>
           <button 
             onClick={onSeeAll}
-            className="flex items-center gap-2 font-bold text-slate-800 hover:text-emerald-600 transition-colors group"
+            className="flex items-center gap-3 font-display font-black text-xs uppercase tracking-widest text-slate-800 hover:text-emerald-600 transition-colors group"
           >
             Lihat Semua Produk <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {PRODUCTS.map((product, i) => (
+          {products.slice(0, 4).map((product, i) => (
             <motion.div 
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -770,9 +805,15 @@ const ShopSection = ({ onAddToCart, onBuyNow, onSeeAll }: {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-4 right-4">
-                  <div className="bg-white px-3 py-1 rounded-full text-[10px] font-black text-emerald-600 border border-emerald-100 shadow-sm uppercase tracking-widest">
-                    Stok Tersedia
-                  </div>
+                  {product.isNew ? (
+                    <div className="bg-emerald-600 px-3 py-1 rounded-full text-[10px] font-black text-white shadow-lg uppercase tracking-widest animate-bounce">
+                      Produk Baru
+                    </div>
+                  ) : (
+                    <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black text-emerald-600 border border-emerald-100 shadow-sm uppercase tracking-widest">
+                      Stok Tersedia
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -822,20 +863,33 @@ const Footer = () => {
                 <Recycle size={32} />
               </div>
               <span className="font-bold text-3xl tracking-tight">
-                BSN RINDU <span className="text-emerald-500">AL-IHYA</span>
+                RINDU BSN <span className="text-emerald-500">AL-IHYA</span>
               </span>
             </div>
             <p className="text-slate-400 max-w-sm text-lg leading-relaxed mb-8">
               {APP_CONFIG.description}
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20">
+          <div className="flex gap-4">
+              <a 
+                href={`https://instagram.com/${APP_CONFIG.contact.instagram.replace('@', '')}`} 
+                target="_blank" 
+                rel="noreferrer"
+                className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20"
+              >
                 <Instagram size={24} />
               </a>
-              <a href="#" className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20">
+              <a 
+                href={`mailto:${APP_CONFIG.contact.email}`}
+                className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20"
+              >
                 <Mail size={24} />
               </a>
-              <a href="#" className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20">
+              <a 
+                href={`https://wa.me/${APP_CONFIG.contact.phone.replace(/[^0-9]/g, '')}`}
+                target="_blank"
+                rel="noreferrer"
+                className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20"
+              >
                 <Phone size={24} />
               </a>
             </div>
@@ -846,7 +900,6 @@ const Footer = () => {
             <ul className="space-y-4 text-slate-400">
               <li><a href="#about" className="hover:text-emerald-400 transition-colors">Tentang Kami</a></li>
               <li><a href="#services" className="hover:text-emerald-400 transition-colors">Layanan</a></li>
-              <li><a href="#prices" className="hover:text-emerald-400 transition-colors">Harga Sampah</a></li>
               <li><a href="#innovation" className="hover:text-emerald-400 transition-colors">Rumah Inovasi</a></li>
               <li><a href="#" className="hover:text-emerald-400 transition-colors">Kemitraan Masyarakat</a></li>
             </ul>
@@ -894,8 +947,23 @@ export default function App() {
   const [isShopModalOpen, setIsShopModalOpen] = useState(false);
   const [isAllProductsOpen, setIsAllProductsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [notifications, setNotifications] = useState<{id: number, type: 'order' | 'feedback', title: string, content: string, time: string, isRead: boolean}[]>([]);
+  const [dynamicProducts, setDynamicProducts] = useState(PRODUCTS);
+  const [dynamicClasses, setDynamicClasses] = useState(EDUCATION_CLASSES);
+  const [dynamicNews, setDynamicNews] = useState(NEWS);
+  const [dynamicMaterials, setDynamicMaterials] = useState(MATERIALS);
   const [cart, setCart] = useState<{product: any, quantity: number}[]>([]);
+  const [selectedCartItems, setSelectedCartItems] = useState<number[]>([]); // Array of product IDs
+  const [checkoutStep, setCheckoutStep] = useState<'cart' | 'payment'>('cart');
+  const [paymentMethod, setPaymentMethod] = useState<string>("Transfer Bank (BSI)");
   const [adminMode, setAdminMode] = useState<string | null>(null); // 'news', 'product', 'class', 'material'
+  const [editingItem, setEditingItem] = useState<{ type: string, id: number } | null>(null);
+  const [totalWasteToday, setTotalWasteToday] = useState(1245.5); // Initial mockup value
+  const [totalBalance, setTotalBalance] = useState(15750000); // Initial mockup value (15.75M)
+  const [financialHistory, setFinancialHistory] = useState([
+    { id: 1, date: "05 Mei 2026", user: "Santri Ahmad", amount: 150000, type: "Masuk", note: "Pembelian Tas Daur Ulang", method: "Transfer BSI" },
+    { id: 2, date: "04 Mei 2026", user: "Asrama Al-Ihya", amount: 75000, type: "Masuk", note: "Pembelian Pupuk Organik", method: "Cash" },
+  ]);
   
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -929,22 +997,55 @@ export default function App() {
     setCart(prev => prev.filter(item => item.product.id !== productId));
   };
 
-  const cartTotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  const cartTotal = cart
+    .filter(item => selectedCartItems.includes(item.product.id))
+    .reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+
+  const addNotification = (type: 'order' | 'feedback' | 'news' | 'report', title: string, content: string) => {
+    const newNotif = {
+      id: Date.now(),
+      type,
+      title,
+      content,
+      time: new Date().toLocaleString("id-ID", { hour: '2-digit', minute: '2-digit' }),
+      isRead: false
+    };
+    setNotifications(prev => [newNotif, ...prev]);
+  };
 
   const handleCartCheckout = () => {
-    let text = `*PESANAN KERANJANG BSN RINDU AL-IHYA*\n`;
+    const selectedItems = cart.filter(item => selectedCartItems.includes(item.product.id));
+    
+    if (selectedItems.length === 0) {
+      alert("Pilih item yang ingin dibeli terlebih dahulu!");
+      return;
+    }
+
+    let text = `*PESANAN KERANJANG RINDU BSN AL-IHYA*\n`;
     text += `----------------------------------\n`;
-    cart.forEach(item => {
-      text += `- ${item.product.name} x${item.quantity} (Rp ${(item.product.price * item.quantity).toLocaleString("id-ID")})\n`;
+    let orderSummary = "";
+    selectedItems.forEach(item => {
+      const line = `- ${item.product.name} x${item.quantity} (Rp ${(item.product.price * item.quantity).toLocaleString("id-ID")})\n`;
+      text += line;
+      orderSummary += line;
     });
     text += `----------------------------------\n`;
+    text += `*Metode Pembayaran: ${paymentMethod}*\n`;
     text += `*Total Pembayaran: Rp ${cartTotal.toLocaleString("id-ID")}*\n\n`;
     text += `Nama: ${userProfile.name}\n`;
     text += `Lokasi: ${userProfile.dorm}\n`;
-    text += `Catatan: Mohon diproses segera, Syukron.`;
+    text += `Catatan: Mohon diproses segera, Syukron.\n\n`;
+    text += `_Terima kasih telah mendukung program sirkular Rindu BSN Al-Ihya._`;
+    
+    // Add notification for Admin
+    addNotification('order', 'Pesanan Baru!', `Pesanan masuk senilai Rp ${cartTotal.toLocaleString("id-ID")} dari ${userProfile.name} (Bayar: ${paymentMethod})\n${orderSummary}`);
     
     window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, "_blank");
-    setCart([]);
+    
+    // Remove only selected items from cart
+    setCart(prev => prev.filter(item => !selectedCartItems.includes(item.product.id)));
+    setSelectedCartItems([]);
+    setCheckoutStep('cart');
     setIsCartOpen(false);
   };
 
@@ -994,6 +1095,64 @@ export default function App() {
     setIsProfileOpen(false);
   };
 
+  const [selectedItem, setSelectedItem] = useState<{ title: string, content: string, type?: string } | null>(null);
+
+  const openDetail = (title: string, content: string, type: string = 'info') => {
+    setSelectedItem({ title, content, type });
+  };
+
+  const handleProcessOrder = (id: number) => {
+    const notif = notifications.find(n => n.id === id);
+    if (!notif) return;
+
+    // Extract amount and details for financial history
+    const amountMatch = notif.content.match(/Rp ([\d.]+)/);
+    const amount = amountMatch ? parseInt(amountMatch[1].replace(/\./g, '')) : 0;
+    
+    // Improved regex to capture name more accurately from notifications
+    // Notification content looks like: "Pesanan masuk senilai Rp 150.000 dari Santri Ahmad (Bayar: ...)\n..."
+    const userNameMatch = notif.content.match(/dari (.*?)(?:\s\(|\s\n|$)/);
+    const userName = userNameMatch ? userNameMatch[1] : "Santri";
+    
+    const methodMatch = notif.content.match(/Bayar: (.*?)\)/);
+    const method = methodMatch ? methodMatch[1] : "Unknown";
+
+    if (amount > 0) {
+      setTotalBalance(prev => prev + amount);
+      setFinancialHistory(prev => [{
+        id: Date.now(),
+        date: new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long', year: 'numeric' }),
+        user: userName,
+        amount: amount,
+        type: "Masuk",
+        note: notif.title === "Pendaftaran Kelas!" ? "Pendaftaran Kelas" : "Pembelian Produk",
+        method: method
+      }, ...prev]);
+    }
+
+    setNotifications(prev => prev.filter(n => n.id !== id));
+    addNotification('feedback', 'Sistem', 'Pesanan Anda telah diproses oleh pengurus!');
+    alert("Pesanan berhasil diproses! Saldo kas rekening telah diperbarui.");
+  };
+
+  const handleExportFinance = () => {
+    const header = "ID,Tanggal,User,Keterangan,Metode,Jumlah,Tipe\n";
+    const csvContent = financialHistory.map(h => 
+      `${h.id},"${h.date}","${h.user}","${h.note}","${h.method}",${h.amount},"${h.type}"`
+    ).join("\n");
+    
+    const blob = new Blob([header + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Laporan_Keuangan_Rindu_BSN_${new Date().toJSON().slice(0,10)}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    alert("Laporan keuangan berhasil diunduh dalam format CSV.");
+  };
+
   const handleSignup = (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -1007,9 +1166,16 @@ export default function App() {
   const handleSubmitReport = (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const reporter = formData.get('reporter') as string;
+    const type = formData.get('type') as string;
+    const amount = formData.get('amount') as string;
+    const notes = formData.get('notes') as string;
+
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
+      addNotification('report', 'Laporan Setoran!', `Setoran ${type} (${amount}kg) oleh ${reporter}. Pesan: ${notes}`);
       setTimeout(() => {
         setSubmitted(false);
         setIsModalOpen(false);
@@ -1017,21 +1183,29 @@ export default function App() {
     }, 1500);
   };
 
-  const handleRegisterSuccess = () => {
+  const handlePaymentSuccess = () => {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
+      
       if (selectedClass) {
         setUserProfile(prev => ({
           ...prev,
           classesJoined: [...prev.classesJoined, selectedClass.title]
         }));
+        addNotification('order', 'Pendaftaran Kelas!', `Pendaftaran baru untuk kelas ${selectedClass.title} dari ${userProfile.name} (Saldo/DANA)`);
+      } else if (selectedProduct) {
+        addNotification('order', 'Pembelian Produk!', `Pembelian produk ${selectedProduct.name} seharga Rp ${selectedProduct.price.toLocaleString("id-ID")} dari ${userProfile.name} (Saldo/DANA)`);
       }
+
       setTimeout(() => {
         setSubmitted(false);
         setIsRegisterOpen(false);
+        setIsShopModalOpen(false);
         setPaymentStep(false);
+        setSelectedClassId("");
+        setSelectedProduct(null);
       }, 2000);
     }, 1500);
   };
@@ -1049,7 +1223,7 @@ export default function App() {
   };
 
   const openWhatsAppOrder = (item: string) => {
-    const text = `Assalamu'alaikum, saya ingin memesan ${item} dari BSN Rindu Al-Ihya.`;
+    const text = `Assalamu'alaikum, saya ingin memesan ${item} dari Rindu BSN Al-Ihya.`;
     window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, "_blank");
   };
 
@@ -1071,7 +1245,9 @@ export default function App() {
               { id: 'product', label: 'Produk Marketplace', icon: ShoppingBag, role: 'pengurus' },
               { id: 'class', label: 'Kelas Edukasi', icon: GraduationCap, role: 'pengurus' },
               { id: 'material', label: 'Materi Belajar', icon: FileText, role: 'pengurus' },
+              { id: 'notifications', label: 'Notifikasi & Order', icon: Bell, role: 'admin' },
               { id: 'reports', label: 'Laporan Setoran', icon: Recycle, role: 'admin' },
+              { id: 'finance', label: 'Keuangan & Kas', icon: Wallet, role: 'admin' },
               { id: 'feedback', label: 'Saran & Feedback', icon: MessageCircle, role: 'admin' },
             ].filter(item => item.role === 'admin' || (item.role === 'pengurus' && isPengurus)).map((item) => (
               <button 
@@ -1105,7 +1281,7 @@ export default function App() {
           <header className="flex justify-between items-center mb-12">
             <div>
               <h1 className="text-3xl font-black text-slate-800">Panel Kendali Pengurus</h1>
-              <p className="text-slate-500">Kelola operasional harian BSN Rindu Al-Ihya</p>
+              <p className="text-slate-500">Kelola operasional harian Rindu BSN Al-Ihya</p>
             </div>
             <div className="flex gap-4">
               <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
@@ -1159,51 +1335,431 @@ export default function App() {
                 className="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm"
               >
                 <div className="flex justify-between items-center mb-8">
-                  <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tighter">Kelola {adminMode}</h2>
+                  <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tighter">{adminMode === 'notifications' ? 'Notifikasi & Pesanan' : `Kelola ${adminMode}`}</h2>
                   <button onClick={() => setAdminMode(null)} className="text-slate-400 hover:text-slate-600 flex items-center gap-2 font-bold text-sm">
                     TUTUP PANEL <X size={18} />
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Judul / Nama Item</label>
-                      <input type="text" placeholder={`Contoh: Promo Produk ${adminMode} Baru`} className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all" />
+                {adminMode === 'notifications' ? (
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div className="lg:col-span-3 space-y-6">
+                      {notifications.length === 0 ? (
+                        <div className="text-center py-32 bg-slate-50 rounded-[3rem] border border-dashed border-slate-200">
+                          <Bell size={80} className="mx-auto text-slate-200 mb-6 animate-bounce-slow" />
+                          <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter mb-2">Semua Bersih!</h4>
+                          <p className="text-slate-400 text-sm font-medium">Belum ada pesanan atau feedback baru saat ini.</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {notifications.map(notif => (
+                            <motion.div 
+                              key={notif.id}
+                              initial={{ opacity: 0, scale: 0.98 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              className={`p-1 rounded-[2.5rem] border transition-all hover:shadow-2xl overflow-hidden group ${
+                                notif.type === 'order' ? 'bg-emerald-50/50 border-emerald-100 hover:border-emerald-300' : 
+                                notif.type === 'report' ? 'bg-indigo-50/50 border-indigo-100 hover:border-indigo-300' :
+                                'bg-blue-50/50 border-blue-100 hover:border-blue-300'
+                              }`}
+                            >
+                              <div className="bg-white p-8 rounded-[2.2rem] flex flex-col md:flex-row gap-8 items-start">
+                                <div className={`w-20 h-20 rounded-[1.5rem] flex items-center justify-center shrink-0 shadow-2xl group-hover:scale-110 transition-transform ${
+                                  notif.type === 'order' ? 'bg-emerald-600 text-white shadow-emerald-200' : 
+                                  notif.type === 'report' ? 'bg-indigo-600 text-white shadow-indigo-200' :
+                                  'bg-blue-600 text-white shadow-blue-200'
+                                }`}>
+                                  {notif.type === 'order' ? <ShoppingBag size={32} /> : 
+                                   notif.type === 'report' ? <Recycle size={32} /> :
+                                   <MessageCircle size={32} />}
+                                </div>
+                                <div className="flex-1 w-full">
+                                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                                    <div>
+                                      <div className="flex items-center gap-3 mb-1">
+                                        <h5 className="font-display font-black text-xl text-slate-800 tracking-tighter capitalize">{notif.title}</h5>
+                                        <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                                          notif.type === 'order' ? 'bg-emerald-100 text-emerald-700' : 
+                                          notif.type === 'report' ? 'bg-indigo-100 text-indigo-700' :
+                                          'bg-blue-100 text-blue-700'
+                                        }`}>
+                                          {notif.type === 'order' ? 'Pesanan Baru' : 
+                                           notif.type === 'report' ? 'Setoran Masuk' :
+                                           'Feedback'}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <Clock size={12} /> {notif.time}
+                                      </p>
+                                    </div>
+                                    <div className="flex gap-2 w-full md:w-auto">
+                                      {notif.type === 'order' && (
+                                        <button 
+                                          onClick={() => handleProcessOrder(notif.id)}
+                                          className="flex-1 md:flex-none px-6 py-3 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100 active:scale-95"
+                                        >
+                                          Proses Sekarang
+                                        </button>
+                                      )}
+                                      {notif.type === 'report' && (
+                                        <button 
+                                          onClick={() => {
+                                            // Extract KG from content string "(Xkg)"
+                                            const weightMatch = notif.content.match(/\((\d+(?:\.\d+)?)kg\)/);
+                                            if (weightMatch) {
+                                              const weight = parseFloat(weightMatch[1]);
+                                              setTotalWasteToday(prev => prev + weight);
+                                            }
+                                            
+                                            setNotifications(prev => prev.filter(n => n.id !== notif.id));
+                                            addNotification('feedback', 'Sistem', 'Setoran Anda telah divalidasi oleh pengurus!');
+                                            alert("Setoran berhasil divalidasi! Berat sampah telah ditambahkan ke data harian.");
+                                          }}
+                                          className="flex-1 md:flex-none px-6 py-3 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95"
+                                        >
+                                          Validasi Setoran
+                                        </button>
+                                      )}
+                                      <button 
+                                        onClick={() => setNotifications(prev => prev.filter(n => n.id !== notif.id))}
+                                        className="p-3 bg-slate-50 text-slate-400 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all border border-slate-100"
+                                      >
+                                        <Trash2 size={18} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <div className="bg-slate-50/50 p-6 rounded-[1.5rem] border border-slate-100/50">
+                                    <p className="text-slate-600 text-sm leading-relaxed font-bold whitespace-pre-line">
+                                      {notif.content}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Konten / Deskripsi</label>
-                      <textarea placeholder="Tuliskan detail selengkap mungkin agar nasabah tertarik..." className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all h-48"></textarea>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Harga / Biaya (Opsional)</label>
-                        <input type="number" placeholder="Rp 0" className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" />
+                    <div className="space-y-6">
+                      <div className="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                        <h4 className="font-display font-black uppercase text-[10px] tracking-widest mb-8 text-emerald-400">Ringkasan Hari Ini</h4>
+                        <div className="space-y-8">
+                          <div className="flex items-center justify-between">
+                            <span className="text-white/60 font-medium uppercase text-[10px] tracking-widest">Saldo Rekening Kas</span>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-white/30 text-lg font-bold italic">Rp</span>
+                              <span className="text-4xl font-display font-black text-emerald-400">{totalBalance.toLocaleString("id-ID")}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-white/60 font-medium uppercase text-[10px] tracking-widest">Pesanan Baru</span>
+                            <span className="text-2xl font-display font-black text-emerald-400">{notifications.filter(n => n.type === 'order').length}</span>
+                          </div>
+                          <div className="bg-white/5 p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors cursor-default group">
+                            <p className="text-[10px] uppercase font-black text-emerald-400 mb-1">Total Sampah Terkumpul</p>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-4xl font-display font-black text-white">{totalWasteToday.toLocaleString("id-ID")}</span>
+                              <span className="text-emerald-400 font-bold text-sm">Kg</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-white/60 font-medium uppercase text-[10px] tracking-widest">Feedback</span>
+                            <span className="text-3xl font-display font-black text-blue-400">{notifications.filter(n => n.type === 'feedback').length}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-white/60 font-medium uppercase text-[10px] tracking-widest">Setoran</span>
+                            <span className="text-3xl font-display font-black text-indigo-400">{notifications.filter(n => n.type === 'report').length}</span>
+                          </div>
+                          <div className="pt-8 border-t border-white/10">
+                            <p className="text-[10px] text-white/30 leading-relaxed font-bold italic text-center">
+                              "Kedisiplinan adalah kunci kesuksesan bersama."
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Kategori</label>
-                        <select className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none appearance-none">
-                          <option>UMUM</option>
-                          <option>DARURAT</option>
-                          <option>PENAWARAN</option>
-                        </select>
+                      <div className="bg-emerald-600 p-10 rounded-[3rem] text-white shadow-2xl shadow-emerald-200">
+                        <h4 className="font-display font-black uppercase text-[10px] tracking-widest mb-4">Butuh Bantuan?</h4>
+                        <p className="text-sm text-emerald-100 mb-6 font-medium">Hubungi Admin Pusat jika terjadi kendala pada sistem atau database santri.</p>
+                        <button className="w-full bg-white text-emerald-600 py-4 rounded-3xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-emerald-50 transition-colors">WhatsApp Support</button>
                       </div>
                     </div>
-                    <button className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-100">
-                      Publikasikan Sekarang <PlusCircle size={22} />
-                    </button>
                   </div>
+                ) : adminMode === 'finance' ? (
+                  <div className="space-y-8 pb-20">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform"></div>
+                        <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Total Saldo Kas</p>
+                        <h4 className="text-3xl font-display font-black text-slate-800">Rp {totalBalance.toLocaleString("id-ID")}</h4>
+                        <div className="mt-4 flex items-center gap-2 text-xs font-bold text-emerald-600">
+                          <TrendingUp size={14} /> +12% dari bulan lalu
+                        </div>
+                      </div>
+                      <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform"></div>
+                        <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Pemasukkan Hari Ini</p>
+                        <h4 className="text-3xl font-display font-black text-slate-800">Rp {financialHistory.filter(h => h.date.includes("06 Mei")).reduce((s, h) => s + h.amount, 0).toLocaleString("id-ID")}</h4>
+                        <p className="mt-4 text-xs font-bold text-slate-400 italic">Berdasarkan data input terbaru</p>
+                      </div>
+                      <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform"></div>
+                        <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Transaksi Terakhir</p>
+                        <h4 className="text-3xl font-display font-black text-slate-800">{financialHistory.length} Transaksi</h4>
+                        <p className="mt-4 text-xs font-bold text-slate-400 italic">Terekam dalam database</p>
+                      </div>
+                    </div>
 
-                  <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200">
-                    <h4 className="font-bold text-slate-800 mb-6 uppercase text-sm tracking-widest text-center border-b pb-4">Panduan Pengurus</h4>
-                    <ul className="space-y-4 text-sm text-slate-600">
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div> Gunakan bahasa yang sopan dan mencerminkan adab pesantren.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div> Pastikan foto produk yang diunggah memiliki kualitas yang baik.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div> Berita yang diupdate akan otomatis terkirim melalui notifikasi web kepada santri.</li>
-                      <li className="flex gap-3"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div> Hubungi IT Al-Ihya jika terjadi kendala teknis pada database.</li>
-                    </ul>
+                    <div className="bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-sm">
+                      <div className="p-10 border-b border-slate-100 flex justify-between items-center">
+                        <div>
+                          <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter">Buku Kas & Saldo Rekening</h4>
+                          <p className="text-slate-400 text-sm font-medium">Catatan otomatis dari hasil penjualan marketplace dan pendaftaran kelas</p>
+                        </div>
+                        <button 
+                          onClick={handleExportFinance}
+                          className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200"
+                        >
+                          <FileText size={16} /> Export Laporan
+                        </button>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                          <thead>
+                            <tr className="bg-slate-50 border-b border-slate-100">
+                              <th className="py-5 px-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tanggal</th>
+                              <th className="py-5 px-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Santri/Pelanggan</th>
+                              <th className="py-5 px-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Item / Keterangan</th>
+                              <th className="py-5 px-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Metode Bayar</th>
+                              <th className="py-5 px-8 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Jumlah</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-50">
+                            {financialHistory.map((item) => (
+                              <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
+                                <td className="py-6 px-8 text-xs font-bold text-slate-500">{item.date}</td>
+                                <td className="py-6 px-8">
+                                  <p className="text-sm font-black text-slate-800">{item.user}</p>
+                                </td>
+                                <td className="py-6 px-8">
+                                  <div className="flex items-center gap-2">
+                                    <span className="px-2 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase rounded-lg border border-emerald-100">Masuk</span>
+                                    <span className="text-sm font-medium text-slate-600">{item.note}</span>
+                                  </div>
+                                </td>
+                                <td className="py-6 px-8">
+                                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{item.method}</span>
+                                </td>
+                                <td className="py-6 px-8 text-right">
+                                  <span className="text-sm font-black text-emerald-600">Rp {item.amount.toLocaleString("id-ID")}</span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-black text-slate-800 uppercase text-sm tracking-widest">{editingItem ? `Edit ${adminMode}` : `Tambah ${adminMode} Baru`}</h4>
+                        {editingItem && (
+                          <button 
+                            onClick={() => {
+                              setEditingItem(null);
+                              const form = document.getElementById('admin-form') as HTMLFormElement;
+                              if (form) form.reset();
+                            }}
+                            className="text-xs font-bold text-red-500 hover:text-red-600 uppercase tracking-widest"
+                          >
+                            Batal Edit
+                          </button>
+                        )}
+                      </div>
+                      <form 
+                        id="admin-form"
+                        className="space-y-6"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          const formData = new FormData(e.currentTarget);
+                          const title = formData.get('title') as string;
+                          const desc = formData.get('desc') as string;
+                          const price = formData.get('price') ? parseInt(formData.get('price') as string) : 0;
+                          const category = formData.get('category') as string;
+                          const image = "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800";
+
+                          if (editingItem) {
+                            switch(adminMode) {
+                              case 'news':
+                                setDynamicNews(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, excerpt: desc.substring(0, 100) + '...', desc, category: category || item.category } : item));
+                                break;
+                              case 'product':
+                                setDynamicProducts(prev => prev.map(item => item.id === editingItem.id ? { ...item, name: title, desc, price: price || item.price } : item));
+                                break;
+                              case 'class':
+                                setDynamicClasses(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, desc, category: category || item.category, price: price || item.price } : item));
+                                break;
+                              case 'material':
+                                setDynamicMaterials(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, type: category || item.type } : item));
+                                break;
+                            }
+                            addNotification('feedback', 'Sistem', `${adminMode} berhasil diperbarui.`);
+                            alert(`${adminMode} successfully updated!`);
+                          } else {
+                            switch(adminMode) {
+                              case 'news':
+                                setDynamicNews(prev => [{ id: Date.now(), title, excerpt: desc.substring(0, 100) + '...', desc, date: "Hari Ini", image, category: category || "Berita", isNew: true }, ...prev]);
+                                break;
+                              case 'product':
+                                setDynamicProducts(prev => [{ id: Date.now(), name: title, desc, price: price || 15000, image, stock: 10, isNew: true }, ...prev]);
+                                break;
+                              case 'class':
+                                setDynamicClasses(prev => [{ id: Date.now(), title, desc, category: category || "Umum", image, schedule: "Jadwal Segera", price: price || 0, isNew: true }, ...prev]);
+                                break;
+                              case 'material':
+                                setDynamicMaterials(prev => [{ id: Date.now(), title, type: category || "PDF", size: "2.4 MB" }, ...prev]);
+                                break;
+                            }
+                            addNotification('feedback', 'Sistem', `Konten ${adminMode} berhasil dipublikasikan ke Beranda.`);
+                            alert(`${adminMode} successfully published!`);
+                          }
+                          
+                          e.currentTarget.reset();
+                          setEditingItem(null);
+                          setAdminMode(null);
+                        }}
+                      >
+                        <div>
+                          <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Judul / Nama Item</label>
+                          <input 
+                            required 
+                            name="title" 
+                            type="text" 
+                            key={editingItem ? `edit-${editingItem.id}` : 'new'}
+                            defaultValue={editingItem ? (
+                              adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.title :
+                              adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.name :
+                              adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.title :
+                              adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.title : ''
+                            ) : ''}
+                            placeholder={`Contoh: Promo Produk ${adminMode} Baru`} 
+                            className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Konten / Deskripsi</label>
+                          <textarea 
+                            required 
+                            name="desc" 
+                            key={editingItem ? `edit-desc-${editingItem.id}` : 'new-desc'}
+                            defaultValue={editingItem ? (
+                              adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.desc :
+                              adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.desc :
+                              adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.desc : ''
+                            ) : ''}
+                            placeholder="Tuliskan detail selengkap mungkin agar nasabah tertarik..." 
+                            className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all h-24 lg:h-32"
+                          ></textarea>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Harga / Biaya (Rp)</label>
+                            <input 
+                              name="price" 
+                              type="number" 
+                              key={editingItem ? `edit-price-${editingItem.id}` : 'new-price'}
+                              defaultValue={editingItem ? (
+                                adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.price :
+                                adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.price : 0
+                              ) : 0}
+                              placeholder="Rp 0" 
+                              className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Kategori / Tipe</label>
+                            <input 
+                              name="category" 
+                              type="text" 
+                              key={editingItem ? `edit-cat-${editingItem.id}` : 'new-cat'}
+                              defaultValue={editingItem ? (
+                                adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.category :
+                                adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.category :
+                                adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.type : ''
+                              ) : ''}
+                              placeholder="Contoh: Kriya, PDF, Kajian" 
+                              className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                            />
+                          </div>
+                        </div>
+                        <button type="submit" className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-100">
+                          {editingItem ? 'Simpan Perubahan' : 'Publikasikan Sekarang'} <PlusCircle size={22} />
+                        </button>
+                      </form>
+                    </div>
+
+                    <div className="flex flex-col h-full bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 overflow-hidden">
+                      <h4 className="font-bold text-slate-800 mb-6 uppercase text-sm tracking-widest text-center border-b pb-4">Daftar {adminMode} Terpasang</h4>
+                      <div className="flex-1 overflow-y-auto space-y-4 max-h-[600px] pr-2 custom-scrollbar">
+                        {adminMode === 'news' && dynamicNews.map(item => (
+                          <div key={item.id} className="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center group">
+                            <div className="flex-1 mr-4">
+                              <p className="font-bold text-slate-800 line-clamp-1">{item.title}</p>
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{item.date} • {item.category}</p>
+                            </div>
+                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={() => setEditingItem({ type: 'news', id: item.id })} className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"><Pencil size={16} /></button>
+                              <button onClick={() => setDynamicNews(prev => prev.filter(i => i.id !== item.id))} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><Trash2 size={16} /></button>
+                            </div>
+                          </div>
+                        ))}
+                        {adminMode === 'product' && dynamicProducts.map(item => (
+                          <div key={item.id} className="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center group">
+                            <div className="flex-1 mr-4">
+                              <p className="font-bold text-slate-800 line-clamp-1">{item.name}</p>
+                              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest">Rp {item.price.toLocaleString("id-ID")}</p>
+                            </div>
+                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={() => setEditingItem({ type: 'product', id: item.id })} className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"><Pencil size={16} /></button>
+                              <button onClick={() => setDynamicProducts(prev => prev.filter(i => i.id !== item.id))} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><Trash2 size={16} /></button>
+                            </div>
+                          </div>
+                        ))}
+                        {adminMode === 'class' && dynamicClasses.map(item => (
+                          <div key={item.id} className="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center group">
+                            <div className="flex-1 mr-4">
+                              <p className="font-bold text-slate-800 line-clamp-1">{item.title}</p>
+                              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest">{item.schedule}</p>
+                            </div>
+                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={() => setEditingItem({ type: 'class', id: item.id })} className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"><Pencil size={16} /></button>
+                              <button onClick={() => setDynamicClasses(prev => prev.filter(i => i.id !== item.id))} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><Trash2 size={16} /></button>
+                            </div>
+                          </div>
+                        ))}
+                        {adminMode === 'material' && dynamicMaterials.map(item => (
+                          <div key={item.id} className="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center group">
+                            <div className="flex-1 mr-4">
+                              <p className="font-bold text-slate-800 line-clamp-1">{item.title}</p>
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{item.type} • {item.size}</p>
+                            </div>
+                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={() => setEditingItem({ type: 'material', id: item.id })} className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"><Pencil size={16} /></button>
+                              <button onClick={() => setDynamicMaterials(prev => prev.filter(i => i.id !== item.id))} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><Trash2 size={16} /></button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-6 pt-6 border-t border-slate-200">
+                        <p className="text-[10px] text-slate-400 font-bold text-center leading-relaxed italic">
+                          "Hover kursor pada item untuk memunculkan tombol edit dan hapus."
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -1228,31 +1784,91 @@ export default function App() {
           userProfile={userProfile}
           onOpenProfile={() => setIsProfileOpen(true)}
         />
-        <AboutSection />
+        <AboutSection onSeeProfile={() => openDetail("Profil Rindu BSN Al-Ihya", "Rindu BSN Al-Ihya adalah unit usaha mandiri milik Pesantren Al-Ihya yang fokus pada pengelolaan limbah sirkular. Kami memiliki visi menciptakan lingkungan pesantren zero-waste sekaligus memberdayakan ekonomi santri melalui produk-produk daur ulang inovatif.")} />
         <StatsSection />
-        <ServicesSection />
+        <ServicesSection onLearnMore={(title) => {
+          const desc = SERVICES.find(s => s.title === title)?.description || "";
+          openDetail(title, desc + "\n\nLayanan ini dikelola oleh tim profesional santri dengan standar kualitas tinggi yang menjamin kepuasan nasabah dan kebersihan lingkungan.", "service");
+        }} />
         
-        {/* Price Section */}
-        <section id="prices" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-4">Informasi Harga</h2>
-              <h3 className="text-4xl font-black text-slate-900 mb-4">Update Harga Sampah Hari Ini</h3>
-              <p className="text-slate-500 max-w-2xl mx-auto">
-                Harga khusus santri. Hasil pengumpulan sampah akan dikonversi menjadi saldo kemandirian asrama.
-              </p>
-            </div>
 
-            <PriceDisplay onAction={() => setIsModalOpen(true)} />
-          </div>
-        </section>
-
-        <EducationSection onRegister={handleRegisterClick} />
-        <ShopSection onAddToCart={addToCart} onBuyNow={handleBuyClick} onSeeAll={() => setIsAllProductsOpen(true)} />
-        <NewsSection />
-        <MaterialsSection />
-        <InnovationSection />
-        <FeedbackSection />
+        <EducationSection 
+          classes={dynamicClasses}
+          onRegister={handleRegisterClick} 
+        />
+        <ShopSection 
+          products={dynamicProducts}
+          onAddToCart={addToCart} 
+          onBuyNow={handleBuyClick} 
+          onSeeAll={() => setIsAllProductsOpen(true)} 
+        />
+        <NewsSection 
+          news={dynamicNews} 
+          onReadMore={(title) => {
+            const item = dynamicNews.find(n => n.title === title);
+            openDetail(title, item?.excerpt + "\n\nSelengkapnya: " + item?.desc || "", "news");
+          }}
+        />
+        <MaterialsSection 
+          materials={dynamicMaterials} 
+          onDownload={(mat) => alert(`Mengunduh materi: ${mat.title}\nFormat: ${mat.type}\nUkuran: ${mat.size}\n\nFile Anda akan segera tersedia di folder unduhan (Simulasi).`)}
+          onRequest={() => openDetail("Request Materi", "Silakan hubungi tim kurikulum kami untuk pengajuan materi baru terkait lingkungan hidup dan kewirausahaan santri.", "request")}
+        />
+        <InnovationSection onContactFounder={() => openDetail("Catatan Founder", "Inovasi adalah ruh dari setiap pergerakan kami. Kami percaya bahwa sampah plastik bukanlah musuh, melainkan sumber daya yang belum berada di tangan yang tepat. Melalui teknologi pavblok, kami ingin membuktikan bahwa pesantren adalah inkubator solusi umat.", "innovation")} />
+        <FeedbackSection onSendFeedback={(name, message) => addNotification('feedback', `Feedback dari ${name}`, message)} />
+        
+        {/* Detail Modal */}
+        <AnimatePresence>
+          {selectedItem && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-md"
+            >
+              <motion.div 
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                className="bg-white w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.3)]"
+              >
+                <div className="p-10">
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="bg-emerald-100 text-emerald-600 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em]">
+                      {selectedItem.type || 'Detail'}
+                    </div>
+                    <button onClick={() => setSelectedItem(null)} className="p-2 bg-slate-100 rounded-2xl text-slate-400 hover:text-slate-600 transition-colors">
+                      <X size={24} />
+                    </button>
+                  </div>
+                  <h3 className="text-4xl font-display font-black text-slate-800 mb-8 leading-tight tracking-tighter">{selectedItem.title}</h3>
+                  <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
+                    <p className="text-slate-600 text-lg leading-relaxed font-medium whitespace-pre-line italic">
+                      "{selectedItem.content}"
+                    </p>
+                  </div>
+                  <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                    <button 
+                      onClick={() => {
+                        openWhatsAppOrder(`Tanya tentang: ${selectedItem.title}`);
+                        setSelectedItem(null);
+                      }}
+                      className="flex-1 bg-emerald-600 text-white py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-widest hover:bg-emerald-700 transition-all active:scale-95 shadow-xl shadow-emerald-100 flex items-center justify-center gap-3"
+                    >
+                      Tanya Lanjut (WA) <MessageCircle size={18} />
+                    </button>
+                    <button 
+                      onClick={() => setSelectedItem(null)}
+                      className="flex-1 bg-slate-900 text-white py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-95"
+                    >
+                      Tutup
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         {/* Contact CTA */}
         <section className="py-24 bg-white">
@@ -1272,10 +1888,16 @@ export default function App() {
                   Mari menjaga kesucian dan kebersihan lingkungan pesantren bersama. Laporkan setoran sampah asrama Anda sekarang.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-6">
-                  <button className="bg-white text-emerald-800 px-10 py-5 rounded-2xl font-black text-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">
+                  <button 
+                    onClick={() => openWhatsAppOrder("Kerjasama Zero Waste")}
+                    className="bg-white text-emerald-800 px-10 py-5 rounded-2xl font-black text-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95"
+                  >
                     Hubungi Pengurus
                   </button>
-                  <button className="bg-emerald-500/20 backdrop-blur-md text-white border border-white/30 px-10 py-5 rounded-2xl font-black text-lg hover:bg-white/10 transition-all active:scale-95">
+                  <button 
+                    onClick={() => openWhatsAppOrder("Konsultasi Pengelolaan Sampah")}
+                    className="bg-emerald-500/20 backdrop-blur-md text-white border border-white/30 px-10 py-5 rounded-2xl font-black text-lg hover:bg-white/10 transition-all active:scale-95"
+                  >
                     Konsultasi Gratis
                   </button>
                 </div>
@@ -1351,6 +1973,12 @@ export default function App() {
                         placeholder="Nomor WhatsApp Aktif" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
                       />
+                      <input 
+                        required
+                        type="email" 
+                        placeholder="Alamat Email (untuk pemberitahuan)" 
+                        className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
+                      />
                       <textarea 
                         placeholder="Catatan Pesanan / Saran untuk BSN" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none h-24"
@@ -1372,7 +2000,7 @@ export default function App() {
                     
                     <div className="space-y-3">
                       <button 
-                        onClick={handleRegisterSuccess}
+                        onClick={handlePaymentSuccess}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -1385,7 +2013,7 @@ export default function App() {
                       </button>
 
                       <button 
-                        onClick={handleRegisterSuccess}
+                        onClick={handlePaymentSuccess}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -1472,7 +2100,7 @@ export default function App() {
 
               <div className="flex-1 overflow-y-auto p-8 lg:p-12">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {PRODUCTS.map((product) => (
+                  {dynamicProducts.map((product) => (
                     <div key={product.id} className="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all group flex flex-col h-full">
                       <div className="aspect-square relative overflow-hidden">
                         <img 
@@ -1539,72 +2167,193 @@ export default function App() {
               <div className="p-8 border-b flex justify-between items-center bg-white sticky top-0 z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
-                    <ShoppingCart size={20} />
+                    {checkoutStep === 'cart' ? <ShoppingCart size={20} /> : <CreditCard size={20} />}
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-slate-800">Keranjang Belanja</h3>
-                    <p className="text-xs text-slate-400 uppercase font-black tracking-widest">{cart.length} Item Tersimpan</p>
+                    <h3 className="text-xl font-black text-slate-800">
+                      {checkoutStep === 'cart' ? 'Keranjang Belanja' : 'Pembayaran'}
+                    </h3>
+                    <p className="text-xs text-slate-400 uppercase font-black tracking-widest">
+                      {checkoutStep === 'cart' ? `${cart.length} Item Tersimpan` : `${selectedCartItems.length} Item Terpilih`}
+                    </p>
                   </div>
                 </div>
-                <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400">
+                <button 
+                  onClick={() => {
+                    setIsCartOpen(false);
+                    setTimeout(() => setCheckoutStep('cart'), 300);
+                  }} 
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
+                >
                   <X />
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-8 space-y-6">
-                {cart.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center">
-                    <div className="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-4">
-                      <ShoppingBag size={40} />
-                    </div>
-                    <p className="text-slate-500 font-bold">Keranjang Anda masih kosong</p>
-                    <button onClick={() => setIsCartOpen(false)} className="mt-4 text-emerald-600 font-black text-sm">Mulai Belanja Sekarang</button>
-                  </div>
-                ) : (
-                  cart.map((item) => (
-                    <motion.div key={item.product.id} layout className="flex gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 group">
-                      <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
-                        <img src={item.product.image} className="w-full h-full object-cover" />
+                {checkoutStep === 'cart' ? (
+                  <>
+                    {cart.length === 0 ? (
+                      <div className="h-full flex flex-col items-center justify-center text-center py-20">
+                        <div className="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-4">
+                          <ShoppingBag size={40} />
+                        </div>
+                        <p className="text-slate-500 font-bold">Keranjang Anda masih kosong</p>
+                        <button onClick={() => setIsCartOpen(false)} className="mt-4 text-emerald-600 font-black text-sm">Mulai Belanja Sekarang</button>
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-slate-800 mb-1">{item.product.name}</h4>
-                        <p className="text-emerald-600 font-black text-sm mb-2">Rp {item.product.price.toLocaleString("id-ID")}</p>
-                        <div className="flex items-center gap-3">
-                          <button 
-                            onClick={() => {
-                              setCart(prev => prev.map(i => i.product.id === item.product.id ? { ...i, quantity: Math.max(1, i.quantity - 1) } : i))
-                            }}
-                            className="w-6 h-6 rounded-md bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-100 transition-colors text-slate-600"
-                          >-</button>
-                          <span className="font-bold text-sm">{item.quantity}</span>
-                          <button 
-                            onClick={() => {
-                              setCart(prev => prev.map(i => i.product.id === item.product.id ? { ...i, quantity: i.quantity + 1 } : i))
-                            }}
-                            className="w-6 h-6 rounded-md bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-100 transition-colors text-slate-600"
-                          >+</button>
-                          <button onClick={() => removeFromCart(item.product.id)} className="ml-auto text-red-400 hover:text-red-500 transition-colors">
-                            <Trash2 size={16} />
-                          </button>
+                    ) : (
+                      <>
+                        <div className="flex justify-between items-center bg-emerald-50 p-4 rounded-2xl border border-emerald-100 mb-6">
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={selectedCartItems.length === cart.length} 
+                              onChange={(e) => {
+                                if (e.target.checked) setSelectedCartItems(cart.map(i => i.product.id));
+                                else setSelectedCartItems([]);
+                              }}
+                              className="w-5 h-5 accent-emerald-500 rounded-lg cursor-pointer" 
+                            />
+                            <span className="text-sm font-black text-emerald-800 uppercase tracking-widest">Pilih Semua</span>
+                          </label>
+                          <span className="text-[10px] bg-emerald-500 text-white px-2 py-1 rounded-full font-bold">{selectedCartItems.length} terpilih</span>
+                        </div>
+                        
+                        {cart.map((item) => (
+                          <motion.div key={item.product.id} layout className={`flex gap-4 p-4 rounded-2xl border transition-all ${selectedCartItems.includes(item.product.id) ? 'bg-white border-emerald-500 shadow-xl shadow-emerald-100/50' : 'bg-slate-50 border-slate-100 opacity-80'}`}>
+                            <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-slate-200">
+                              <img src={item.product.image} className="w-full h-full object-cover" />
+                              <div className="absolute top-1 left-1">
+                                <input 
+                                  type="checkbox" 
+                                  checked={selectedCartItems.includes(item.product.id)}
+                                  onChange={() => {
+                                    if (selectedCartItems.includes(item.product.id)) {
+                                      setSelectedCartItems(selectedCartItems.filter(id => id !== item.product.id));
+                                    } else {
+                                      setSelectedCartItems([...selectedCartItems, item.product.id]);
+                                    }
+                                  }}
+                                  className="w-5 h-5 accent-emerald-600 rounded-lg shadow-lg cursor-pointer" 
+                                />
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-bold text-slate-800 text-sm mb-0.5 line-clamp-1">{item.product.name}</h4>
+                              <p className="text-emerald-600 font-black text-xs mb-3">Rp {item.product.price.toLocaleString("id-ID")}</p>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <button 
+                                    onClick={() => {
+                                      setCart(prev => prev.map(i => i.product.id === item.product.id ? { ...i, quantity: Math.max(1, i.quantity - 1) } : i))
+                                    }}
+                                    className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-100 transition-colors text-slate-600 text-xs font-bold"
+                                  >-</button>
+                                  <span className="font-bold text-sm w-4 text-center">{item.quantity}</span>
+                                  <button 
+                                    onClick={() => {
+                                      setCart(prev => prev.map(i => i.product.id === item.product.id ? { ...i, quantity: i.quantity + 1 } : i))
+                                    }}
+                                    className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-100 transition-colors text-slate-600 text-xs font-bold"
+                                  >+</button>
+                                </div>
+                                <button onClick={() => removeFromCart(item.product.id)} className="text-slate-300 hover:text-red-500 transition-colors p-1">
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div className="space-y-8">
+                    <div>
+                      <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Ringkasan Belanja</h4>
+                      <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 space-y-3">
+                        {cart.filter(i => selectedCartItems.includes(i.product.id)).map(item => (
+                          <div key={item.product.id} className="flex justify-between items-center text-sm">
+                            <span className="text-slate-600 font-medium">{item.product.name} x {item.quantity}</span>
+                            <span className="font-bold text-slate-800">Rp {(item.product.price * item.quantity).toLocaleString("id-ID")}</span>
+                          </div>
+                        ))}
+                        <div className="pt-3 mt-3 border-t border-slate-200 flex justify-between items-center">
+                          <span className="text-slate-500 font-bold">Total Pembayaran</span>
+                          <span className="text-lg font-black text-emerald-600">Rp {cartTotal.toLocaleString("id-ID")}</span>
                         </div>
                       </div>
-                    </motion.div>
-                  ))
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Pilih Metode Pembayaran</p>
+                      <div className="grid grid-cols-1 gap-3">
+                        {[
+                          { id: 'bsi', label: 'Transfer Bank (BSI)', icon: Wallet, desc: '9123847291 (An. Rindu BSN)' },
+                          { id: 'wallet', label: 'E-Wallet (Dana/OVO)', icon: CreditCard, desc: '0821-2345-6789' },
+                          { id: 'cash', label: 'Tunai di Kantin BSN', icon: DollarSign, desc: 'Bayar saat ambil barang' },
+                          { id: 'points', label: 'Poin Rindu BSN', icon: Award, desc: 'Gunakan saldo poin harian' }
+                        ].map((method) => (
+                          <button
+                            key={method.id}
+                            onClick={() => setPaymentMethod(method.label)}
+                            className={`flex items-center justify-between p-5 rounded-2xl border transition-all ${paymentMethod === method.label ? 'bg-emerald-50 border-emerald-500 shadow-lg shadow-emerald-100/50 scale-[1.02]' : 'bg-white border-slate-200 hover:border-emerald-200'}`}
+                          >
+                            <div className="flex items-center gap-4 text-left">
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${paymentMethod === method.label ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                                <method.icon size={20} />
+                              </div>
+                              <div>
+                                <p className={`text-sm font-black ${paymentMethod === method.label ? 'text-emerald-700' : 'text-slate-700'}`}>{method.label}</p>
+                                <p className="text-[10px] text-slate-400 font-medium">{method.desc}</p>
+                              </div>
+                            </div>
+                            {paymentMethod === method.label && (
+                              <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
 
               {cart.length > 0 && (
-                <div className="p-8 border-t bg-slate-50 rounded-t-[2rem]">
-                  <div className="flex justify-between items-center mb-6">
-                    <p className="text-slate-500 font-bold">Subtotal</p>
-                    <p className="text-2xl font-black text-slate-800">Rp {cartTotal.toLocaleString("id-ID")}</p>
-                  </div>
-                  <button 
-                    onClick={handleCartCheckout}
-                    className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 flex items-center justify-center gap-3"
-                  >
-                    Checkout Sekarang <ArrowRight size={20} />
-                  </button>
+                <div className="p-8 border-t bg-slate-50 rounded-t-[2.5rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)]">
+                  {checkoutStep === 'cart' ? (
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center mb-2 px-2">
+                        <div>
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Terpilih ({selectedCartItems.length} item)</p>
+                          <p className="text-xl font-black text-slate-800">Rp {cartTotal.toLocaleString("id-ID")}</p>
+                        </div>
+                        <button 
+                          disabled={selectedCartItems.length === 0}
+                          onClick={() => setCheckoutStep('payment')}
+                          className="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black text-sm hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 flex items-center gap-3 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+                        >
+                          Checkout <ArrowRight size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex gap-4">
+                      <button 
+                        onClick={() => setCheckoutStep('cart')}
+                        className="p-4 bg-white border border-slate-200 rounded-2xl text-slate-400 hover:text-slate-600 transition-all"
+                      >
+                        <ShoppingBag size={24} />
+                      </button>
+                      <button 
+                        onClick={handleCartCheckout}
+                        className="flex-1 bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 flex items-center justify-center gap-3"
+                      >
+                        Konfirmasi & Bayar <ArrowRight size={22} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
@@ -1743,7 +2492,46 @@ export default function App() {
                           </div>
                         )}
 
-                        {adminMode && (
+                        {adminMode === 'notifications' && (
+                          <div className="space-y-4">
+                            {notifications.length === 0 ? (
+                              <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200">
+                                <Bell size={48} className="mx-auto text-slate-200 mb-4" />
+                                <p className="text-slate-400 font-bold">Belum ada notifikasi baru</p>
+                              </div>
+                            ) : (
+                              notifications.map(notif => (
+                                <div key={notif.id} className={`p-5 rounded-3xl border ${
+                                  notif.type === 'order' ? 'bg-emerald-50 border-emerald-100' : 
+                                  notif.type === 'news' ? 'bg-purple-50 border-purple-100' :
+                                  notif.type === 'report' ? 'bg-indigo-50 border-indigo-100' :
+                                  'bg-blue-50 border-blue-100'
+                                } flex gap-4`}>
+                                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
+                                    notif.type === 'order' ? 'bg-emerald-500 text-white' : 
+                                    notif.type === 'news' ? 'bg-purple-500 text-white' :
+                                    notif.type === 'report' ? 'bg-indigo-500 text-white' :
+                                    'bg-blue-500 text-white'
+                                  }`}>
+                                    {notif.type === 'order' ? <ShoppingBag size={20} /> : 
+                                     notif.type === 'news' ? <Newspaper size={20} /> :
+                                     notif.type === 'report' ? <Recycle size={20} /> :
+                                     <MessageCircle size={20} />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="flex justify-between items-start mb-1">
+                                      <h5 className="font-black text-slate-800 uppercase text-xs tracking-tighter">{notif.title}</h5>
+                                      <span className="text-[10px] font-bold text-slate-400">{notif.time}</span>
+                                    </div>
+                                    <p className="text-slate-600 text-xs whitespace-pre-line leading-relaxed">{notif.content}</p>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        )}
+
+                        {adminMode && adminMode !== 'notifications' && (
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 border border-slate-200 rounded-3xl">
                             <div className="flex justify-between items-center mb-4">
                               <h5 className="font-black text-slate-800 uppercase text-xs">Form Input {adminMode}</h5>
@@ -1751,11 +2539,81 @@ export default function App() {
                                 <X size={16} />
                               </button>
                             </div>
-                            <div className="space-y-3">
-                              <input type="text" placeholder={`Judul ${adminMode}`} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none" />
-                              <textarea placeholder={`Deskripsi / Isi ${adminMode}`} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none h-24"></textarea>
-                              <button className="w-full bg-emerald-600 text-white py-3 rounded-xl font-black text-sm">Publikasikan Sekarang</button>
-                            </div>
+                            <form 
+                              className="space-y-3"
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                const formData = new FormData(e.currentTarget);
+                                const title = formData.get('title') as string;
+                                const desc = formData.get('desc') as string;
+                                const price = formData.get('price') ? parseInt(formData.get('price') as string) : 0;
+                                const category = formData.get('category') as string;
+                                const image = "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800"; 
+
+                                switch(adminMode) {
+                                  case 'news':
+                                    setDynamicNews(prev => [{
+                                      id: Date.now(),
+                                      title,
+                                      excerpt: desc.substring(0, 100) + '...',
+                                      desc,
+                                      date: "Hari Ini",
+                                      image,
+                                      category: category || "Terbaru",
+                                      isNew: true
+                                    }, ...prev]);
+                                    break;
+                                  case 'product':
+                                    setDynamicProducts(prev => [{
+                                      id: Date.now(),
+                                      name: title,
+                                      desc,
+                                      price: price || 15000,
+                                      image,
+                                      stock: 10,
+                                      isNew: true
+                                    }, ...prev]);
+                                    break;
+                                  case 'class':
+                                    setDynamicClasses(prev => [{
+                                      id: Date.now(),
+                                      title,
+                                      desc,
+                                      category: category || "Umum",
+                                      image,
+                                      schedule: "Jadwal Segera",
+                                      price: price || 0,
+                                      isNew: true
+                                    }, ...prev]);
+                                    break;
+                                  case 'material':
+                                    setDynamicMaterials(prev => [{
+                                      id: Date.now(),
+                                      title,
+                                      type: category || "PDF",
+                                      size: "1.2 MB"
+                                    }, ...prev]);
+                                    break;
+                                }
+                                e.currentTarget.reset();
+                                setAdminMode(null);
+                                setIsProfileOpen(false);
+                                addNotification('news', 'Sistem', `Update ${adminMode} baru telah diterbitkan.`);
+                                alert(`${adminMode} successfully published!`);
+                              }}
+                            >
+                              <div className="space-y-4">
+                                <input required name="title" type="text" placeholder={`Judul ${adminMode}`} className="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500" />
+                                <textarea required name="desc" placeholder={`Keterangan ${adminMode}`} className="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 h-24"></textarea>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <input name="price" type="number" placeholder="Harga/Biaya (Rp)" className="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none" />
+                                  <input name="category" type="text" placeholder="Kategori/Label" className="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none" />
+                                </div>
+                              </div>
+                              <button type="submit" className="w-full bg-emerald-600 text-white py-4 rounded-xl font-black mt-4 shadow-lg hover:shadow-emerald-200 transition-all">
+                                Publikasikan Item
+                              </button>
+                            </form>
                           </motion.div>
                         )}
 
@@ -1919,6 +2777,27 @@ export default function App() {
                       </div>
                     </div>
 
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Nomor WhatsApp</label>
+                        <input 
+                          required
+                          type="tel" 
+                          placeholder="0812xxxx" 
+                          className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Alamat Email</label>
+                        <input 
+                          required
+                          type="email" 
+                          placeholder="santri@email.com" 
+                          className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
+                        />
+                      </div>
+                    </div>
+
                     <textarea 
                       placeholder="Pesan / Saran Pendaftaran" 
                       className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none h-20"
@@ -1948,7 +2827,7 @@ export default function App() {
                     <div className="space-y-3">
                       <p className="text-sm font-bold text-slate-700">Pilih Metode Pembayaran:</p>
                       <button 
-                        onClick={handleRegisterSuccess}
+                        onClick={handlePaymentSuccess}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -1964,7 +2843,7 @@ export default function App() {
                       </button>
 
                       <button 
-                        onClick={handleRegisterSuccess}
+                        onClick={handlePaymentSuccess}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -2038,7 +2917,7 @@ export default function App() {
                   <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-emerald-50">
                     <User size={30} />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-800">Masuk BSN Rindu Al-Ihya</h3>
+                  <h3 className="text-2xl font-black text-slate-800">Masuk Rindu BSN Al-Ihya</h3>
                   <p className="text-slate-400 text-sm">Akses portal pengelolaan bank sampah</p>
                 </div>
 
@@ -2149,7 +3028,7 @@ export default function App() {
                     <User size={30} />
                   </div>
                   <h3 className="text-2xl font-black text-slate-800">Daftar Akun Baru</h3>
-                  <p className="text-slate-400 text-sm">Masuk ke ekosistem BSM Rindu Al-Ihya</p>
+                  <p className="text-slate-400 text-sm">Masuk ke ekosistem Rindu BSN Al-Ihya</p>
                 </div>
 
                 <form onSubmit={handleSignup} className="space-y-4">
@@ -2229,6 +3108,7 @@ export default function App() {
                       <label className="block text-sm font-bold text-slate-700 mb-2">Nama Santri / Asrama</label>
                       <input 
                         required
+                        name="reporter"
                         type="text" 
                         defaultValue={isLoggedIn ? `${userProfile.name} - ${userProfile.dorm}` : ""}
                         placeholder="Contoh: Santri Ahmad - Asrama Al-Ihya" 
@@ -2239,7 +3119,7 @@ export default function App() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Jenis Sampah</label>
-                        <select className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none">
+                        <select name="type" className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none">
                           {WASTE_PRICES.map(cat => 
                             cat.items.map(item => (
                               <option key={item.name} value={item.name}>{item.name}</option>
@@ -2251,6 +3131,7 @@ export default function App() {
                         <label className="block text-sm font-bold text-slate-700 mb-2">Berat (Est. Kg)</label>
                         <input 
                           required
+                          name="amount"
                           type="number" 
                           placeholder="Kg" 
                           className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
@@ -2261,6 +3142,7 @@ export default function App() {
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">Pesan / Lokasi Penjemputan</label>
                       <textarea 
+                        name="notes"
                         rows={3}
                         placeholder="Misal: Samping pintu gerbang asrama..." 
                         className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none resize-none"

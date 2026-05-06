@@ -1,6 +1,6 @@
 {
-  "name": "BSN Rindu Al Ihya",
-  "description": "Website resmi BSN Rindu Al Ihya - Program pengelolaan sampah berbasis pesantren di Pondok Pesantren Al-Ihya untuk lingkungan yang bersih dan santri yang kreatif.",
+  "name": "Rindu BSN Al-Ihya",
+  "description": "Website resmi Rindu BSN Al-Ihya - Program pengelolaan sampah berbasis pesantren di Pondok Pesantren Al-Ihya untuk lingkungan yang bersih dan santri yang kreatif.",
   "requestFramePermissions": [
     "geolocation"
   ],
