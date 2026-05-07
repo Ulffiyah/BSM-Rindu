@@ -19,31 +19,37 @@ export const STATISTICS = [
 
 export const EDUCATION_CLASSES = [
   {
+    id: 1,
     title: "Budidaya Maggot BSF",
     schedule: "Setiap Kamis Sore",
     desc: "Pelatihan intensif mengolah limbah organik kantin pesantren menggunakan larva Black Soldier Fly menjadi pakan ternak berkualitas.",
     mentor: "Ust. Ahmad Ghozali",
     category: "Eco-Tech",
     price: 50000,
-    image: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?auto=format&fit=crop&q=80&w=800",
+    videoLink: "https://www.youtube.com/watch?v=R9K-U6R09uA"
   },
   {
+    id: 2,
     title: "Daur Ulang Limbah Kreatif",
     schedule: "Jumat Berkah",
     desc: "Mengubah limbah anorganik (plastik & kain) menjadi produk bernilai seni tinggi seperti tas kitab, sajadah travel, dan dekorasi asrama.",
     mentor: "Mbak Laila Nur",
     category: "Workshop",
     price: 35000,
-    image: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&q=80&w=800",
+    videoLink: "https://www.youtube.com/watch?v=FmS3b6N9XhY"
   },
   {
+    id: 3,
     title: "Fiqih Lingkungan (Ekologi)",
     schedule: "Kajian Rutin Sabtu",
     desc: "Bedah kitab dan pemahaman mendalam tentang kewajiban menjaga alam dalam perspektif hukum Islam untuk santri milenial.",
     mentor: "KH. Ihya Ulumudin",
     category: "Kajian",
     price: 0,
-    image: "https://images.unsplash.com/photo-1540946485063-a40da27545f8?auto=format&fit=crop&q=80&w=600"
+    image: "https://images.unsplash.com/photo-1540946485063-a40da27545f8?auto=format&fit=crop&q=80&w=600",
+    videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   }
 ];
 

@@ -35,6 +35,7 @@ import {
   Newspaper,
   FileText,
   PlusCircle,
+  Play,
   CreditCard,
   DollarSign,
   Send,
@@ -115,13 +116,7 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
               onClick={onOpenLogin}
               className={`text-xs uppercase tracking-widest font-extrabold flex items-center gap-2 px-6 py-2.5 rounded-full border transition-all ${isScrolled ? "text-slate-700 border-slate-200 hover:bg-slate-50" : "text-white border-white/20 hover:bg-white/10"}`}
             >
-              <LogIn size={16} /> {isLoggedIn ? "Profil Saya" : "Masuk Akun"}
-            </button>
-            <button 
-              onClick={onOpenModal}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-black transition-all shadow-[0_8px_20px_rgba(16,185,129,0.3)] active:scale-95"
-            >
-              Setor Sampah
+              <LogIn size={16} /> {isLoggedIn ? "Profil Saya" : "Portal Pengurus"}
             </button>
           </div>
         </div>
@@ -157,11 +152,11 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
             <button 
               onClick={() => {
                 setMobileMenuOpen(false);
-                onOpenModal();
+                onOpenLogin();
               }}
               className="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold"
             >
-              Setor Sekarang
+              {isLoggedIn ? "Profil Saya" : "Portal Pengurus"}
             </button>
           </motion.div>
         )}
@@ -214,17 +209,17 @@ const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenM
               Inisiatif <span className="text-emerald-300">{APP_CONFIG.name}</span> membangun ekosistem sirkular, mengelola limbah menjadi berkah dari bilik santri.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
-              <button 
-                onClick={onOpenModal}
-                className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-10 py-5 rounded-[2rem] font-display font-black text-sm uppercase tracking-widest transition-all shadow-[0_20px_50px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3 group active:scale-95"
-              >
-                Setor Sampah <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
               <a 
                 href="#shop"
+                className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-10 py-5 rounded-[2rem] font-display font-black text-sm uppercase tracking-widest transition-all shadow-[0_20px_50px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3 group active:scale-95"
+              >
+                Mulai Belanja <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+              <a 
+                href="#innovation"
                 className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white border border-white/10 px-10 py-5 rounded-[2rem] font-display font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-3 active:scale-95"
               >
-                Jelajahi Produk
+                Jelajahi Inovasi
               </a>
             </div>
           </motion.div>
@@ -257,8 +252,8 @@ const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenM
                       <p className="text-xl font-display font-black leading-none">Rp {userProfile.balance.toLocaleString("id-ID")}</p>
                     </div>
                     <div className="bg-white/5 p-6 rounded-[2rem] border border-white/10 hover:bg-white/10 transition-colors">
-                      <p className="text-[9px] uppercase font-black text-emerald-400 tracking-widest mb-2 opacity-60">Setoran</p>
-                      <p className="text-xl font-display font-black leading-none">{userProfile.wasteTotal} <span className="text-xs">kg</span></p>
+                      <p className="text-[9px] uppercase font-black text-emerald-400 tracking-widest mb-2 opacity-60">Item Terbeli</p>
+                      <p className="text-xl font-display font-black leading-none">{userProfile.classesJoined.length} <span className="text-xs">Kelas</span></p>
                     </div>
                   </div>
 
@@ -586,6 +581,11 @@ const EducationSection = ({ classes, onRegister }: { classes: any[], onRegister:
                   {cls.isNew && (
                     <div className="px-3 py-1 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-widest rounded-full shadow-lg animate-pulse">
                       BUKA BARU
+                    </div>
+                  )}
+                  {cls.videoLink && (
+                    <div className="px-3 py-1 bg-emerald-600 text-white text-[8px] font-black uppercase tracking-widest rounded-full shadow-lg flex items-center gap-1">
+                      <Play size={10} /> VIDEO COURSE
                     </div>
                   )}
                   <div className="px-5 py-2 bg-white/10 backdrop-blur-xl border border-white/20 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-full">
@@ -943,7 +943,6 @@ export default function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [isShopModalOpen, setIsShopModalOpen] = useState(false);
   const [isAllProductsOpen, setIsAllProductsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -957,6 +956,7 @@ export default function App() {
   const [checkoutStep, setCheckoutStep] = useState<'cart' | 'payment'>('cart');
   const [paymentMethod, setPaymentMethod] = useState<string>("Transfer Bank (BSI)");
   const [adminMode, setAdminMode] = useState<string | null>(null); // 'news', 'product', 'class', 'material'
+  const [selectedFinanceMonth, setSelectedFinanceMonth] = useState(new Date().toLocaleDateString("id-ID", { month: 'long', year: 'numeric' }));
   const [editingItem, setEditingItem] = useState<{ type: string, id: number } | null>(null);
   const [totalWasteToday, setTotalWasteToday] = useState(1245.5); // Initial mockup value
   const [totalBalance, setTotalBalance] = useState(15750000); // Initial mockup value (15.75M)
@@ -1067,7 +1067,7 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const selectedClass = EDUCATION_CLASSES.find(c => c.title === selectedClassId);
+  const selectedClass = dynamicClasses.find(c => c.title === selectedClassId);
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
@@ -1075,29 +1075,28 @@ export default function App() {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const role = formData.get("role") as string;
     const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
 
     setTimeout(() => {
-      setIsLoggedIn(true);
-      if (role === "pengurus") {
+      if (role === "pengurus" && username === "pengurus" && password === "bsn2026") {
+        setIsLoggedIn(true);
         setIsPengurus(true);
-        setIsAdmin(true); // Super admin is also admin
+        setIsAdmin(true); 
         setUserProfile(prev => ({ ...prev, name: "Pengurus BSN", dorm: "Manajemen Unit BSN" }));
         setView('dashboard');
-      } else if (role === "admin") {
+        setIsLoginOpen(false);
+      } else if (role === "admin" && username === "admin" && password === "bsnops2026") {
+        setIsLoggedIn(true);
         setIsAdmin(true);
         setIsPengurus(false);
         setUserProfile(prev => ({ ...prev, name: "Admin BSN", dorm: "Operasional Bank Sampah" }));
         setView('dashboard');
+        setIsLoginOpen(false);
       } else {
-        setIsAdmin(false);
-        setIsPengurus(false);
-        if (username) {
-          setUserProfile(prev => ({ ...prev, name: username }));
-        }
+        alert("Kredensial tidak valid. Hanya Pengurus dan Admin yang diizinkan masuk.");
       }
       setIsSubmitting(false);
-      setIsLoginOpen(false);
-    }, 1500);
+    }, 1000);
   };
 
   const handleLogout = () => {
@@ -1166,16 +1165,6 @@ export default function App() {
     alert("Laporan keuangan berhasil diunduh dalam format CSV.");
   };
 
-  const handleSignup = (e: FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsLoggedIn(true);
-      setIsSubmitting(false);
-      setIsSignupOpen(false);
-    }, 1500);
-  };
-
   const handleSubmitReport = (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -1188,7 +1177,7 @@ export default function App() {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-      addNotification('report', 'Laporan Setoran!', `Setoran ${type} (${amount}kg) oleh ${reporter}. Pesan: ${notes}`);
+      addNotification('feedback', 'Sistem', 'Laporan Anda telah diterima.');
       setTimeout(() => {
         setSubmitted(false);
         setIsModalOpen(false);
@@ -1208,6 +1197,12 @@ export default function App() {
           classesJoined: [...prev.classesJoined, selectedClass.title]
         }));
         addNotification('order', 'Pendaftaran Kelas!', `Pendaftaran baru untuk kelas ${selectedClass.title} dari ${userProfile.name} (Saldo/DANA)`);
+        
+        // WhatsApp notification with video link
+        const waText = `Halo ${userProfile.name}, pendaftaran Anda untuk kelas *${selectedClass.title}* telah berhasil! \n\nBerikut adalah link video materi Anda: \n${selectedClass.videoLink || 'Akan segera menyusul'} \n\nSelamat belajar!`;
+        setTimeout(() => {
+          window.open(`https://wa.me/${userProfile.phone || '6281234567890'}?text=${encodeURIComponent(waText)}`, "_blank");
+        }, 1000);
       } else if (selectedProduct) {
         addNotification('order', 'Pembelian Produk!', `Pembelian produk ${selectedProduct.name} seharga Rp ${selectedProduct.price.toLocaleString("id-ID")} dari ${userProfile.name} (Saldo/DANA)`);
       }
@@ -1258,10 +1253,9 @@ export default function App() {
               { id: 'product', label: 'Produk Marketplace', icon: ShoppingBag, role: 'pengurus' },
               { id: 'class', label: 'Kelas Edukasi', icon: GraduationCap, role: 'pengurus' },
               { id: 'material', label: 'Materi Belajar', icon: FileText, role: 'pengurus' },
-              { id: 'notifications', label: 'Notifikasi & Order', icon: Bell, role: 'admin' },
-              { id: 'reports', label: 'Laporan Setoran', icon: Recycle, role: 'admin' },
-              { id: 'finance', label: 'Keuangan & Kas', icon: Wallet, role: 'admin' },
-              { id: 'feedback', label: 'Saran & Feedback', icon: MessageCircle, role: 'admin' },
+              { id: 'notifications', label: 'Notifikasi & Order', icon: Bell, role: 'pengurus' },
+              { id: 'finance', label: 'Keuangan & Kas', icon: Wallet, role: 'pengurus' },
+              { id: 'feedback', label: 'Saran & Feedback', icon: MessageCircle, role: 'pengurus' },
             ].filter(item => item.role === 'admin' || (item.role === 'pengurus' && isPengurus)).map((item) => (
               <button 
                 key={item.id}
@@ -1299,11 +1293,7 @@ export default function App() {
             <div className="flex gap-4">
               <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
                 <p className="text-[10px] uppercase font-black text-slate-400 mb-1">Kas Masuk Hari Ini</p>
-                <p className="text-xl font-black text-emerald-600">Rp 450.000</p>
-              </div>
-              <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                <p className="text-[10px] uppercase font-black text-slate-400 mb-1">Setoran Pending</p>
-                <p className="text-xl font-black text-emerald-600">12 Item</p>
+                <p className="text-xl font-black text-emerald-600">Rp {financialHistory.filter(h => h.date.includes(new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long' }))).reduce((s, h) => s + h.amount, 0).toLocaleString("id-ID")}</p>
               </div>
             </div>
           </header>
@@ -1327,12 +1317,12 @@ export default function App() {
                 <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
                   <h4 className="font-bold text-slate-800 mb-4 border-b pb-4">Aktifitas Terakhir</h4>
                   <div className="space-y-4">
-                    {[1, 2, 3].map(i => (
+                    {financialHistory.slice(0, 3).map((h, i) => (
                       <div key={i} className="flex items-center gap-3 text-sm">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400"><Info size={14} /></div>
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><ShoppingBag size={14} /></div>
                         <div>
-                          <p className="font-bold text-slate-700">Setoran Baru dari Asrama A</p>
-                          <p className="text-[10px] text-slate-400">2 menit yang lalu</p>
+                          <p className="font-bold text-slate-700">Pemasukkan dari {h.user}</p>
+                          <p className="text-[10px] text-slate-400">{h.date}</p>
                         </div>
                       </div>
                     ))}
@@ -1372,18 +1362,15 @@ export default function App() {
                               animate={{ opacity: 1, scale: 1 }}
                               className={`p-1 rounded-[2.5rem] border transition-all hover:shadow-2xl overflow-hidden group ${
                                 notif.type === 'order' ? 'bg-emerald-50/50 border-emerald-100 hover:border-emerald-300' : 
-                                notif.type === 'report' ? 'bg-indigo-50/50 border-indigo-100 hover:border-indigo-300' :
                                 'bg-blue-50/50 border-blue-100 hover:border-blue-300'
                               }`}
                             >
                               <div className="bg-white p-8 rounded-[2.2rem] flex flex-col md:flex-row gap-8 items-start">
                                 <div className={`w-20 h-20 rounded-[1.5rem] flex items-center justify-center shrink-0 shadow-2xl group-hover:scale-110 transition-transform ${
                                   notif.type === 'order' ? 'bg-emerald-600 text-white shadow-emerald-200' : 
-                                  notif.type === 'report' ? 'bg-indigo-600 text-white shadow-indigo-200' :
                                   'bg-blue-600 text-white shadow-blue-200'
                                 }`}>
                                   {notif.type === 'order' ? <ShoppingBag size={32} /> : 
-                                   notif.type === 'report' ? <Recycle size={32} /> :
                                    <MessageCircle size={32} />}
                                 </div>
                                 <div className="flex-1 w-full">
@@ -1393,11 +1380,9 @@ export default function App() {
                                         <h5 className="font-display font-black text-xl text-slate-800 tracking-tighter capitalize">{notif.title}</h5>
                                         <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
                                           notif.type === 'order' ? 'bg-emerald-100 text-emerald-700' : 
-                                          notif.type === 'report' ? 'bg-indigo-100 text-indigo-700' :
                                           'bg-blue-100 text-blue-700'
                                         }`}>
                                           {notif.type === 'order' ? 'Pesanan Baru' : 
-                                           notif.type === 'report' ? 'Setoran Masuk' :
                                            'Feedback'}
                                         </span>
                                       </div>
@@ -1412,25 +1397,6 @@ export default function App() {
                                           className="flex-1 md:flex-none px-6 py-3 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100 active:scale-95"
                                         >
                                           Proses Sekarang
-                                        </button>
-                                      )}
-                                      {notif.type === 'report' && (
-                                        <button 
-                                          onClick={() => {
-                                            // Extract KG from content string "(Xkg)"
-                                            const weightMatch = notif.content.match(/\((\d+(?:\.\d+)?)kg\)/);
-                                            if (weightMatch) {
-                                              const weight = parseFloat(weightMatch[1]);
-                                              setTotalWasteToday(prev => prev + weight);
-                                            }
-                                            
-                                            setNotifications(prev => prev.filter(n => n.id !== notif.id));
-                                            addNotification('feedback', 'Sistem', 'Setoran Anda telah divalidasi oleh pengurus!');
-                                            alert("Setoran berhasil divalidasi! Berat sampah telah ditambahkan ke data harian.");
-                                          }}
-                                          className="flex-1 md:flex-none px-6 py-3 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95"
-                                        >
-                                          Validasi Setoran
                                         </button>
                                       )}
                                       <button 
@@ -1480,10 +1446,6 @@ export default function App() {
                             <span className="text-white/60 font-medium uppercase text-[10px] tracking-widest">Feedback</span>
                             <span className="text-3xl font-display font-black text-blue-400">{notifications.filter(n => n.type === 'feedback').length}</span>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-white/60 font-medium uppercase text-[10px] tracking-widest">Setoran</span>
-                            <span className="text-3xl font-display font-black text-indigo-400">{notifications.filter(n => n.type === 'report').length}</span>
-                          </div>
                           <div className="pt-8 border-t border-white/10">
                             <p className="text-[10px] text-white/30 leading-relaxed font-bold italic text-center">
                               "Kedisiplinan adalah kunci kesuksesan bersama."
@@ -1512,7 +1474,13 @@ export default function App() {
                       <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden group">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform"></div>
                         <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Pemasukkan Hari Ini</p>
-                        <h4 className="text-3xl font-display font-black text-slate-800">Rp {financialHistory.filter(h => h.date.includes("06 Mei")).reduce((s, h) => s + h.amount, 0).toLocaleString("id-ID")}</h4>
+                        <h4 className="text-3xl font-display font-black text-slate-800">
+                          Rp {financialHistory
+                            .filter(h => h.date.includes(new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long' })))
+                            .reduce((s, h) => s + h.amount, 0)
+                            .toLocaleString("id-ID")
+                          }
+                        </h4>
                         <p className="mt-4 text-xs font-bold text-slate-400 italic">Berdasarkan data input terbaru</p>
                       </div>
                       <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden group">
@@ -1526,15 +1494,26 @@ export default function App() {
                     <div className="bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-sm">
                       <div className="p-10 border-b border-slate-100 flex justify-between items-center">
                         <div>
-                          <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter">Buku Kas & Saldo Rekening</h4>
+                          <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter">Jurnal Keuangan Bulanan</h4>
                           <p className="text-slate-400 text-sm font-medium">Catatan otomatis dari hasil penjualan marketplace dan pendaftaran kelas</p>
                         </div>
-                        <button 
-                          onClick={handleExportFinance}
-                          className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200"
-                        >
-                          <FileText size={16} /> Export Laporan
-                        </button>
+                        <div className="flex gap-4">
+                          <select 
+                            value={selectedFinanceMonth}
+                            onChange={(e) => setSelectedFinanceMonth(e.target.value)}
+                            className="px-6 py-3 bg-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none border border-slate-200 focus:border-emerald-500"
+                          >
+                             <option>{new Date().toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}</option>
+                             <option>April 2026</option>
+                             <option>Maret 2026</option>
+                          </select>
+                          <button 
+                            onClick={handleExportFinance}
+                            className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200"
+                          >
+                            <FileText size={16} /> Export CSV
+                          </button>
+                        </div>
                       </div>
                       <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -1548,7 +1527,12 @@ export default function App() {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-50">
-                            {financialHistory.map((item) => (
+                            {financialHistory
+                              .filter(item => {
+                                const [selMonth, selYear] = selectedFinanceMonth.split(' ');
+                                return item.date.includes(selMonth) && item.date.includes(selYear);
+                              })
+                              .map((item) => (
                               <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
                                 <td className="py-6 px-8 text-xs font-bold text-slate-500">{item.date}</td>
                                 <td className="py-6 px-8">
@@ -1604,6 +1588,7 @@ export default function App() {
                           const image = "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800";
 
                           if (editingItem) {
+                            const vLink = formData.get('videoLink') as string;
                             switch(adminMode) {
                               case 'news':
                                 setDynamicNews(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, excerpt: desc.substring(0, 100) + '...', desc, category: category || item.category } : item));
@@ -1612,14 +1597,13 @@ export default function App() {
                                 setDynamicProducts(prev => prev.map(item => item.id === editingItem.id ? { ...item, name: title, desc, price: price || item.price } : item));
                                 break;
                               case 'class':
-                                setDynamicClasses(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, desc, category: category || item.category, price: price || item.price } : item));
+                                setDynamicClasses(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, desc, category: category || item.category, price: price || item.price, videoLink: vLink } : item));
                                 break;
                               case 'material':
                                 setDynamicMaterials(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, type: category || item.type } : item));
                                 break;
                             }
                             addNotification('feedback', 'Sistem', `${adminMode} berhasil diperbarui.`);
-                            alert(`${adminMode} successfully updated!`);
                           } else {
                             switch(adminMode) {
                               case 'news':
@@ -1627,21 +1611,17 @@ export default function App() {
                                 break;
                               case 'product':
                                 const stockValue = parseInt(formData.get('stock') as string) || 0;
-                                if (editingItem) {
-                                  setDynamicProducts(prev => prev.map(i => i.id === editingItem.id ? { ...i, name: title, desc, price: price || 15000, image, stock: stockValue } : i));
-                                } else {
-                                  setDynamicProducts(prev => [{ id: Date.now(), name: title, desc, price: price || 15000, image, stock: stockValue, isNew: true }, ...prev]);
-                                }
+                                setDynamicProducts(prev => [{ id: Date.now(), name: title, desc, price: price || 15000, image, stock: stockValue, isNew: true }, ...prev]);
                                 break;
                               case 'class':
-                                setDynamicClasses(prev => [{ id: Date.now(), title, desc, category: category || "Umum", image, schedule: "Jadwal Segera", price: price || 0, isNew: true }, ...prev]);
+                                const vLink = formData.get('videoLink') as string;
+                                setDynamicClasses(prev => [{ id: Date.now(), title, desc, category: category || "Umum", image, schedule: "Jadwal Segera", price: price || 0, isNew: true, videoLink: vLink }, ...prev]);
                                 break;
                               case 'material':
                                 setDynamicMaterials(prev => [{ id: Date.now(), title, type: category || "PDF", size: "2.4 MB" }, ...prev]);
                                 break;
                             }
                             addNotification('feedback', 'Sistem', `Konten ${adminMode} berhasil dipublikasikan ke Beranda.`);
-                            alert(`${adminMode} successfully published!`);
                           }
                           
                           e.currentTarget.reset();
@@ -1711,6 +1691,19 @@ export default function App() {
                               className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
                             />
                           </div>
+                          {adminMode === 'class' && (
+                            <div className="col-span-2">
+                              <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Link Video (YouTube/Lainnya)</label>
+                              <input 
+                                name="videoLink" 
+                                type="url" 
+                                key={editingItem ? `edit-video-${editingItem.id}` : 'new-video'}
+                                defaultValue={editingItem ? dynamicClasses.find(i => i.id === editingItem.id)?.videoLink : ''}
+                                placeholder="https://youtube.com/..." 
+                                className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                              />
+                            </div>
+                          )}
                           {adminMode === 'product' && (
                             <div>
                               <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Jumlah Stok</label>
@@ -1919,7 +1912,7 @@ export default function App() {
                   Wujudkan Pesantren <br /> Nol Sampah (Zero Waste)
                 </h2>
                 <p className="text-emerald-50/70 text-xl max-w-2xl mx-auto mb-12">
-                  Mari menjaga kesucian dan kebersihan lingkungan pesantren bersama. Laporkan setoran sampah asrama Anda sekarang.
+                  Mari menjaga kesucian dan kebersihan lingkungan pesantren bersama. Mulailah gaya hidup ramah lingkungan dari bilik santri.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-6">
                   <button 
@@ -2433,7 +2426,7 @@ export default function App() {
                   </div>
                   <div className="space-y-4">
                     <div className="bg-white/10 p-4 rounded-2xl">
-                      <p className="text-xs text-emerald-200 uppercase font-black tracking-wider">{isAdmin ? "Total Kas BSM" : "Target Setoran Asrama"}</p>
+                      <p className="text-xs text-emerald-200 uppercase font-black tracking-wider">{isAdmin ? "Total Kas BSN" : "Status Aktif Santri"}</p>
                       <p className="text-2xl font-black">Rp {isAdmin ? "12.450.000" : "5.000.000"}</p>
                     </div>
                     <div className="bg-white/10 p-4 rounded-2xl">
@@ -2489,7 +2482,7 @@ export default function App() {
                               </h5>
                               <div className="space-y-3">
                                 {[
-                                  { icon: Recycle, title: "Setoran 5kg Plastik", date: "Hari ini", points: "+50 Pts" },
+                                  { icon: ShoppingBag, title: "Pembelian Tas Kitab", date: "Hari ini", amount: "Rp 45.000" },
                                   { icon: GraduationCap, title: "Lulus Kelas Maggot", date: "2 hari lalu", points: "+200 Pts" },
                                   { icon: Award, title: "Badge Santri Teladan", date: "Kemarin", points: "Achievement" },
                                 ].map((activity, idx) => (
@@ -2662,7 +2655,7 @@ export default function App() {
                         )}
 
                         <div>
-                          <p className="text-sm font-black text-slate-400 uppercase mb-3 text-emerald-600">Laporan Setoran Masuk (Pending)</p>
+                          <p className="text-sm font-black text-slate-400 uppercase mb-3 text-emerald-600">Pesanan Masuk Terbaru (Pending)</p>
                           <div className="space-y-3">
                             {[
                               { dorm: "Asrama Al-Ihya 3", name: "Santri Zaid", type: "Plastik", weight: "4.5kg" },
@@ -2720,7 +2713,7 @@ export default function App() {
                                   <Recycle size={20} />
                                 </div>
                                 <div>
-                                  <p className="font-bold text-slate-700 text-sm">Setor Kertas HVS</p>
+                                  <p className="font-bold text-slate-700 text-sm">Pembelian Produk</p>
                                   <p className="text-[10px] text-slate-400">24 Apr 2024</p>
                                 </div>
                               </div>
@@ -2732,7 +2725,7 @@ export default function App() {
                                   <Recycle size={20} />
                                 </div>
                                 <div>
-                                  <p className="font-bold text-slate-700 text-sm">Setor Botol Plastik</p>
+                                  <p className="font-bold text-slate-700 text-sm">Lulus Kelas Edukasi</p>
                                   <p className="text-[10px] text-slate-400">22 Apr 2024</p>
                                 </div>
                               </div>
@@ -2965,7 +2958,14 @@ export default function App() {
                   <p className="text-slate-400 text-sm">Akses portal pengelolaan bank sampah</p>
                 </div>
 
-                <form onSubmit={handleLogin} className="space-y-4">
+                  <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl mb-6">
+                    <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-2">Default Credentials:</p>
+                    <div className="space-y-1 text-xs text-emerald-700 font-medium">
+                      <p>• {loginRole === 'pengurus' ? 'Pengurus: pengurus / bsn2026' : 'Admin: admin / bsnops2026'}</p>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleLogin} className="space-y-4">
                   <div className="flex bg-slate-100 p-1.5 rounded-2xl mb-4">
                     <label className="flex-1 text-center cursor-pointer">
                       <input 
@@ -2989,17 +2989,6 @@ export default function App() {
                       />
                       <span className="block py-2.5 rounded-xl text-[10px] font-black peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-sm transition-all text-slate-500">ADMIN (OPS)</span>
                     </label>
-                    <label className="flex-1 text-center cursor-pointer">
-                      <input 
-                        type="radio" 
-                        name="role" 
-                        value="user" 
-                        checked={loginRole === 'user'} 
-                        onChange={(e) => setLoginRole(e.target.value)}
-                        className="hidden peer" 
-                      />
-                      <span className="block py-2.5 rounded-xl text-[10px] font-black peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-sm transition-all text-slate-500">SANTRI</span>
-                    </label>
                   </div>
                   
                   <div className="relative">
@@ -3008,28 +2997,26 @@ export default function App() {
                       type="text" 
                       required
                       name="username"
-                      placeholder={loginRole === 'user' ? "Nama Lengkap" : "Username / NIS"} 
+                      placeholder="Username / Kantor" 
                       className="w-full pl-12 pr-5 py-3.5 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all font-medium"
                     />
                   </div>
-                  {loginRole !== 'user' && (
-                    <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                      <input 
-                        type="password" 
-                        required
-                        name="password"
-                        placeholder="Kata Sandi" 
-                        className="w-full pl-12 pr-5 py-3.5 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all font-medium"
-                      />
-                    </div>
-                  )}
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <input 
+                      type="password" 
+                      required
+                      name="password"
+                      placeholder="Kata Sandi" 
+                      className="w-full pl-12 pr-5 py-3.5 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all font-medium"
+                    />
+                  </div>
                   <div className="flex items-center justify-between text-xs py-2 px-1">
                     <label className="flex items-center gap-2 cursor-pointer text-slate-500 select-none">
                       <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
                       Ingat Saya
                     </label>
-                    {loginRole !== 'user' && <a href="#" className="text-emerald-600 font-bold hover:underline">Lupa Sandi?</a>}
+                    <a href="#" className="text-emerald-600 font-bold hover:underline">Lupa Sandi?</a>
                   </div>
                   <button 
                     type="submit"
@@ -3038,179 +3025,7 @@ export default function App() {
                   >
                     {isSubmitting ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : "Masuk Sekarang"}
                   </button>
-                  <p className="text-center text-slate-400 text-sm mt-6">
-                    Belum punya akun? <button type="button" onClick={() => setIsLoginOpen(false) || setIsSignupOpen(true)} className="text-emerald-600 font-bold hover:underline">Daftar Mandiri</button>
-                  </p>
                 </form>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Signup Modal */}
-      <AnimatePresence>
-        {isSignupOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsSignupOpen(false)}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-            ></motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
-            >
-              <div className="p-10">
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-emerald-50">
-                    <User size={30} />
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-800">Daftar Akun Baru</h3>
-                  <p className="text-slate-400 text-sm">Masuk ke ekosistem Rindu BSN Al-Ihya</p>
-                </div>
-
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="Nama Lengkap Santri" 
-                    className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all font-medium"
-                  />
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="Nomor Induk Santri (NIS)" 
-                    className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all font-medium"
-                  />
-                  <input 
-                    type="password" 
-                    required
-                    placeholder="Buat Kata Sandi" 
-                    className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 outline-none transition-all font-medium"
-                  />
-                  
-                  <button 
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-black text-lg transition-all shadow-lg shadow-emerald-200 active:scale-95 mt-4 flex items-center justify-center"
-                  >
-                    {isSubmitting ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : "Daftar Akun"}
-                  </button>
-                  <p className="text-center text-slate-400 text-sm mt-6">
-                    Sudah punya akun? <button type="button" onClick={() => setIsSignupOpen(false) || setIsLoginOpen(true)} className="text-emerald-600 font-bold hover:underline">Masuk Sini</button>
-                  </p>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Setor Sampah Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-            ></motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
-            >
-              <div className="p-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-black text-slate-800">Formulir Setor Sampah</h3>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400">
-                    <X />
-                  </button>
-                </div>
-
-                {submitted ? (
-                  <div className="py-12 text-center">
-                    <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Recycle size={40} className="animate-spin-slow" />
-                    </div>
-                    <h4 className="text-2xl font-bold text-slate-800 mb-2">Berhasil Terkirim!</h4>
-                    <p className="text-slate-500">Pengurus akan segera memvalidasi setoran asrama Anda.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmitReport} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Nama Santri / Asrama</label>
-                      <input 
-                        required
-                        name="reporter"
-                        type="text" 
-                        defaultValue={isLoggedIn ? `${userProfile.name} - ${userProfile.dorm}` : ""}
-                        placeholder="Contoh: Santri Ahmad - Asrama Al-Ihya" 
-                        className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Jenis Sampah</label>
-                        <select name="type" className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none">
-                          {WASTE_PRICES.map(cat => 
-                            cat.items.map(item => (
-                              <option key={item.name} value={item.name}>{item.name}</option>
-                            ))
-                          )}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Berat (Est. Kg)</label>
-                        <input 
-                          required
-                          name="amount"
-                          type="number" 
-                          placeholder="Kg" 
-                          className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Pesan / Lokasi Penjemputan</label>
-                      <textarea 
-                        name="notes"
-                        rows={3}
-                        placeholder="Misal: Samping pintu gerbang asrama..." 
-                        className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none resize-none"
-                      ></textarea>
-                    </div>
-
-                    <button 
-                      type="submit" 
-                      disabled={isSubmitting}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-black text-lg transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                          Memproses...
-                        </>
-                      ) : (
-                        <>
-                          Kirim Laporan <ArrowRight size={20} />
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
               </div>
             </motion.div>
           </div>
