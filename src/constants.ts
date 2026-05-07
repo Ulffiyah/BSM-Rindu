@@ -5,7 +5,7 @@ export const APP_CONFIG = {
   contact: {
     address: "Komp. Pondok Pesantren Al-Ihya, Kelurahan Karta, Kec. Demang, Jawa Barat",
     phone: "+62 821-xxxx-xxxx",
-    email: "pesantren@rindu-bsn.id",
+    email: "pesantren@rindubsn.com",
     instagram: "@rindubsn_alihya",
   }
 };
