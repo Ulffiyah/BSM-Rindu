@@ -986,7 +986,15 @@ export default function App() {
     setCart(prev => {
       const existing = prev.find(item => item.product.id === product.id);
       if (existing) {
+        if (existing.quantity >= product.stock) {
+          alert(`Maaf, stok ${product.name} hanya tersedia ${product.stock} unit.`);
+          return prev;
+        }
         return prev.map(item => item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
+      }
+      if (product.stock <= 0) {
+        alert(`Maaf, stok ${product.name} saat ini sedang kosong.`);
+        return prev;
       }
       return [...prev, { product, quantity: 1 }];
     });
@@ -1042,7 +1050,12 @@ export default function App() {
     
     window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, "_blank");
     
-    // Remove only selected items from cart
+    // Remove only selected items from cart and deduct stock
+    setDynamicProducts(prev => prev.map(p => {
+      const purchased = selectedItems.find(i => i.product.id === p.id);
+      return purchased ? { ...p, stock: Math.max(0, p.stock - purchased.quantity) } : p;
+    }));
+
     setCart(prev => prev.filter(item => !selectedCartItems.includes(item.product.id)));
     setSelectedCartItems([]);
     setCheckoutStep('cart');
@@ -1613,7 +1626,12 @@ export default function App() {
                                 setDynamicNews(prev => [{ id: Date.now(), title, excerpt: desc.substring(0, 100) + '...', desc, date: "Hari Ini", image, category: category || "Berita", isNew: true }, ...prev]);
                                 break;
                               case 'product':
-                                setDynamicProducts(prev => [{ id: Date.now(), name: title, desc, price: price || 15000, image, stock: 10, isNew: true }, ...prev]);
+                                const stockValue = parseInt(formData.get('stock') as string) || 0;
+                                if (editingItem) {
+                                  setDynamicProducts(prev => prev.map(i => i.id === editingItem.id ? { ...i, name: title, desc, price: price || 15000, image, stock: stockValue } : i));
+                                } else {
+                                  setDynamicProducts(prev => [{ id: Date.now(), name: title, desc, price: price || 15000, image, stock: stockValue, isNew: true }, ...prev]);
+                                }
                                 break;
                               case 'class':
                                 setDynamicClasses(prev => [{ id: Date.now(), title, desc, category: category || "Umum", image, schedule: "Jadwal Segera", price: price || 0, isNew: true }, ...prev]);
@@ -1693,6 +1711,19 @@ export default function App() {
                               className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
                             />
                           </div>
+                          {adminMode === 'product' && (
+                            <div>
+                              <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Jumlah Stok</label>
+                              <input 
+                                name="stock" 
+                                type="number" 
+                                key={editingItem ? `edit-stock-${editingItem.id}` : 'new-stock'}
+                                defaultValue={editingItem ? dynamicProducts.find(i => i.id === editingItem.id)?.stock : 10}
+                                placeholder="0" 
+                                className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                              />
+                            </div>
+                          )}
                         </div>
                         <button type="submit" className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-100">
                           {editingItem ? 'Simpan Perubahan' : 'Publikasikan Sekarang'} <PlusCircle size={22} />
@@ -1719,7 +1750,10 @@ export default function App() {
                           <div key={item.id} className="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center group">
                             <div className="flex-1 mr-4">
                               <p className="font-bold text-slate-800 line-clamp-1">{item.name}</p>
-                              <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest">Rp {item.price.toLocaleString("id-ID")}</p>
+                              <div className="flex items-center gap-2">
+                                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-widest">Rp {item.price.toLocaleString("id-ID")}</p>
+                                <span className="text-[8px] px-1.5 py-0.5 bg-slate-50 text-slate-400 border border-slate-100 rounded-full">Stok: {item.stock}</span>
+                              </div>
                             </div>
                             <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <button onClick={() => setEditingItem({ type: 'product', id: item.id })} className="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100"><Pencil size={16} /></button>
@@ -2109,8 +2143,13 @@ export default function App() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           referrerPolicy="no-referrer"
                         />
-                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black text-emerald-600 shadow-sm border border-emerald-100">
-                          {product.price.toLocaleString("id-ID")}
+                        <div className="absolute top-4 right-4 flex flex-col gap-2 items-end">
+                          <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black text-emerald-600 shadow-sm border border-emerald-100">
+                            Rp {product.price.toLocaleString("id-ID")}
+                          </div>
+                          <div className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm border ${product.stock > 0 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}>
+                            {product.stock > 0 ? `Stok: ${product.stock}` : 'Habis'}
+                          </div>
                         </div>
                       </div>
                       <div className="p-5 flex-1 flex flex-col justify-between">
@@ -2121,13 +2160,15 @@ export default function App() {
                         <div className="flex flex-col gap-2 pt-4 border-t border-slate-200/60">
                           <button 
                             onClick={() => { addToCart(product); }}
-                            className="w-full py-3 bg-white text-emerald-600 border border-emerald-100 rounded-xl font-bold text-xs hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-2"
+                            disabled={product.stock <= 0}
+                            className={`w-full py-3 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 border ${product.stock > 0 ? 'bg-white text-emerald-600 border-emerald-100 hover:bg-emerald-600 hover:text-white' : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'}`}
                           >
-                            <ShoppingCart size={14} /> +KERANJANG
+                            <ShoppingCart size={14} /> {product.stock > 0 ? '+KERANJANG' : 'STOK HABIS'}
                           </button>
                           <button 
-                            onClick={() => { handleBuyClick(product); }}
-                            className="w-full py-3 bg-emerald-600 text-white rounded-xl font-black text-xs hover:bg-emerald-700 transition-all flex items-center justify-center shadow-lg shadow-emerald-100 shadow-none border border-emerald-600"
+                            onClick={() => { if(product.stock > 0) handleBuyClick(product); }}
+                            disabled={product.stock <= 0}
+                            className={`w-full py-3 rounded-xl font-black text-xs transition-all flex items-center justify-center shadow-lg shadow-none border ${product.stock > 0 ? 'bg-emerald-600 text-white hover:bg-emerald-700 border-emerald-600' : 'bg-slate-200 text-white border-slate-200 cursor-not-allowed'}`}
                           >
                             BELI SEKARANG
                           </button>
@@ -2239,7 +2280,10 @@ export default function App() {
                             </div>
                             <div className="flex-1">
                               <h4 className="font-bold text-slate-800 text-sm mb-0.5 line-clamp-1">{item.product.name}</h4>
-                              <p className="text-emerald-600 font-black text-xs mb-3">Rp {item.product.price.toLocaleString("id-ID")}</p>
+                              <div className="flex items-center gap-2 mb-3">
+                                <p className="text-emerald-600 font-black text-xs">Rp {item.product.price.toLocaleString("id-ID")}</p>
+                                <span className="text-[9px] text-slate-400 font-bold border border-slate-200 px-1.5 rounded-full">Stok: {item.product.stock}</span>
+                              </div>
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                   <button 
@@ -2251,9 +2295,9 @@ export default function App() {
                                   <span className="font-bold text-sm w-4 text-center">{item.quantity}</span>
                                   <button 
                                     onClick={() => {
-                                      setCart(prev => prev.map(i => i.product.id === item.product.id ? { ...i, quantity: i.quantity + 1 } : i))
+                                      setCart(prev => prev.map(i => i.product.id === item.product.id ? { ...i, quantity: Math.min(item.product.stock, i.quantity + 1) } : i))
                                     }}
-                                    className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-100 transition-colors text-slate-600 text-xs font-bold"
+                                    className={`w-7 h-7 rounded-lg border flex items-center justify-center transition-colors text-xs font-bold ${item.quantity >= item.product.stock ? 'bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed' : 'bg-white border-slate-200 hover:bg-slate-100 text-slate-600'}`}
                                   >+</button>
                                 </div>
                                 <button onClick={() => removeFromCart(item.product.id)} className="text-slate-300 hover:text-red-500 transition-colors p-1">

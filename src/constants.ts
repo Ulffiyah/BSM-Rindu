@@ -83,28 +83,32 @@ export const PRODUCTS = [
     name: "Tas Kitab Santriwati",
     price: 45000,
     image: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&q=80&w=400",
-    desc: "Tas ramah lingkungan dari kain perca asrama."
+    desc: "Tas ramah lingkungan dari kain perca asrama.",
+    stock: 12
   },
   {
     id: 2,
     name: "Lampu Hias Residu",
     price: 125000,
     image: "https://images.unsplash.com/photo-1513519247352-4d7663a7c6a9?auto=format&fit=crop&q=80&w=400",
-    desc: "Estetika tinggi dari kristal plastik olahan."
+    desc: "Estetika tinggi dari kristal plastik olahan.",
+    stock: 5
   },
   {
     id: 3,
     name: "Maggot Kering (Super Feed)",
     price: 15000,
     image: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?auto=format&fit=crop&q=80&w=400",
-    desc: "Pakan ternak tinggi protein hasil olahan limbah organik asrama."
+    desc: "Pakan ternak tinggi protein hasil olahan limbah organik asrama.",
+    stock: 50
   },
   {
     id: 4,
     name: "Pupuk Organik Cair 1L",
     price: 15000,
     image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=400",
-    desc: "Nutrisi alami dari pengolahan limbah kantin pesantren."
+    desc: "Nutrisi alami dari pengolahan limbah kantin pesantren.",
+    stock: 30
   }
 ];
 
