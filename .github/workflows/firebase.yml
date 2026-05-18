@@ -1,0 +1,23 @@
+name: Deploy to Firebase Hosting
+
+# Workflow ini akan berjalan secara otomatis setiap kali ada perubahan kode
+on:
+  push:
+    branches:
+      - main # Jalankan otomatis saat kamu push kode ke branch 'main'
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Mengambil kode terbaru dari repositori GitHub
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Melakukan deploy langsung ke Firebase Hosting
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
