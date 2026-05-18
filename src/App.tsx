@@ -17,6 +17,7 @@ import {
   Menu, 
   X,
   ArrowRight,
+  CheckCircle,
   Leaf,
   Recycle,
   Coins,
@@ -43,10 +44,14 @@ import {
   LogOut,
   Bell,
   Pencil,
-  TrendingUp
+  Settings,
+  TrendingUp,
+  UserCircle,
+  BarChart3,
+  Briefcase
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { APP_CONFIG, STATISTICS, WASTE_PRICES, SERVICES, INNOVATIONS, EDUCATION_CLASSES, PRODUCTS, NEWS, MATERIALS } from "./constants";
+import { APP_CONFIG, STATISTICS, WASTE_PRICES, SERVICES, EDUCATION_CLASSES, PRODUCTS, NEWS, MATERIALS } from "./constants";
 
 const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }: { 
   onOpenModal: () => void, 
@@ -69,7 +74,6 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
     { name: "Tentang", href: "#about" },
     { name: "Edukasi", href: "#education" },
     { name: "Belanja", href: "#shop" },
-    { name: "Inovasi", href: "#innovation" },
   ];
 
   return (
@@ -166,7 +170,7 @@ const Navbar = ({ onOpenModal, onOpenLogin, isLoggedIn, cartCount, onOpenCart }:
 };
 
 
-const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenModal: () => void, isLoggedIn: boolean, userProfile: any, onOpenProfile: () => void }) => {
+const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile, isPelanggan = false }: { onOpenModal: () => void, isLoggedIn: boolean, userProfile: any, onOpenProfile: () => void, isPelanggan?: boolean }) => {
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-emerald-950">
       {/* Decorative Blobs */}
@@ -215,12 +219,6 @@ const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenM
               >
                 Mulai Belanja <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </a>
-              <a 
-                href="#innovation"
-                className="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white border border-white/10 px-10 py-5 rounded-[2rem] font-display font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-3 active:scale-95"
-              >
-                Jelajahi Inovasi
-              </a>
             </div>
           </motion.div>
 
@@ -241,7 +239,7 @@ const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenM
                       {userProfile.name.substring(0, 1)}
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase text-emerald-400 tracking-[0.3em] mb-1">Status Mudabbir</p>
+                      <p className="text-[10px] font-black uppercase text-emerald-400 tracking-[0.3em] mb-1">{isPelanggan ? "Customer BSN" : "Status Mudabbir"}</p>
                       <h4 className="text-2xl font-display font-black tracking-tighter leading-none">{userProfile.name}</h4>
                     </div>
                   </div>
@@ -301,7 +299,7 @@ const Hero = ({ onOpenModal, isLoggedIn, userProfile, onOpenProfile }: { onOpenM
   );
 };
 
-const AboutSection = ({ onSeeProfile }: { onSeeProfile: () => void }) => {
+const AboutSection = ({ onSeeProfile, onSeeProgram, isAdminView = false, onEditSection }: { onSeeProfile: () => void, onSeeProgram: () => void, isAdminView?: boolean, onEditSection?: () => void }) => {
   return (
     <section id="about" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -328,7 +326,17 @@ const AboutSection = ({ onSeeProfile }: { onSeeProfile: () => void }) => {
           </motion.div>
           
           <div className="lg:pl-10">
-            <h2 className="text-emerald-600 font-display font-black uppercase tracking-[0.2em] text-xs mb-4">Mengenal Rindu BSN Al-Ihya</h2>
+            <div className="flex items-center gap-4 mb-4">
+              <h2 className="text-emerald-600 font-display font-black uppercase tracking-[0.2em] text-xs">Mengenal Rindu BSN Al-Ihya</h2>
+              {isAdminView && (
+                <button 
+                  onClick={onEditSection}
+                  className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl font-black text-[10px] uppercase tracking-widest border border-emerald-100 hover:bg-emerald-100 transition-all flex items-center gap-2"
+                >
+                  <Pencil size={12} /> Edit Profil & Program
+                </button>
+              )}
+            </div>
             <h3 className="text-5xl md:text-6xl font-display font-black text-slate-900 mb-8 leading-[0.95] tracking-tighter">
               Membangun Peradaban <br /> 
               <span className="text-emerald-500">Hijau Dari Bilik Santri</span>
@@ -356,12 +364,20 @@ const AboutSection = ({ onSeeProfile }: { onSeeProfile: () => void }) => {
                 </div>
               </div>
             </div>
-            <button 
-              onClick={onSeeProfile}
-              className="bg-slate-900 text-white px-10 py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-emerald-600 transition-all active:scale-95 shadow-xl"
-            >
-              Lihat Profil Lengkap <ChevronRight size={18} />
-            </button>
+            <div className="flex flex-wrap gap-4">
+              <button 
+                onClick={onSeeProfile}
+                className="bg-slate-900 text-white px-10 py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-emerald-600 transition-all active:scale-95 shadow-xl"
+              >
+                Profil Rindu BSN <ChevronRight size={18} />
+              </button>
+              <button 
+                onClick={onSeeProgram}
+                className="bg-emerald-50 text-emerald-800 border border-emerald-100 px-10 py-5 rounded-[2rem] font-display font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-emerald-100 transition-all active:scale-95 shadow-xl"
+              >
+                Program BSN <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -369,7 +385,7 @@ const AboutSection = ({ onSeeProfile }: { onSeeProfile: () => void }) => {
   );
 };
 
-const StatsSection = () => {
+const StatsSection = ({ stats, isAdminView = false, onEditSection }: { stats: typeof STATISTICS, isAdminView?: boolean, onEditSection?: () => void }) => {
   const IconMap: { [key: string]: any } = {
     Users: Users,
     Trash2: Trash2,
@@ -380,8 +396,18 @@ const StatsSection = () => {
   return (
     <section className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-6">
+        {isAdminView && (
+          <div className="flex justify-end mb-4">
+            <button 
+              onClick={onEditSection}
+              className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl font-black text-[10px] uppercase tracking-widest border border-emerald-100 hover:bg-emerald-100 transition-all flex items-center gap-2"
+            >
+              <Pencil size={12} /> Edit Statistik
+            </button>
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {STATISTICS.map((stat, i) => {
+          {stats.map((stat, i) => {
             const Icon = IconMap[stat.icon];
             return (
               <motion.div 
@@ -407,139 +433,116 @@ const StatsSection = () => {
   );
 };
 
-const ServicesSection = ({ onLearnMore }: { onLearnMore: (serviceTitle: string) => void }) => {
+const ServicesSection = ({ onLearnMore, services, news, onReadMore, isAdminView = false, onEditSection }: { 
+  onLearnMore: (title: string) => void, 
+  services: typeof SERVICES, 
+  news: any[],
+  onReadMore: (title: string) => void,
+  isAdminView?: boolean, 
+  onEditSection?: () => void 
+}) => {
   return (
     <section id="services" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-xl">
-            <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-4">Program Pesantren</h2>
+            <div className="flex items-center gap-4 mb-4">
+              <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm">Program & Aktivitas Pesantren</h2>
+              {isAdminView && (
+                <button 
+                  onClick={onEditSection}
+                  className="px-4 py-2 bg-white text-emerald-600 rounded-xl font-black text-[10px] uppercase tracking-widest border border-slate-200 hover:bg-emerald-50 transition-all flex items-center gap-2 shadow-sm"
+                >
+                  <Pencil size={12} /> Edit Konten
+                </button>
+              )}
+            </div>
             <h3 className="text-4xl font-black text-slate-900 leading-tight">
-              Dari Pesantren, Oleh Santri, Untuk Lingkungan
+              Kabar Terbaru & Program Unggulan Santri
             </h3>
           </div>
           <p className="text-slate-600 max-w-sm text-lg italic">
-            "Kami tidak hanya mengumpulkan sampah, kami menciptakan ekosistem berkelanjutan."
+            "Kami mengolah limbah menjadi berkah, menciptakan ekosistem sirkular yang berkelanjutan."
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {SERVICES.map((service, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500"
-            >
-              <div className="h-64 overflow-hidden relative">
-                <img 
-                  src={service.image} 
-                  alt={service.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-emerald-900/20 group-hover:bg-emerald-900/0 transition-colors"></div>
-              </div>
-              <div className="p-8">
-                <h4 className="text-2xl font-bold text-slate-800 mb-4 group-hover:text-emerald-600 transition-colors">{service.title}</h4>
-                <p className="text-slate-600 leading-relaxed mb-6">
-                  {service.description}
-                </p>
-                <button 
-                  onClick={() => onLearnMore(service.title)}
-                  className="flex items-center gap-2 text-emerald-600 font-bold group-hover:gap-4 transition-all"
-                >
-                  Pelajari Lebih Lanjut <ChevronRight size={18} />
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-
-const InnovationSection = ({ onContactFounder }: { onContactFounder: () => void }) => {
-  return (
-    <section id="innovation" className="py-24 bg-emerald-950 text-white overflow-hidden relative">
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-emerald-900/30 blur-3xl -skew-x-12"></div>
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-xs font-bold uppercase mb-8 border border-emerald-500/30">
-              <Lightbulb size={16} /> Rumah Inovasi
-            </div>
-            <h2 className="text-5xl font-black mb-8 leading-tight">
-              Inovasi Santri <br />
-              <span className="text-emerald-400">Khas Al-Ihya</span>
-            </h2>
-            <p className="text-emerald-50/60 text-lg leading-relaxed mb-10 max-w-xl">
-              Sampah dari asrama dan kantin tidak lagi menjadi beban. Melalui tangan kreatif para santri, limbah diubah menjadi fasilitas pendukung kegiatan belajar mengajar di pesantren.
-            </p>
-            
-            <div className="space-y-6">
-              {INNOVATIONS.map((inn, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="flex gap-6 items-start"
-                >
-                  <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-emerald-400 font-bold text-xl shrink-0">
-                    0{i + 1}
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">{inn.name}</h4>
-                    <p className="text-white/50">{inn.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="relative aspect-square rounded-[3rem] overflow-hidden border-8 border-white/10 shadow-3xl">
-              <img 
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000" 
-                alt="Innovation" 
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-transparent to-transparent"></div>
-              <button 
-                onClick={onContactFounder}
-                className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 text-left hover:bg-white/20 transition-all group"
+        <div className="space-y-12">
+          {/* Services Grid */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((service, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500"
               >
-                <p className="italic text-emerald-200 mb-4 font-serif">
-                  "Inovasi paving block dari plastik residu kami kini telah digunakan di taman-taman warga sebagai uji coba keberlanjutan."
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold">IH</div>
-                    <div className="text-sm">
-                      <p className="font-bold">Ihya Ulumudin</p>
-                      <p className="text-white/40">Founder Rindu BSN Al-Ihya</p>
-                    </div>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500 transition-colors">
-                    <MessageCircle size={18} />
-                  </div>
+                <div className="h-64 overflow-hidden relative">
+                  <img 
+                    src={service.image} 
+                    alt={service.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-emerald-900/20 group-hover:bg-emerald-900/0 transition-colors"></div>
                 </div>
-              </button>
-            </div>
+                <div className="p-8">
+                  <h4 className="text-2xl font-bold text-slate-800 mb-4 group-hover:text-emerald-600 transition-colors">{service.title}</h4>
+                  <p className="text-slate-600 leading-relaxed mb-6">
+                    {service.description}
+                  </p>
+                  <button 
+                    onClick={() => onLearnMore(service.title)}
+                    className="flex items-center gap-2 text-emerald-600 font-bold group-hover:gap-4 transition-all"
+                  >
+                    Pelajari Lebih Lanjut <ChevronRight size={18} />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* News Grid (Horizontal Layout) */}
+          <div className="grid md:grid-cols-2 gap-8 mt-12 pt-12 border-t border-slate-200">
+            {news.map((item, i) => (
+              <motion.div 
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all flex flex-col md:flex-row gap-6 border border-slate-100"
+              >
+                <div className="md:w-1/3 aspect-[4/3] rounded-2xl overflow-hidden shrink-0">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                </div>
+                <div className="md:w-2/3 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className="text-emerald-600 text-xs font-black uppercase tracking-widest">{item.date}</p>
+                    {(item.date === "Hari Ini" || item.isNew) && (
+                      <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[8px] font-black uppercase animate-pulse">Terbaru</span>
+                    )}
+                  </div>
+                  <h4 className="text-xl font-black text-slate-800 mb-2 leading-tight">{item.title}</h4>
+                  <p className="text-slate-500 text-sm mb-4 line-clamp-2">{item.excerpt}</p>
+                  <button 
+                    onClick={() => onReadMore(item.title)}
+                    className="text-emerald-600 font-bold text-sm flex items-center gap-1 hover:gap-3 transition-all"
+                  >
+                    Baca Selengkapnya <ChevronRight size={16} />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
 };
+
+
 
 const EducationSection = ({ classes, onRegister }: { classes: any[], onRegister: (className: string) => void }) => {
   return (
@@ -628,56 +631,15 @@ const EducationSection = ({ classes, onRegister }: { classes: any[], onRegister:
   );
 };
 
-const NewsSection = ({ news, onReadMore }: { news: any[], onReadMore: (newsTitle: string) => void }) => {
-  return (
-    <section id="news" className="py-24 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-4">Kabar BSN</h2>
-          <h3 className="text-4xl font-black text-slate-900 mb-4">Update Berita Terkini</h3>
-          <p className="text-slate-500">Informasi seputar aktivitas dan inovasi terbaru di pesantren Al-Ihya.</p>
-        </div>
-        <div className="grid md:grid-cols-2 gap-8">
-          {news.map((item, i) => (
-            <motion.div 
-              key={item.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white p-6 rounded-[2.5rem] shadow-xl shadow-slate-200/50 flex flex-col md:flex-row gap-6 hover:shadow-2xl transition-all"
-            >
-              <div className="md:w-1/3 aspect-[4/3] rounded-2xl overflow-hidden">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-              </div>
-              <div className="md:w-2/3 flex flex-col justify-center">
-                <div className="flex items-center gap-2 mb-2">
-                  <p className="text-emerald-600 text-xs font-black uppercase tracking-widest">{item.date}</p>
-                  {(item.date === "Hari Ini" || item.isNew) && (
-                    <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[8px] font-black uppercase animate-pulse">Terbaru</span>
-                  )}
-                </div>
-                <h4 className="text-xl font-black text-slate-800 mb-3">{item.title}</h4>
-                <p className="text-slate-500 text-sm mb-4 line-clamp-2">{item.excerpt}</p>
-                <button 
-                  onClick={() => onReadMore(item.title)}
-                  className="text-emerald-600 font-bold text-sm flex items-center gap-1 hover:gap-3 transition-all"
-                >
-                  Baca Selengkapnya <ChevronRight size={16} />
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
-const MaterialsSection = ({ materials, onDownload, onRequest }: { 
+
+const MaterialsSection = ({ materials, config, onDownload, onRequest, isAdminView = false, onEditSection }: { 
   materials: any[], 
+  config: { title: string, subtitle: string, requestTitle: string, requestSubtitle: string, requestButton: string },
   onDownload: (mat: any) => void,
-  onRequest: () => void 
+  onRequest: () => void,
+  isAdminView?: boolean,
+  onEditSection?: () => void
 }) => {
   return (
     <section id="materials" className="py-24 bg-white">
@@ -686,8 +648,18 @@ const MaterialsSection = ({ materials, onDownload, onRequest }: {
           <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 blur-3xl -translate-y-1/2 translate-x-1/3"></div>
           <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-3xl font-black mb-6">Materi & Panduan Mandiri</h3>
-              <p className="text-emerald-100/70 mb-8 max-w-md">Unduh berbagai materi edukasi pengelolaan bank sampah untuk diterapkan di rumah atau lingkungan Anda.</p>
+              <div className="flex items-center gap-4 mb-6">
+                <h3 className="text-3xl font-black">{config.title}</h3>
+                {isAdminView && (
+                  <button 
+                    onClick={onEditSection}
+                    className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-black text-[10px] uppercase tracking-widest border border-white/10 transition-all flex items-center gap-2"
+                  >
+                    <Pencil size={12} /> Edit Konten
+                  </button>
+                )}
+              </div>
+              <p className="text-emerald-100/70 mb-8 max-w-md">{config.subtitle}</p>
               <div className="space-y-4">
                 {materials.map((mat) => (
                   <div key={mat.id} className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl group hover:bg-white/10 transition-all">
@@ -711,13 +683,13 @@ const MaterialsSection = ({ materials, onDownload, onRequest }: {
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20">
-              <h4 className="text-xl font-bold mb-4">Request Materi Baru?</h4>
-              <p className="text-sm text-emerald-100/60 mb-6">Punya topik menarik yang ingin dibahas? Kirimkan usulan materi Anda kepada tim pengajar kami.</p>
+              <h4 className="text-xl font-bold mb-4">{config.requestTitle}</h4>
+              <p className="text-sm text-emerald-100/60 mb-6">{config.requestSubtitle}</p>
               <button 
                 onClick={onRequest}
                 className="w-full bg-emerald-500 py-3 rounded-xl font-black hover:bg-emerald-400 transition-all active:scale-95 shadow-lg"
               >
-                Hubungi Tim Edukasi
+                {config.requestButton}
               </button>
             </div>
           </div>
@@ -852,7 +824,7 @@ const ShopSection = ({ products, onAddToCart, onBuyNow, onSeeAll }: {
   );
 };
 
-const Footer = () => {
+const Footer = ({ contact }: { contact: { whatsapp: string, email: string, name: string } }) => {
   return (
     <footer className="bg-slate-900 text-white pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
@@ -879,13 +851,13 @@ const Footer = () => {
                 <Instagram size={24} />
               </a>
               <a 
-                href={`mailto:${APP_CONFIG.contact.email}`}
+                href={`mailto:${contact.email}`}
                 className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20"
               >
                 <Mail size={24} />
               </a>
               <a 
-                href={`https://wa.me/${APP_CONFIG.contact.phone.replace(/[^0-9]/g, '')}`}
+                href={`https://wa.me/${contact.whatsapp}`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg shadow-black/20"
@@ -900,7 +872,6 @@ const Footer = () => {
             <ul className="space-y-4 text-slate-400">
               <li><a href="#about" className="hover:text-emerald-400 transition-colors">Tentang Kami</a></li>
               <li><a href="#services" className="hover:text-emerald-400 transition-colors">Layanan</a></li>
-              <li><a href="#innovation" className="hover:text-emerald-400 transition-colors">Rumah Inovasi</a></li>
               <li><a href="#" className="hover:text-emerald-400 transition-colors">Kemitraan Masyarakat</a></li>
             </ul>
           </div>
@@ -914,11 +885,11 @@ const Footer = () => {
               </li>
               <li className="flex gap-4">
                 <Phone className="text-emerald-500 shrink-0" size={24} />
-                <span>{APP_CONFIG.contact.phone}</span>
+                <span>+{contact.whatsapp}</span>
               </li>
               <li className="flex gap-4">
                 <Mail className="text-emerald-500 shrink-0" size={24} />
-                <span>{APP_CONFIG.contact.email}</span>
+                <span>{contact.email}</span>
               </li>
             </ul>
           </div>
@@ -953,22 +924,23 @@ export default function App() {
   const [dynamicMaterials, setDynamicMaterials] = useState(MATERIALS);
   const [cart, setCart] = useState<{product: any, quantity: number}[]>([]);
   const [selectedCartItems, setSelectedCartItems] = useState<number[]>([]); // Array of product IDs
-  const [checkoutStep, setCheckoutStep] = useState<'cart' | 'payment'>('cart');
-  const [paymentMethod, setPaymentMethod] = useState<string>("Transfer Bank (BSI)");
+  const [checkoutStep, setCheckoutStep] = useState<'cart' | 'payment' | 'confirmation'>('cart');
+  const [paymentMethod, setPaymentMethod] = useState<string>("Transfer BRI (VA)");
+  const [financeCategory, setFinanceCategory] = useState<'all' | 'marketplace' | 'class'>('all');
   const [adminMode, setAdminMode] = useState<string | null>(null); // 'news', 'product', 'class', 'material'
   const [selectedFinanceMonth, setSelectedFinanceMonth] = useState(new Date().toLocaleDateString("id-ID", { month: 'long', year: 'numeric' }));
   const [editingItem, setEditingItem] = useState<{ type: string, id: number } | null>(null);
   const [totalWasteToday, setTotalWasteToday] = useState(1245.5); // Initial mockup value
   const [totalBalance, setTotalBalance] = useState(15750000); // Initial mockup value (15.75M)
   const [financialHistory, setFinancialHistory] = useState([
-    { id: 1, date: "05 Mei 2026", user: "Santri Ahmad", amount: 150000, type: "Masuk", note: "Pembelian Tas Daur Ulang", method: "Transfer BSI" },
-    { id: 2, date: "04 Mei 2026", user: "Asrama Al-Ihya", amount: 75000, type: "Masuk", note: "Pembelian Pupuk Organik", method: "Cash" },
+    { id: 1, date: new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long', year: 'numeric' }), user: "Sistem", amount: 15750000, type: "Masuk", note: "Saldo Awal Kas BSN", method: "Internal", category: 'all' },
   ]);
   
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPengurus, setIsPengurus] = useState(false);
+  const [isPelanggan, setIsPelanggan] = useState(false);
   const [loginRole, setLoginRole] = useState('pengurus');
   const [userProfile, setUserProfile] = useState({
     name: "Ahmad Santri",
@@ -980,6 +952,30 @@ export default function App() {
     rank: "Santri Hijau",
     points: 1250,
     classesJoined: ["Budidaya Maggot BSF"]
+  });
+
+  const [contactInfo, setContactInfo] = useState({
+    whatsapp: "6282123456789",
+    email: APP_CONFIG.contact.email,
+    name: "Admin BSN Al-Ihya"
+  });
+
+  const [rinduProfile, setRinduProfile] = useState("Rindu BSN Al-Ihya adalah unit usaha mandiri milik Pesantren Al-Ihya yang fokus pada pengelolaan limbah sirkular. Kami memiliki visi menciptakan lingkungan pesantren zero-waste sekaligus memberdayakan ekonomi santri melalui produk-produk daur ulang inovatif.");
+  const [programProfile, setProgramProfile] = useState("Program Bank Sampah Nusantara (BSN) di Al-Ihya mencakup edukasi pemilahan sampah, workshop daur ulang kreatif, hingga konversi sampah menjadi nilai ekonomi (Tabungan Santri).");
+  const [bankAccount, setBankAccount] = useState({
+    bankName: "BRI",
+    accountNumber: "0123-0100-3456-508",
+    accountName: "PENGURUS BSN AL-IHYA (BRI)"
+  });
+
+  const [stats, setStats] = useState(STATISTICS);
+  const [services, setServices] = useState(SERVICES);
+  const [materialsConfig, setMaterialsConfig] = useState({
+    title: "Materi & Panduan Mandiri",
+    subtitle: "Unduh berbagai materi edukasi pengelolaan bank sampah untuk diterapkan di rumah atau lingkungan Anda.",
+    requestTitle: "Request Materi Baru?",
+    requestSubtitle: "Punya topik menarik yang ingin dibahas? Kirimkan usulan materi Anda kepada tim pengajar kami.",
+    requestButton: "Hubungi Tim Edukasi"
   });
 
   const addToCart = (product: any) => {
@@ -1048,26 +1044,104 @@ export default function App() {
     // Add notification for Admin
     addNotification('order', 'Pesanan Baru!', `Pesanan masuk senilai Rp ${cartTotal.toLocaleString("id-ID")} dari ${userProfile.name} (Bayar: ${paymentMethod})\n${orderSummary}`);
     
-    window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, "_blank");
+    setIsSubmitting(true);
+    setVerificationStep("Sinkronisasi Mutasi...");
     
-    // Remove only selected items from cart and deduct stock
-    setDynamicProducts(prev => prev.map(p => {
-      const purchased = selectedItems.find(i => i.product.id === p.id);
-      return purchased ? { ...p, stock: Math.max(0, p.stock - purchased.quantity) } : p;
-    }));
+    setTimeout(() => {
+      setVerificationStep("Mencocokkan Nominal...");
+      setTimeout(() => {
+        setVerificationStep("Pembayaran Terverifikasi!");
+        setTimeout(() => {
+          setIsSubmitting(false);
+          setSubmitted(true);
+          setVerificationStep("");
+          
+          window.open(`https://wa.me/${contactInfo.whatsapp}?text=${encodeURIComponent(text)}`, "_blank");
+          
+          // Remove only selected items from cart and deduct stock
+          setDynamicProducts(prev => prev.map(p => {
+            const purchased = selectedItems.find(i => i.product.id === p.id);
+            return purchased ? { ...p, stock: Math.max(0, p.stock - purchased.quantity) } : p;
+          }));
 
-    setCart(prev => prev.filter(item => !selectedCartItems.includes(item.product.id)));
-    setSelectedCartItems([]);
-    setCheckoutStep('cart');
-    setIsCartOpen(false);
+          // Add to financial history
+          setFinancialHistory(prev => [
+            {
+              id: Date.now(),
+              date: new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long', year: 'numeric' }),
+              user: userProfile.name,
+              amount: cartTotal,
+              type: "Masuk",
+              note: "Pembelian Produk (Keranjang)",
+              method: paymentMethod,
+              category: 'marketplace'
+            },
+            ...prev
+          ]);
+          setTotalBalance(prev => prev + cartTotal);
+
+          setTimeout(() => {
+            setSubmitted(false);
+            setCart(prev => prev.filter(item => !selectedCartItems.includes(item.product.id)));
+            setSelectedCartItems([]);
+            setCheckoutStep('cart');
+            setIsCartOpen(false);
+          }, 3000);
+        }, 1000);
+      }, 1500);
+    }, 1200);
   };
 
   const [selectedClassId, setSelectedClassId] = useState("");
   const [paymentStep, setPaymentStep] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
+  const [isConfirmingPayment, setIsConfirmingPayment] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [verificationStep, setVerificationStep] = useState<string>("");
+
+  // Automatic Payment Simulation for Virtual Account
+  useEffect(() => {
+    if (isConfirmingPayment && selectedPaymentMethod?.includes('Bank')) {
+      const timer = setTimeout(() => {
+        handlePaymentSuccess();
+      }, 7000); // 7 seconds simulation for "Waiting for payment"
+      return () => clearTimeout(timer);
+    }
+  }, [isConfirmingPayment, selectedPaymentMethod]);
+
+  useEffect(() => {
+    if (checkoutStep === 'confirmation' && paymentMethod?.includes('Bank')) {
+      const timer = setTimeout(() => {
+        handleCartCheckout();
+      }, 7000);
+      return () => clearTimeout(timer);
+    }
+  }, [checkoutStep, paymentMethod]);
 
   const selectedClass = dynamicClasses.find(c => c.title === selectedClassId);
+
+  const handlePaymentSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const name = formData.get('name') as string || formData.get('userName') as string;
+    const phone = formData.get('phone') as string;
+    const address = formData.get('address') as string || formData.get('dorm') as string || formData.get('nasabahAddress') as string;
+
+    // Capture user info for history and set as Pelanggan if not already specific role
+    if (!isAdmin && !isPengurus) {
+      setIsLoggedIn(true);
+      setIsPelanggan(true);
+      setUserProfile(prev => ({
+        ...prev,
+        name: name || prev.name,
+        phone: phone || prev.phone,
+        dorm: address || prev.dorm
+      }));
+    }
+    
+    setPaymentStep(true);
+  };
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
@@ -1081,7 +1155,8 @@ export default function App() {
       if (role === "pengurus" && username === "pengurus" && password === "bsn2026") {
         setIsLoggedIn(true);
         setIsPengurus(true);
-        setIsAdmin(true); 
+        setIsAdmin(false); 
+        setIsPelanggan(false);
         setUserProfile(prev => ({ ...prev, name: "Pengurus BSN", dorm: "Manajemen Unit BSN" }));
         setView('dashboard');
         setIsLoginOpen(false);
@@ -1089,11 +1164,12 @@ export default function App() {
         setIsLoggedIn(true);
         setIsAdmin(true);
         setIsPengurus(false);
+        setIsPelanggan(false);
         setUserProfile(prev => ({ ...prev, name: "Admin BSN", dorm: "Operasional Bank Sampah" }));
         setView('dashboard');
         setIsLoginOpen(false);
       } else {
-        alert("Kredensial tidak valid. Hanya Pengurus dan Admin yang diizinkan masuk.");
+        alert("Kredensial tidak valid.");
       }
       setIsSubmitting(false);
     }, 1000);
@@ -1103,6 +1179,7 @@ export default function App() {
     setIsLoggedIn(false);
     setIsAdmin(false);
     setIsPengurus(false);
+    setIsPelanggan(false);
     setView('home');
     setIsProfileOpen(false);
   };
@@ -1138,7 +1215,8 @@ export default function App() {
         amount: amount,
         type: "Masuk",
         note: notif.title === "Pendaftaran Kelas!" ? "Pendaftaran Kelas" : "Pembelian Produk",
-        method: method
+        method: method,
+        category: notif.title === "Pendaftaran Kelas!" ? "class" : "marketplace"
       }, ...prev]);
     }
 
@@ -1148,9 +1226,9 @@ export default function App() {
   };
 
   const handleExportFinance = () => {
-    const header = "ID,Tanggal,User,Keterangan,Metode,Jumlah,Tipe\n";
+    const header = "ID,Tanggal,User,Keterangan,Metode,Jumlah,Tipe,Kategori\n";
     const csvContent = financialHistory.map(h => 
-      `${h.id},"${h.date}","${h.user}","${h.note}","${h.method}",${h.amount},"${h.type}"`
+      `${h.id},"${h.date}","${h.user}","${h.note}","${h.method}",${h.amount},"${h.type}","${h.category || 'all'}"`
     ).join("\n");
     
     const blob = new Blob([header + csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1187,55 +1265,105 @@ export default function App() {
 
   const handlePaymentSuccess = () => {
     setIsSubmitting(true);
+    setVerificationStep("Mengecek Rekening...");
+    
+    // Simulate multi-step verification process
     setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      
-      if (selectedClass) {
-        setUserProfile(prev => ({
-          ...prev,
-          classesJoined: [...prev.classesJoined, selectedClass.title]
-        }));
-        addNotification('order', 'Pendaftaran Kelas!', `Pendaftaran baru untuk kelas ${selectedClass.title} dari ${userProfile.name} (Saldo/DANA)`);
-        
-        // WhatsApp notification with video link
-        const waText = `Halo ${userProfile.name}, pendaftaran Anda untuk kelas *${selectedClass.title}* telah berhasil! \n\nBerikut adalah link video materi Anda: \n${selectedClass.videoLink || 'Akan segera menyusul'} \n\nSelamat belajar!`;
-        setTimeout(() => {
-          window.open(`https://wa.me/${userProfile.phone || '6281234567890'}?text=${encodeURIComponent(waText)}`, "_blank");
-        }, 1000);
-      } else if (selectedProduct) {
-        addNotification('order', 'Pembelian Produk!', `Pembelian produk ${selectedProduct.name} seharga Rp ${selectedProduct.price.toLocaleString("id-ID")} dari ${userProfile.name} (Saldo/DANA)`);
-      }
-
+      setVerificationStep("Memverifikasi Nominal...");
       setTimeout(() => {
-        setSubmitted(false);
-        setIsRegisterOpen(false);
-        setIsShopModalOpen(false);
-        setPaymentStep(false);
-        setSelectedClassId("");
-        setSelectedProduct(null);
-      }, 2000);
+        setVerificationStep("Sinkronisasi Mutasi Bank...");
+        setTimeout(() => {
+          setIsSubmitting(false);
+          setSubmitted(true);
+          setVerificationStep("");
+          
+          if (selectedClass) {
+            setUserProfile(prev => ({
+              ...prev,
+              classesJoined: [...prev.classesJoined, selectedClass.title]
+            }));
+            addNotification('order', 'Pendaftaran Kelas!', `Pendaftaran baru untuk kelas ${selectedClass.title} dari ${userProfile.name} (${selectedPaymentMethod})`);
+            
+            // Add to financial history
+            setFinancialHistory(prev => [
+              {
+                id: Date.now(),
+                date: new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long', year: 'numeric' }),
+                user: userProfile.name,
+                amount: selectedClass.price,
+                type: "Masuk",
+                note: `Pendaftaran: ${selectedClass.title}`,
+                method: selectedPaymentMethod || "Transfer",
+                category: 'class'
+              },
+              ...prev
+            ]);
+            setTotalBalance(prev => prev + selectedClass.price);
+
+            // WhatsApp notification with video link
+            const waText = `Halo ${userProfile.name}, pendaftaran Anda untuk kelas *${selectedClass.title}* telah berhasil! \n\nBerikut adalah link video materi Anda: \n${selectedClass.videoLink || 'Akan segera menyusul'} \n\nSelamat belajar!`;
+            setTimeout(() => {
+              window.open(`https://wa.me/${userProfile.phone || contactInfo.whatsapp}?text=${encodeURIComponent(waText)}`, "_blank");
+            }, 1000);
+          } else if (selectedProduct) {
+            addNotification('order', 'Pembelian Produk!', `Pembelian produk ${selectedProduct.name} seharga Rp ${selectedProduct.price.toLocaleString("id-ID")} dari ${userProfile.name} (${selectedPaymentMethod})`);
+            
+            // Add to financial history
+            setFinancialHistory(prev => [
+              {
+                id: Date.now(),
+                date: new Date().toLocaleDateString("id-ID", { day: '2-digit', month: 'long', year: 'numeric' }),
+                user: userProfile.name,
+                amount: selectedProduct.price,
+                type: "Masuk",
+                note: `Beli: ${selectedProduct.name}`,
+                method: selectedPaymentMethod || "Transfer",
+                category: 'marketplace'
+              },
+              ...prev
+            ]);
+            setTotalBalance(prev => prev + selectedProduct.price);
+            
+            // Deduct stock for quick buy as well
+            setDynamicProducts(prev => prev.map(p => 
+              p.id === selectedProduct.id ? { ...p, stock: Math.max(0, p.stock - 1) } : p
+            ));
+          }
+
+          setTimeout(() => {
+            setSubmitted(false);
+            setIsRegisterOpen(false);
+            setIsShopModalOpen(false);
+            setPaymentStep(false);
+            setIsConfirmingPayment(false);
+            setSelectedClassId("");
+            setSelectedProduct(null);
+          }, 3000);
+        }, 1500);
+      }, 1500);
     }, 1500);
   };
 
   const handleRegisterClick = (className: string) => {
     setSelectedClassId(className);
     setPaymentStep(false);
+    setIsConfirmingPayment(false);
     setIsRegisterOpen(true);
   };
 
   const handleBuyClick = (product: any) => {
     setSelectedProduct(product);
     setPaymentStep(false);
+    setIsConfirmingPayment(false);
     setIsShopModalOpen(true);
   };
 
   const openWhatsAppOrder = (item: string) => {
     const text = `Assalamu'alaikum, saya ingin memesan ${item} dari Rindu BSN Al-Ihya.`;
-    window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(`https://wa.me/${contactInfo.whatsapp}?text=${encodeURIComponent(text)}`, "_blank");
   };
 
-  if (view === 'dashboard' && isAdmin) {
+  if (view === 'dashboard' && (isAdmin || isPengurus)) {
     return (
       <div className="min-h-screen bg-slate-50 flex">
         {/* Sidebar */}
@@ -1247,25 +1375,58 @@ export default function App() {
             <span className="font-bold text-xl uppercase tracking-tighter">BSN <span className="text-emerald-400">DASHBOARD</span></span>
           </div>
 
-          <nav className="flex-1 space-y-2">
-            {[
-              { id: 'news', label: 'Berita & Artikel', icon: Newspaper, role: 'pengurus' },
-              { id: 'product', label: 'Produk Marketplace', icon: ShoppingBag, role: 'pengurus' },
-              { id: 'class', label: 'Kelas Edukasi', icon: GraduationCap, role: 'pengurus' },
-              { id: 'material', label: 'Materi Belajar', icon: FileText, role: 'pengurus' },
-              { id: 'notifications', label: 'Notifikasi & Order', icon: Bell, role: 'pengurus' },
-              { id: 'finance', label: 'Keuangan & Kas', icon: Wallet, role: 'pengurus' },
-              { id: 'feedback', label: 'Saran & Feedback', icon: MessageCircle, role: 'pengurus' },
-            ].filter(item => item.role === 'admin' || (item.role === 'pengurus' && isPengurus)).map((item) => (
-              <button 
-                key={item.id}
-                onClick={() => setAdminMode(item.id)}
-                className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-bold transition-all ${adminMode === item.id ? "bg-emerald-500 text-emerald-950" : "text-emerald-100/60 hover:bg-white/5 hover:text-white"}`}
-              >
-                <item.icon size={20} />
-                {item.label}
-              </button>
-            ))}
+          <nav className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-8">
+            {/* GRUP PENGURUS: KONTEN */}
+            {isPengurus && (
+              <div>
+                <h3 className="px-5 mb-3 text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] opacity-50">Menu Pengurus</h3>
+                <div className="space-y-1">
+                  {[
+                    { id: 'news', label: 'Berita & Artikel', icon: Newspaper },
+                    { id: 'product', label: 'Produk Marketplace', icon: ShoppingBag },
+                    { id: 'class', label: 'Kelas Edukasi', icon: GraduationCap },
+                    { id: 'material', label: 'Materi Belajar', icon: FileText },
+                    { id: 'notifications', label: 'Notifikasi & Order', icon: Bell },
+                  ].map((item) => (
+                    <button 
+                      key={item.id}
+                      onClick={() => setAdminMode(item.id)}
+                      className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl font-bold transition-all ${adminMode === item.id ? "bg-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/20" : "text-emerald-100/60 hover:bg-white/5 hover:text-white"}`}
+                    >
+                      <item.icon size={18} />
+                      <span className="text-sm">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* GRUP ADMIN: SISTEM */}
+            {isAdmin && (
+              <div>
+                <h3 className="px-5 mb-3 text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] opacity-50">Pengaturan Admin</h3>
+                <div className="space-y-1">
+                  {[
+                    { id: 'settings_profile', label: 'Profil & Kontak', icon: UserCircle },
+                    { id: 'settings_account', label: 'Rekening Bank', icon: CreditCard },
+                    { id: 'settings_stats', label: 'Statistik Data', icon: BarChart3 },
+                    { id: 'settings_services', label: 'Layanan Utama', icon: Briefcase },
+                    { id: 'settings_material', label: 'Info Materi Belajar', icon: Info },
+                    { id: 'finance', label: 'Keuangan & Kas', icon: Wallet },
+                    { id: 'feedback', label: 'Saran & Feedback', icon: MessageCircle },
+                  ].map((item) => (
+                    <button 
+                      key={item.id}
+                      onClick={() => setAdminMode(item.id)}
+                      className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl font-bold transition-all ${adminMode === item.id ? "bg-emerald-500 text-emerald-950 shadow-lg shadow-emerald-500/20" : "text-emerald-100/60 hover:bg-white/5 hover:text-white"}`}
+                    >
+                      <item.icon size={18} />
+                      <span className="text-sm">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </nav>
 
           <div className="mt-auto pt-8 border-t border-white/10">
@@ -1338,16 +1499,21 @@ export default function App() {
                 className="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm"
               >
                 <div className="flex justify-between items-center mb-8">
-                  <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tighter">{adminMode === 'notifications' ? 'Notifikasi & Pesanan' : `Kelola ${adminMode}`}</h2>
+                  <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tighter">
+                    {adminMode === 'notifications' ? 'Notifikasi & Pesanan' : 
+                     adminMode === 'feedback' ? 'Saran & Feedback Nasabah' : 
+                     adminMode.startsWith('settings_') ? `Pengaturan ${adminMode.replace('settings_', '').replace('profile', 'Profil').replace('account', 'Rekening').replace('stats', 'Statistik').replace('services', 'Layanan')}` :
+                     `Kelola ${adminMode}`}
+                  </h2>
                   <button onClick={() => setAdminMode(null)} className="text-slate-400 hover:text-slate-600 flex items-center gap-2 font-bold text-sm">
                     TUTUP PANEL <X size={18} />
                   </button>
                 </div>
 
-                {adminMode === 'notifications' ? (
+                {adminMode === 'notifications' || adminMode === 'feedback' ? (
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-3 space-y-6">
-                      {notifications.length === 0 ? (
+                      {(adminMode === 'feedback' ? notifications.filter(n => n.type === 'feedback') : notifications).length === 0 ? (
                         <div className="text-center py-32 bg-slate-50 rounded-[3rem] border border-dashed border-slate-200">
                           <Bell size={80} className="mx-auto text-slate-200 mb-6 animate-bounce-slow" />
                           <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter mb-2">Semua Bersih!</h4>
@@ -1355,7 +1521,7 @@ export default function App() {
                         </div>
                       ) : (
                         <div className="space-y-4">
-                          {notifications.map(notif => (
+                          {(adminMode === 'feedback' ? notifications.filter(n => n.type === 'feedback') : notifications).map(notif => (
                             <motion.div 
                               key={notif.id}
                               initial={{ opacity: 0, scale: 0.98 }}
@@ -1456,7 +1622,12 @@ export default function App() {
                       <div className="bg-emerald-600 p-10 rounded-[3rem] text-white shadow-2xl shadow-emerald-200">
                         <h4 className="font-display font-black uppercase text-[10px] tracking-widest mb-4">Butuh Bantuan?</h4>
                         <p className="text-sm text-emerald-100 mb-6 font-medium">Hubungi Admin Pusat jika terjadi kendala pada sistem atau database santri.</p>
-                        <button className="w-full bg-white text-emerald-600 py-4 rounded-3xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-emerald-50 transition-colors">WhatsApp Support</button>
+                        <button 
+                          onClick={() => openWhatsAppOrder("Bantuan Sistem (Support Pengurus)")}
+                          className="w-full bg-white text-emerald-600 py-4 rounded-3xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-emerald-50 transition-colors active:scale-95 transition-all"
+                        >
+                          WhatsApp Support
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1492,10 +1663,30 @@ export default function App() {
                     </div>
 
                     <div className="bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-sm">
-                      <div className="p-10 border-b border-slate-100 flex justify-between items-center">
+                      <div className="p-10 border-b border-slate-100 flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div>
-                          <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter">Jurnal Keuangan Bulanan</h4>
+                          <h4 className="text-2xl font-display font-black text-slate-800 uppercase tracking-tighter mb-1">Jurnal Keuangan Bulanan</h4>
                           <p className="text-slate-400 text-sm font-medium">Catatan otomatis dari hasil penjualan marketplace dan pendaftaran kelas</p>
+                          
+                          <div className="flex items-center gap-2 mt-6">
+                            {[
+                              { id: 'all', label: 'Semua Transaksi' },
+                              { id: 'marketplace', label: 'E-Marketplace' },
+                              { id: 'class', label: 'Pendaftaran Kelas' }
+                            ].map(cat => (
+                              <button
+                                key={cat.id}
+                                onClick={() => setFinanceCategory(cat.id as any)}
+                                className={`px-5 py-2.5 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${
+                                  financeCategory === cat.id 
+                                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-100' 
+                                    : 'bg-white text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 border border-slate-100'
+                                }`}
+                              >
+                                {cat.label}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         <div className="flex gap-4">
                           <select 
@@ -1530,7 +1721,9 @@ export default function App() {
                             {financialHistory
                               .filter(item => {
                                 const [selMonth, selYear] = selectedFinanceMonth.split(' ');
-                                return item.date.includes(selMonth) && item.date.includes(selYear);
+                                const matchesDate = item.date.includes(selMonth) && item.date.includes(selYear);
+                                const matchesCategory = financeCategory === 'all' || item.category === financeCategory || item.category === 'all';
+                                return matchesDate && matchesCategory;
                               })
                               .map((item) => (
                               <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
@@ -1561,7 +1754,7 @@ export default function App() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <div className="space-y-6">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-black text-slate-800 uppercase text-sm tracking-widest">{editingItem ? `Edit ${adminMode}` : `Tambah ${adminMode} Baru`}</h4>
+                        <h4 className="font-black text-slate-800 uppercase text-sm tracking-widest">{adminMode?.startsWith('settings_') ? 'Form Edit Pengaturan' : (editingItem ? `Edit ${adminMode}` : `Tambah ${adminMode} Baru`)}</h4>
                         {editingItem && (
                           <button 
                             onClick={() => {
@@ -1581,26 +1774,88 @@ export default function App() {
                         onSubmit={(e) => {
                           e.preventDefault();
                           const formData = new FormData(e.currentTarget);
+                          
+                          if (adminMode === 'settings_profile') {
+                            const wa = formData.get('whatsapp') as string;
+                            const email = formData.get('email') as string;
+                            const contactName = formData.get('contactName') as string;
+                            const rProfile = formData.get('rinduProfile') as string;
+                            const pProfile = formData.get('programProfile') as string;
+                            setContactInfo({ whatsapp: wa, email: email, name: contactName });
+                            setRinduProfile(rProfile);
+                            setProgramProfile(pProfile);
+                            addNotification('feedback', 'Sistem', 'Profil & Kontak berhasil diperbarui.');
+                            setAdminMode(null);
+                            return;
+                          }
+
+                          if (adminMode === 'settings_account') {
+                            const bName = formData.get('bankName') as string;
+                            const bNum = formData.get('accountNumber') as string;
+                            const bAccName = formData.get('accountName') as string;
+                            setBankAccount({ bankName: bName, accountNumber: bNum, accountName: bAccName });
+                            addNotification('feedback', 'Sistem', 'Data Rekening berhasil diperbarui.');
+                            setAdminMode(null);
+                            return;
+                          }
+
+                          if (adminMode === 'settings_stats') {
+                            const newStats = stats.map((s, idx) => ({
+                              ...s,
+                              value: formData.get(`stat_value_${idx}`) as string
+                            }));
+                            setStats(newStats);
+                            addNotification('feedback', 'Sistem', 'Statistik Beranda berhasil diperbarui.');
+                            setAdminMode(null);
+                            return;
+                          }
+
+                          if (adminMode === 'settings_services') {
+                            const newServices = services.map((s, idx) => ({
+                              ...s,
+                              title: formData.get(`service_title_${idx}`) as string,
+                              image: formData.get(`service_image_${idx}`) as string,
+                              description: formData.get(`service_desc_${idx}`) as string
+                            }));
+                            setServices(newServices);
+                            addNotification('feedback', 'Sistem', 'Layanan Utama berhasil diperbarui.');
+                            setAdminMode(null);
+                            return;
+                          }
+
+                          if (adminMode === 'settings_material') {
+                            setMaterialsConfig({
+                              title: formData.get('mat_title') as string,
+                              subtitle: formData.get('mat_subtitle') as string,
+                              requestTitle: formData.get('req_title') as string,
+                              requestSubtitle: formData.get('req_subtitle') as string,
+                              requestButton: formData.get('req_btn') as string
+                            });
+                            addNotification('feedback', 'Sistem', 'Header Materi Berhasil diperbarui.');
+                            setAdminMode(null);
+                            return;
+                          }
+
                           const title = formData.get('title') as string;
                           const desc = formData.get('desc') as string;
                           const price = formData.get('price') ? parseInt(formData.get('price') as string) : 0;
                           const category = formData.get('category') as string;
-                          const image = "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800";
+                          const image = formData.get('image') as string || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800";
 
                           if (editingItem) {
                             const vLink = formData.get('videoLink') as string;
                             switch(adminMode) {
                               case 'news':
-                                setDynamicNews(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, excerpt: desc.substring(0, 100) + '...', desc, category: category || item.category } : item));
+                                setDynamicNews(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, excerpt: desc.substring(0, 100) + '...', desc, category: category || item.category, image } : item));
                                 break;
                               case 'product':
-                                setDynamicProducts(prev => prev.map(item => item.id === editingItem.id ? { ...item, name: title, desc, price: price || item.price } : item));
+                                setDynamicProducts(prev => prev.map(item => item.id === editingItem.id ? { ...item, name: title, desc, price: price || item.price, image } : item));
                                 break;
                               case 'class':
-                                setDynamicClasses(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, desc, category: category || item.category, price: price || item.price, videoLink: vLink } : item));
+                                setDynamicClasses(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, desc, category: category || item.category, price: price || item.price, videoLink: vLink, image } : item));
                                 break;
                               case 'material':
-                                setDynamicMaterials(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, type: category || item.type } : item));
+                                setDynamicMaterials(prev => prev.map(item => item.id === editingItem.id ? { ...item, title, type: category || item.type, image } : item));
                                 break;
                             }
                             addNotification('feedback', 'Sistem', `${adminMode} berhasil diperbarui.`);
@@ -1618,6 +1873,13 @@ export default function App() {
                                 setDynamicClasses(prev => [{ id: Date.now(), title, desc, category: category || "Umum", image, schedule: "Jadwal Segera", price: price || 0, isNew: true, videoLink: vLink }, ...prev]);
                                 break;
                               case 'material':
+                                if (!editingItem) {
+                                  const matTitle = formData.get('mat_title') as string;
+                                  const matSub = formData.get('mat_subtitle') as string;
+                                  if (matTitle || matSub) {
+                                    setMaterialsConfig(prev => ({ ...prev, title: matTitle || prev.title, subtitle: matSub || prev.subtitle }));
+                                  }
+                                }
                                 setDynamicMaterials(prev => [{ id: Date.now(), title, type: category || "PDF", size: "2.4 MB" }, ...prev]);
                                 break;
                             }
@@ -1629,102 +1891,271 @@ export default function App() {
                           setAdminMode(null);
                         }}
                       >
-                        <div>
-                          <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Judul / Nama Item</label>
-                          <input 
-                            required 
-                            name="title" 
-                            type="text" 
-                            key={editingItem ? `edit-${editingItem.id}` : 'new'}
-                            defaultValue={editingItem ? (
-                              adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.title :
-                              adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.name :
-                              adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.title :
-                              adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.title : ''
-                            ) : ''}
-                            placeholder={`Contoh: Promo Produk ${adminMode} Baru`} 
-                            className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all" 
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Konten / Deskripsi</label>
-                          <textarea 
-                            required 
-                            name="desc" 
-                            key={editingItem ? `edit-desc-${editingItem.id}` : 'new-desc'}
-                            defaultValue={editingItem ? (
-                              adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.desc :
-                              adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.desc :
-                              adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.desc : ''
-                            ) : ''}
-                            placeholder="Tuliskan detail selengkap mungkin agar nasabah tertarik..." 
-                            className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all h-24 lg:h-32"
-                          ></textarea>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Harga / Biaya (Rp)</label>
-                            <input 
-                              name="price" 
-                              type="number" 
-                              key={editingItem ? `edit-price-${editingItem.id}` : 'new-price'}
-                              defaultValue={editingItem ? (
-                                adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.price :
-                                adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.price : 0
-                              ) : 0}
-                              placeholder="Rp 0" 
-                              className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Kategori / Tipe</label>
-                            <input 
-                              name="category" 
-                              type="text" 
-                              key={editingItem ? `edit-cat-${editingItem.id}` : 'new-cat'}
-                              defaultValue={editingItem ? (
-                                adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.category :
-                                adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.category :
-                                adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.type : ''
-                              ) : ''}
-                              placeholder="Contoh: Kriya, PDF, Kajian" 
-                              className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
-                            />
-                          </div>
-                          {adminMode === 'class' && (
-                            <div className="col-span-2">
-                              <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Link Video (YouTube/Lainnya)</label>
-                              <input 
-                                name="videoLink" 
-                                type="url" 
-                                key={editingItem ? `edit-video-${editingItem.id}` : 'new-video'}
-                                defaultValue={editingItem ? dynamicClasses.find(i => i.id === editingItem.id)?.videoLink : ''}
-                                placeholder="https://youtube.com/..." 
-                                className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
-                              />
+                        {adminMode === 'settings_profile' ? (
+                          <div className="space-y-8">
+                            <div className="space-y-4">
+                              <h5 className="font-black text-emerald-600 text-xs uppercase tracking-[0.2em]">Profil Utama</h5>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Profil Rindu BSN</label>
+                                  <textarea name="rinduProfile" defaultValue={rinduProfile} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm h-32"></textarea>
+                                </div>
+                                <div>
+                                  <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Profil Program BSN</label>
+                                  <textarea name="programProfile" defaultValue={programProfile} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm h-32"></textarea>
+                                </div>
+                              </div>
                             </div>
-                          )}
-                          {adminMode === 'product' && (
+
+                            <div className="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                              <h5 className="font-black text-emerald-600 text-xs uppercase tracking-[0.2em]">Konten Nara Hubung</h5>
+                              <div className="grid md:grid-cols-3 gap-4">
+                                <div>
+                                  <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Nama Admin</label>
+                                  <input name="contactName" type="text" defaultValue={contactInfo.name} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                </div>
+                                <div>
+                                  <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">WhatsApp (62...)</label>
+                                  <input name="whatsapp" type="text" defaultValue={contactInfo.whatsapp} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                </div>
+                                <div>
+                                  <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Email Official</label>
+                                  <input name="email" type="email" defaultValue={contactInfo.email} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : adminMode === 'settings_account' ? (
+                          <div className="space-y-4 max-w-md mx-auto py-8">
+                            <h5 className="font-black text-emerald-600 text-xs uppercase tracking-[0.2em] mb-4 text-center">Rekening Pembayaran</h5>
                             <div>
-                              <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Jumlah Stok</label>
+                              <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Nama Bank</label>
+                              <input name="bankName" type="text" defaultValue={bankAccount.bankName} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Nomor Rekening</label>
+                              <input name="accountNumber" type="text" defaultValue={bankAccount.accountNumber} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Atas Nama (Pemilik)</label>
+                              <input name="accountName" type="text" defaultValue={bankAccount.accountName} className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                            </div>
+                          </div>
+                        ) : adminMode === 'settings_stats' ? (
+                          <div className="space-y-4 py-8">
+                            <h5 className="font-black text-emerald-600 text-xs uppercase tracking-[0.2em] mb-6">Statistik Utama Beranda</h5>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                              {stats.map((stat, idx) => (
+                                <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                  <label className="block text-[10px] font-black text-slate-400 mb-2 uppercase leading-tight">{stat.label}</label>
+                                  <input 
+                                    name={`stat_value_${idx}`} 
+                                    type="text" 
+                                    defaultValue={stat.value} 
+                                    className="w-full px-4 py-2 rounded-xl border border-white focus:border-emerald-500 outline-none text-sm font-bold shadow-inner" 
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : adminMode === 'settings_services' ? (
+                          <div className="space-y-6 py-4">
+                            <h5 className="font-black text-emerald-600 text-xs uppercase tracking-[0.2em]">Layanan Utama (Services)</h5>
+                            <div className="grid grid-cols-1 gap-4">
+                              {services.map((service, idx) => (
+                                <div key={idx} className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                      <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Judul Layanan</label>
+                                      <input name={`service_title_${idx}`} type="text" defaultValue={service.title} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                    </div>
+                                    <div>
+                                      <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest text-emerald-600">URL Gambar (.jpg/URL)</label>
+                                      <input name={`service_image_${idx}`} type="text" defaultValue={service.image} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-xs font-mono" />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Deskripsi Singkat</label>
+                                    <textarea name={`service_desc_${idx}`} defaultValue={service.description} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm h-20"></textarea>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : adminMode === 'settings_material' ? (
+                          <div className="space-y-6 py-4">
+                            <h5 className="font-black text-emerald-600 text-xs uppercase tracking-[0.2em]">Header Seksi Materi</h5>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-4">
+                                  <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Judul Utama Seksi</label>
+                                    <input name="mat_title" type="text" defaultValue={materialsConfig.title} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                  </div>
+                                  <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Deskripsi Header</label>
+                                    <textarea name="mat_subtitle" defaultValue={materialsConfig.subtitle} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm h-32"></textarea>
+                                  </div>
+                                </div>
+                                <div className="space-y-4 bg-emerald-50/30 p-8 rounded-[2rem] border border-emerald-100">
+                                  <h6 className="font-bold text-emerald-800 text-sm mb-2 italic">Pengaturan Request Materi (Sidebar)</h6>
+                                  <div className="space-y-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Judul Request</label>
+                                        <input name="req_title" type="text" defaultValue={materialsConfig.requestTitle} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                      </div>
+                                      <div>
+                                        <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Teks Tombol</label>
+                                        <input name="req_btn" type="text" defaultValue={materialsConfig.requestButton} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Instruksi Request</label>
+                                      <textarea name="req_subtitle" defaultValue={materialsConfig.requestSubtitle} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm h-24"></textarea>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        ) : adminMode === 'settings' ? (
+                          <div className="space-y-6">
+                            <p className="text-center py-12 text-slate-400 font-bold italic">Pilih kategori pengaturan di menu samping untuk memulai.</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div>
+                              <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Judul / Nama Item</label>
                               <input 
-                                name="stock" 
-                                type="number" 
-                                key={editingItem ? `edit-stock-${editingItem.id}` : 'new-stock'}
-                                defaultValue={editingItem ? dynamicProducts.find(i => i.id === editingItem.id)?.stock : 10}
-                                placeholder="0" 
-                                className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                                required 
+                                name="title" 
+                                type="text" 
+                                key={editingItem ? `edit-${editingItem.id}` : 'new'}
+                                defaultValue={editingItem ? (
+                                  adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.title :
+                                  adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.name :
+                                  adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.title :
+                                  adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.title : ''
+                                ) : ''}
+                                placeholder={`Contoh: Promo Produk ${adminMode} Baru`} 
+                                className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all" 
                               />
                             </div>
-                          )}
-                        </div>
+                            <div>
+                              <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Konten / Deskripsi</label>
+                              <textarea 
+                                required 
+                                name="desc" 
+                                key={editingItem ? `edit-desc-${editingItem.id}` : 'new-desc'}
+                                defaultValue={editingItem ? (
+                                  adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.desc :
+                                  adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.desc :
+                                  adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.desc : ''
+                                ) : ''}
+                                placeholder="Tuliskan detail selengkap mungkin agar nasabah tertarik..." 
+                                className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all h-24 lg:h-32"
+                              ></textarea>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Harga / Biaya (Rp)</label>
+                                <input 
+                                  name="price" 
+                                  type="number" 
+                                  key={editingItem ? `edit-price-${editingItem.id}` : 'new-price'}
+                                  defaultValue={editingItem ? (
+                                    adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.price :
+                                    adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.price : 0
+                                  ) : 0}
+                                  placeholder="Rp 0" 
+                                  className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Kategori / Tipe</label>
+                                <input 
+                                  name="category" 
+                                  type="text" 
+                                  key={editingItem ? `edit-cat-${editingItem.id}` : 'new-cat'}
+                                  defaultValue={editingItem ? (
+                                    adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.category :
+                                    adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.category :
+                                    adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.type : ''
+                                  ) : ''}
+                                  placeholder="Contoh: Kriya, PDF, Kajian" 
+                                  className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                                />
+                              </div>
+                              <div className="col-span-2">
+                                <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide text-emerald-600">URL Gambar (.jpg / .png)</label>
+                                <input 
+                                  required 
+                                  name="image" 
+                                  type="text" 
+                                  key={editingItem ? `edit-image-${editingItem.id}` : 'new-image'}
+                                  defaultValue={editingItem ? (
+                                    adminMode === 'news' ? dynamicNews.find(i => i.id === editingItem.id)?.image :
+                                    adminMode === 'product' ? dynamicProducts.find(i => i.id === editingItem.id)?.image :
+                                    adminMode === 'class' ? dynamicClasses.find(i => i.id === editingItem.id)?.image :
+                                    adminMode === 'material' ? dynamicMaterials.find(i => i.id === editingItem.id)?.image : ''
+                                  ) : ''}
+                                  placeholder="https://images.unsplash.com/..." 
+                                  className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none transition-all font-mono text-xs" 
+                                />
+                              </div>
+                              {adminMode === 'class' && (
+                                <div className="col-span-2">
+                                  <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Link Video (YouTube/Lainnya)</label>
+                                  <input 
+                                    name="videoLink" 
+                                    type="url" 
+                                    key={editingItem ? `edit-video-${editingItem.id}` : 'new-video'}
+                                    defaultValue={editingItem ? dynamicClasses.find(i => i.id === editingItem.id)?.videoLink : ''}
+                                    placeholder="https://youtube.com/..." 
+                                    className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                                  />
+                                </div>
+                              )}
+                              {adminMode === 'material' && !editingItem && (
+                                <div className="col-span-2 space-y-4 bg-emerald-50/30 p-6 rounded-2xl border border-emerald-100/50 mb-4">
+                                  <h5 className="font-black text-emerald-600 text-[10px] uppercase tracking-widest flex items-center gap-2">
+                                    <Settings size={14} /> Pengaturan Judul Seksi (Header)
+                                  </h5>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                      <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Judul Seksi</label>
+                                      <input name="mat_title" type="text" defaultValue={materialsConfig.title} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                    </div>
+                                    <div>
+                                      <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase">Subjudul Seksi</label>
+                                      <input name="mat_subtitle" type="text" defaultValue={materialsConfig.subtitle} className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-sm font-bold" />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              {adminMode === 'product' && (
+                                <div>
+                                  <label className="block text-sm font-black text-slate-700 mb-2 uppercase tracking-wide">Jumlah Stok</label>
+                                  <input 
+                                    name="stock" 
+                                    type="number" 
+                                    key={editingItem ? `edit-stock-${editingItem.id}` : 'new-stock'}
+                                    defaultValue={editingItem ? dynamicProducts.find(i => i.id === editingItem.id)?.stock : 10}
+                                    placeholder="0" 
+                                    className="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 outline-none" 
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        )}
                         <button type="submit" className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-100">
-                          {editingItem ? 'Simpan Perubahan' : 'Publikasikan Sekarang'} <PlusCircle size={22} />
+                          {adminMode?.startsWith('settings_') ? 'Simpan Perubahan' : (editingItem ? 'Simpan Perubahan' : 'Publikasikan Sekarang')} <PlusCircle size={22} />
                         </button>
                       </form>
                     </div>
 
-                    <div className="flex flex-col h-full bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 overflow-hidden">
+                    {!adminMode?.startsWith('settings_') && (
+                      <div className="flex flex-col h-full bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 overflow-hidden">
                       <h4 className="font-bold text-slate-800 mb-6 uppercase text-sm tracking-widest text-center border-b pb-4">Daftar {adminMode} Terpasang</h4>
                       <div className="flex-1 overflow-y-auto space-y-4 max-h-[600px] pr-2 custom-scrollbar">
                         {adminMode === 'news' && dynamicNews.map(item => (
@@ -1785,13 +2216,14 @@ export default function App() {
                         </p>
                       </div>
                     </div>
+                  )}
                   </div>
                 )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </main>
-      </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </main>
+        </div>
     );
   }
 
@@ -1809,16 +2241,43 @@ export default function App() {
           onOpenModal={() => setIsModalOpen(true)} 
           isLoggedIn={isLoggedIn}
           userProfile={userProfile}
+          isPelanggan={isPelanggan}
           onOpenProfile={() => setIsProfileOpen(true)}
         />
-        <AboutSection onSeeProfile={() => openDetail("Profil Rindu BSN Al-Ihya", "Rindu BSN Al-Ihya adalah unit usaha mandiri milik Pesantren Al-Ihya yang fokus pada pengelolaan limbah sirkular. Kami memiliki visi menciptakan lingkungan pesantren zero-waste sekaligus memberdayakan ekonomi santri melalui produk-produk daur ulang inovatif.")} />
-        <StatsSection />
-        <ServicesSection onLearnMore={(title) => {
-          const desc = SERVICES.find(s => s.title === title)?.description || "";
+        <AboutSection 
+          onSeeProfile={() => openDetail("Profil Rindu BSN Al-Ihya", rinduProfile)} 
+          onSeeProgram={() => openDetail("Program Utama BSN", programProfile)}
+          isAdminView={isAdmin || isPengurus}
+          onEditSection={() => {
+            setAdminMode('settings_profile');
+            setView('dashboard');
+          }}
+        />
+        <StatsSection 
+          stats={stats} 
+          isAdminView={isAdmin || isPengurus} 
+          onEditSection={() => {
+            setAdminMode('settings_stats');
+            setView('dashboard');
+          }}
+        />
+        <ServicesSection 
+          services={services}
+          news={dynamicNews}
+          onReadMore={(title) => {
+            const item = dynamicNews.find(n => n.title === title);
+            openDetail(title, item?.excerpt + "\n\nSelengkapnya: " + item?.desc || "", "news");
+          }}
+          isAdminView={isAdmin || isPengurus}
+          onEditSection={() => {
+            setAdminMode('settings_services');
+            setView('dashboard');
+          }}
+          onLearnMore={(title) => {
+          const desc = services.find(s => s.title === title)?.description || "";
           openDetail(title, desc + "\n\nLayanan ini dikelola oleh tim profesional santri dengan standar kualitas tinggi yang menjamin kepuasan nasabah dan kebersihan lingkungan.", "service");
         }} />
         
-
         <EducationSection 
           classes={dynamicClasses}
           onRegister={handleRegisterClick} 
@@ -1829,19 +2288,17 @@ export default function App() {
           onBuyNow={handleBuyClick} 
           onSeeAll={() => setIsAllProductsOpen(true)} 
         />
-        <NewsSection 
-          news={dynamicNews} 
-          onReadMore={(title) => {
-            const item = dynamicNews.find(n => n.title === title);
-            openDetail(title, item?.excerpt + "\n\nSelengkapnya: " + item?.desc || "", "news");
-          }}
-        />
         <MaterialsSection 
           materials={dynamicMaterials} 
+          config={materialsConfig}
+          isAdminView={isAdmin || isPengurus}
+          onEditSection={() => {
+            setAdminMode('settings_material');
+            setView('dashboard');
+          }}
           onDownload={(mat) => alert(`Mengunduh materi: ${mat.title}\nFormat: ${mat.type}\nUkuran: ${mat.size}\n\nFile Anda akan segera tersedia di folder unduhan (Simulasi).`)}
-          onRequest={() => openDetail("Request Materi", "Silakan hubungi tim kurikulum kami untuk pengajuan materi baru terkait lingkungan hidup dan kewirausahaan santri.", "request")}
+          onRequest={() => openDetail(materialsConfig.requestTitle, materialsConfig.requestSubtitle + "\n\nSilakan hubungi tim kurikulum kami untuk pengajuan materi baru terkait lingkungan hidup dan kewirausahaan santri.", "request")}
         />
-        <InnovationSection onContactFounder={() => openDetail("Catatan Founder", "Inovasi adalah ruh dari setiap pergerakan kami. Kami percaya bahwa sampah plastik bukanlah musuh, melainkan sumber daya yang belum berada di tangan yang tepat. Melalui teknologi pavblok, kami ingin membuktikan bahwa pesantren adalah inkubator solusi umat.", "innovation")} />
         <FeedbackSection onSendFeedback={(name, message) => addNotification('feedback', `Feedback dari ${name}`, message)} />
         
         {/* Detail Modal */}
@@ -1933,6 +2390,7 @@ export default function App() {
           </div>
         </section>
       </main>
+      <Footer contact={contactInfo} />
       <AnimatePresence>
         {isShopModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
@@ -1970,7 +2428,7 @@ export default function App() {
                     <p className="text-slate-500">Produk akan segera disiapkan dan dikirim ke lokasi Anda.</p>
                   </div>
                 ) : !paymentStep ? (
-                  <form onSubmit={(e) => { e.preventDefault(); setPaymentStep(true); }} className="space-y-4">
+                  <form onSubmit={handlePaymentSubmit} className="space-y-4">
                     <div className="p-4 bg-slate-50 rounded-2xl flex items-center gap-4 border border-slate-100 mb-4">
                       <img src={selectedProduct?.image} className="w-16 h-16 rounded-xl object-cover" />
                       <div>
@@ -1982,31 +2440,36 @@ export default function App() {
                     <div className="space-y-4">
                       <input 
                         required
+                        name="name"
                         type="text" 
-                        defaultValue={isLoggedIn ? userProfile.name : ""}
+                        defaultValue={userProfile.name !== "Santri Ahmad" && userProfile.name !== "Pengurus BSN" && userProfile.name !== "Admin BSN" ? userProfile.name : ""}
                         placeholder="Nama Lengkap Penerima" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
                       />
                       <input 
                         required
+                        name="address"
                         type="text" 
-                        defaultValue={isLoggedIn ? userProfile.dorm : ""}
+                        defaultValue={userProfile.dorm !== "Asrama Al-Ihya 3" && userProfile.dorm !== "Manajemen Unit BSN" && userProfile.dorm !== "Operasional Bank Sampah" ? userProfile.dorm : ""}
                         placeholder="Alamat Lengkap / Asrama" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
                       />
                       <input 
                         required
+                        name="phone"
                         type="tel" 
                         placeholder="Nomor WhatsApp Aktif" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
                       />
                       <input 
                         required
+                        name="email"
                         type="email" 
                         placeholder="Alamat Email (untuk pemberitahuan)" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
                       />
                       <textarea 
+                        name="notes"
                         placeholder="Catatan Pesanan / Saran untuk BSN" 
                         className="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none h-24"
                       ></textarea>
@@ -2019,6 +2482,51 @@ export default function App() {
                       Lanjut Pembelian <ArrowRight size={20} />
                     </button>
                   </form>
+                ) : isConfirmingPayment ? (
+                  <div className="space-y-6">
+                    <div className="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 text-center">
+                      <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-1">Total Pembayaran</p>
+                      <h4 className="text-3xl font-black text-slate-800">Rp {selectedProduct?.price.toLocaleString("id-ID")}</h4>
+                      <p className="text-[10px] text-slate-400 mt-2">Metode: <span className="font-bold text-slate-600 uppercase">{selectedPaymentMethod}</span></p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Instruksi Pembayaran</p>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          Silahkan lakukan pengiriman dana sesuai nominal di atas. Setelah selesai, klik tombol konfirmasi di bawah ini agar pesanan Anda dapat segera kami proses.
+                        </p>
+                      </div>
+
+                      {selectedPaymentMethod.includes('VA') && (
+                        <div className="p-5 bg-white border-2 border-dashed border-emerald-100 rounded-2xl text-center">
+                          <p className="text-[10px] font-black text-emerald-600 uppercase mb-1">BRI Virtual Account (Pengurus)</p>
+                          <p className="text-2xl font-black text-slate-800 tracking-widest">8801 {userProfile.phone?.replace('08', '') || '1234 5678'}</p>
+                          <p className="text-[10px] text-slate-400">Verifikasi Otomatis Ke BRI BSN</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col items-center justify-center gap-3 py-6 bg-slate-50/50 rounded-2xl border border-slate-100 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-emerald-100">
+                          <div className="h-full bg-emerald-600 animate-[progress-loading_10s_linear_infinite]"></div>
+                        </div>
+                        <div className="w-10 h-10 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin"></div>
+                        <div className="text-center">
+                          <p className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Sistem Sedang Menunggu Transaksi</p>
+                          <p className="text-[9px] text-slate-400 mt-1">Gunakan Aplikasi Bank Anda untuk Transfer Ke VA di atas</p>
+                        </div>
+                      </div>
+                      
+                      <button 
+                        onClick={() => setIsConfirmingPayment(false)}
+                        className="w-full py-3 rounded-xl font-bold text-slate-400 hover:text-slate-600 transition-all text-xs"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <div className="space-y-6">
                     <div className="text-center mb-6">
@@ -2027,20 +2535,7 @@ export default function App() {
                     
                     <div className="space-y-3">
                       <button 
-                        onClick={handlePaymentSuccess}
-                        className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center">
-                            <Wallet size={20} />
-                          </div>
-                          <div className="text-left font-bold text-slate-800">DANA</div>
-                        </div>
-                        <ChevronRight className="text-slate-300 group-hover:text-emerald-500" size={20} />
-                      </button>
-
-                      <button 
-                        onClick={handlePaymentSuccess}
+                        onClick={() => { setSelectedPaymentMethod('Saldo BSN'); setIsConfirmingPayment(true); }}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -2050,6 +2545,25 @@ export default function App() {
                           <div className="text-left font-bold text-slate-800">Saldo BSN</div>
                         </div>
                         <ChevronRight className="text-slate-300 group-hover:text-emerald-500" size={20} />
+                      </button>
+                      
+                      <button 
+                        onClick={() => { setSelectedPaymentMethod('Transfer BRI (VA)'); setIsConfirmingPayment(true); }}
+                        className="w-full p-0 text-left rounded-[2rem] overflow-hidden border border-emerald-100 hover:shadow-md transition-all group"
+                      >
+                        <div className="p-5 bg-emerald-50 relative overflow-hidden">
+                          <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-200/20 blur-2xl rounded-full"></div>
+                          <p className="text-[10px] uppercase font-black text-emerald-600 mb-3 tracking-widest">Virtual Account BRI</p>
+                          <div className="flex justify-between items-center relative z-10">
+                            <div>
+                              <p className="text-2xl font-display font-black text-emerald-600 tracking-widest my-1">8801 {userProfile.phone?.replace('08', '') || '12345678'}</p>
+                              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">BRI VA Pengurus BSN</p>
+                            </div>
+                            <div className="bg-white p-3 rounded-2xl shadow-md border border-emerald-50 text-emerald-600 group-hover:scale-110 transition-transform">
+                              <CreditCard size={28} />
+                            </div>
+                          </div>
+                        </div>
                       </button>
                       
                       <button 
@@ -2303,6 +2817,88 @@ export default function App() {
                       </>
                     )}
                   </>
+                ) : checkoutStep === 'confirmation' ? (
+                  <div className="h-full flex flex-col justify-center items-center py-12 px-6">
+                    {submitted ? (
+                      <motion.div 
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="text-center"
+                      >
+                        <div className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+                          <CheckCircle size={48} />
+                        </div>
+                        <h4 className="text-3xl font-black text-slate-800 mb-4 tracking-tighter">Pembayaran Berhasil!</h4>
+                        <p className="text-slate-500 font-medium">Terima kasih atas kontribusi Anda pada Bank Sampah Nusantara Al-Ihya.</p>
+                        <div className="mt-8 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                          <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-1">ID Transaksi</p>
+                          <p className="font-mono text-sm text-slate-600">BSN-ORD-{Math.floor(Math.random() * 100000)}</p>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <div className="w-full space-y-8">
+                        <div className="bg-emerald-50 p-8 rounded-[2.5rem] border border-emerald-100 text-center relative overflow-hidden">
+                          <div className="absolute -top-10 -right-10 w-32 h-32 bg-emerald-200/20 blur-3xl rounded-full"></div>
+                          <p className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] mb-2">Total Tagihan</p>
+                          <h4 className="text-4xl font-black text-slate-800 tracking-tighter">Rp {cartTotal.toLocaleString("id-ID")}</h4>
+                          <div className="mt-6 flex items-center justify-center gap-2">
+                             <div className="px-3 py-1 bg-white border border-emerald-100 rounded-full text-[10px] font-black text-emerald-600 uppercase tracking-widest">{paymentMethod}</div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          {paymentMethod?.includes('Bank') && (
+                            <div className="p-6 bg-white border-2 border-dashed border-emerald-100 rounded-3xl text-center shadow-sm">
+                              <p className="text-[10px] font-black text-emerald-600 uppercase mb-2 tracking-widest">BRI Virtual Account (Pengurus)</p>
+                              <p className="text-3xl font-display font-black text-slate-800 tracking-widest mb-1">8801 {userProfile.phone?.replace('08', '') || '1234 5678'}</p>
+                              <p className="text-[10px] text-slate-400 font-bold uppercase">Verifikasi BRI BSN 24 Jam</p>
+                            </div>
+                          )}
+                          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                            <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Detail Pesanan</h5>
+                            <div className="space-y-2">
+                              {cart.filter(i => selectedCartItems.includes(i.product.id)).map(item => (
+                                <div key={item.product.id} className="flex justify-between text-xs font-bold">
+                                  <span className="text-slate-500">{item.product.name} x {item.quantity}</span>
+                                  <span className="text-slate-800">Rp {(item.product.price * item.quantity).toLocaleString("id-ID")}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="p-5 border-2 border-emerald-50 bg-emerald-50/10 rounded-2xl">
+                             <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
+                               Silahkan konfirmasi jika Anda sudah melakukan pembayaran. Pesanan akan segera diproses oleh tim logistik BSN Al-Ihya setelah verifikasi selesai.
+                             </p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                          <div className="flex flex-col items-center justify-center gap-3 py-8 bg-emerald-50/30 rounded-3xl border border-emerald-100 shadow-inner overflow-hidden relative">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-emerald-100/50">
+                              <div className="h-full bg-emerald-500 animate-[progress-loading_15s_linear_infinite]"></div>
+                            </div>
+                            <div className="relative">
+                              <div className="w-12 h-12 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin"></div>
+                              <div className="absolute inset-0 flex items-center justify-center text-emerald-600">
+                                <CreditCard size={16} />
+                              </div>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-sm font-black text-emerald-800 tracking-widest uppercase">Sinkronisasi Bank...</p>
+                              <p className="text-[10px] text-emerald-600/70 font-medium mt-1">Jangan tutup halaman ini hingga status BERHASIL</p>
+                            </div>
+                          </div>
+                          <button 
+                            onClick={() => setCheckoutStep('payment')}
+                            className="w-full py-2 text-slate-400 font-bold text-xs"
+                          >
+                            Ganti Metode Pembayaran
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <div className="space-y-8">
                     <div>
@@ -2325,9 +2921,8 @@ export default function App() {
                       <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Pilih Metode Pembayaran</p>
                       <div className="grid grid-cols-1 gap-3">
                         {[
-                          { id: 'bsi', label: 'Transfer Bank (BSI)', icon: Wallet, desc: '9123847291 (An. Rindu BSN)' },
-                          { id: 'wallet', label: 'E-Wallet (Dana/OVO)', icon: CreditCard, desc: '0821-2345-6789' },
-                          { id: 'cash', label: 'Tunai di Kantin BSN', icon: DollarSign, desc: 'Bayar saat ambil barang' },
+                          { id: 'bri_va', label: 'Transfer BRI (VA)', icon: Wallet, desc: '8801 + No. HP (Pengurus BRIVA)' },
+                          { id: 'cash', label: 'Tunai di Kantin BSN', icon: DollarSign, desc: 'Bayar langsung di lokasi' },
                           { id: 'points', label: 'Poin Rindu BSN', icon: Award, desc: 'Gunakan saldo poin harian' }
                         ].map((method) => (
                           <button
@@ -2384,10 +2979,10 @@ export default function App() {
                         <ShoppingBag size={24} />
                       </button>
                       <button 
-                        onClick={handleCartCheckout}
+                        onClick={() => setCheckoutStep('confirmation')}
                         className="flex-1 bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 flex items-center justify-center gap-3"
                       >
-                        Konfirmasi & Bayar <ArrowRight size={22} />
+                        Lanjut Konfirmasi <ArrowRight size={22} />
                       </button>
                     </div>
                   )}
@@ -2426,12 +3021,12 @@ export default function App() {
                   </div>
                   <div className="space-y-4">
                     <div className="bg-white/10 p-4 rounded-2xl">
-                      <p className="text-xs text-emerald-200 uppercase font-black tracking-wider">{isAdmin ? "Total Kas BSN" : "Status Aktif Santri"}</p>
-                      <p className="text-2xl font-black">Rp {isAdmin ? "12.450.000" : "5.000.000"}</p>
+                      <p className="text-xs text-emerald-200 uppercase font-black tracking-wider">{isAdmin ? "Total Kas BSN" : isPelanggan ? "Total Belanja (Bulan Ini)" : "Status Aktif Santri"}</p>
+                      <p className="text-2xl font-black">Rp {isAdmin ? "12.450.000" : isPelanggan ? "865.000" : "5.000.000"}</p>
                     </div>
                     <div className="bg-white/10 p-4 rounded-2xl">
-                      <p className="text-xs text-emerald-200 uppercase font-black tracking-wider">{isAdmin ? "Semua Nasabah" : "Jadwal Tugas"}</p>
-                      <p className="text-2xl font-black">{isAdmin ? "856 Santri" : "Asrama A & B"}</p>
+                      <p className="text-xs text-emerald-200 uppercase font-black tracking-wider">{isAdmin ? "Semua Nasabah" : isPelanggan ? "Item Dibeli" : "Jadwal Tugas"}</p>
+                      <p className="text-2xl font-black">{isAdmin ? "856 Santri" : isPelanggan ? "12 Produk" : "Asrama A & B"}</p>
                     </div>
                   </div>
                         <button 
@@ -2444,14 +3039,14 @@ export default function App() {
                       
                       <div className="md:w-2/3 p-8">
                         <div className="flex justify-between items-center mb-6">
-                          <h4 className="text-xl font-black text-slate-800">{isAdmin ? "Panel Kendali Pengurus" : "Profil Lengkap Santri"}</h4>
+                          <h4 className="text-xl font-black text-slate-800">{isAdmin ? "Panel Kendali Pengurus" : isPelanggan ? "Riwayat Belanja Produk BSN" : "Profil Lengkap Santri"}</h4>
                           <button onClick={() => setIsProfileOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400">
                             <X />
                           </button>
                         </div>
                         
                         <div className="space-y-8 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
-                          {(!isAdmin && !isPengurus) && (
+                          {(!isAdmin && !isPengurus && !isPelanggan) && (
                             <div className="grid grid-cols-2 gap-4">
                               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                                 <p className="text-[10px] text-slate-400 uppercase font-black mb-1">ID Nasabah (NIS)</p>
@@ -2475,33 +3070,63 @@ export default function App() {
                             </div>
                           )}
 
-                          {(!isAdmin && !isPengurus) && (
-                            <div>
-                              <h5 className="font-black text-slate-800 text-sm mb-4 flex items-center gap-2">
-                                <Clock size={16} className="text-emerald-500" /> Aktifitas & Capaian Terakhir
-                              </h5>
-                              <div className="space-y-3">
-                                {[
-                                  { icon: ShoppingBag, title: "Pembelian Tas Kitab", date: "Hari ini", amount: "Rp 45.000" },
-                                  { icon: GraduationCap, title: "Lulus Kelas Maggot", date: "2 hari lalu", points: "+200 Pts" },
-                                  { icon: Award, title: "Badge Santri Teladan", date: "Kemarin", points: "Achievement" },
-                                ].map((activity, idx) => (
-                                  <div key={idx} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2x">
-                                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
-                                      <activity.icon size={18} />
-                                    </div>
-                                    <div className="flex-1">
-                                      <p className="text-sm font-bold text-slate-800">{activity.title}</p>
-                                      <p className="text-[10px] text-slate-400 font-bold">{activity.date}</p>
-                                    </div>
-                                    <div className="text-right">
-                                      <p className="text-xs font-black text-emerald-600">{activity.points}</p>
-                                    </div>
-                                  </div>
-                                ))}
+                          {isPelanggan && (
+                            <div className="grid grid-cols-1 gap-4">
+                              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                                <p className="text-[10px] text-slate-400 uppercase font-black mb-1 tracking-widest">Alamat Pengiriman Default</p>
+                                <p className="font-bold text-slate-700 text-lg leading-tight">Rumah Hunian / Kantor - Area Layanan BSN Al-Ihya</p>
                               </div>
                             </div>
                           )}
+
+                          {(!isAdmin && !isPengurus) && (
+                            <div>
+                                <h5 className="font-black text-slate-800 text-sm mb-4 flex items-center gap-2">
+                                  <Clock size={16} className="text-emerald-500" /> {isPelanggan ? "Daftar Pembelian Barang Daur Ulang" : "Aktifitas & Capaian Terakhir"}
+                                </h5>
+                                <div className="space-y-3">
+                                  {isPelanggan ? [
+                                    { icon: ShoppingBag, title: "Pembelian Tas Kitab Daur Ulang", date: "Hari ini", amount: "Rp 45.000", status: "Sedang Dikirim" },
+                                    { icon: ShoppingBag, title: "Pupuk Organik Cair 1L", date: "05 Mei 2026", amount: "Rp 25.000", status: "Selesai" },
+                                    { icon: ShoppingBag, title: "Pavblok Plastik (10 Pcs)", date: "28 April 2026", amount: "Rp 150.000", status: "Selesai" },
+                                  ].map((activity, idx) => (
+                                    <div key={idx} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl">
+                                      <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
+                                        <activity.icon size={18} />
+                                      </div>
+                                      <div className="flex-1">
+                                        <p className="text-sm font-bold text-slate-800">{activity.title}</p>
+                                        <div className="flex items-center gap-2">
+                                          <p className="text-[10px] text-slate-400 font-bold">{activity.date}</p>
+                                          <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
+                                          <p className="text-[10px] text-emerald-500 font-black uppercase tracking-widest">{activity.status}</p>
+                                        </div>
+                                      </div>
+                                      <div className="text-right">
+                                        <p className="text-xs font-black text-slate-800">{activity.amount}</p>
+                                      </div>
+                                    </div>
+                                  )) : [
+                                    { icon: ShoppingBag, title: "Pembelian Tas Kitab", date: "Hari ini", points: "+50 Pts" },
+                                    { icon: GraduationCap, title: "Lulus Kelas Maggot", date: "2 hari lalu", points: "+200 Pts" },
+                                    { icon: Award, title: "Badge Santri Teladan", date: "Kemarin", points: "Achievement" },
+                                  ].map((activity, idx) => (
+                                    <div key={idx} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl">
+                                      <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
+                                        <activity.icon size={18} />
+                                      </div>
+                                      <div className="flex-1">
+                                        <p className="text-sm font-bold text-slate-800">{activity.title}</p>
+                                        <p className="text-[10px] text-slate-400 font-bold">{activity.date}</p>
+                                      </div>
+                                      <div className="text-right">
+                                        <p className="text-xs font-black text-emerald-600">{activity.points}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
 
                           {isAdmin ? (
                       <div className="space-y-8">
@@ -2524,6 +3149,10 @@ export default function App() {
                               <button onClick={() => setAdminMode('material') || setView('dashboard')} className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl text-left hover:bg-emerald-100 transition-all group">
                                 <FileText size={24} className="text-emerald-600 mb-2" />
                                 <p className="font-bold text-slate-800 text-xs">Upload Materi</p>
+                              </button>
+                              <button onClick={() => setAdminMode('contact') || setView('dashboard')} className="p-4 bg-purple-50 border border-purple-100 rounded-2xl text-left hover:bg-purple-100 transition-all group">
+                                <Settings size={24} className="text-purple-600 mb-2" />
+                                <p className="font-bold text-slate-800 text-xs">Nara Hubung</p>
                               </button>
                             </div>
                           </div>
@@ -2780,13 +3409,14 @@ export default function App() {
                     <p className="text-slate-500">Silakan cek riwayat Anda di profil untuk detail jadwal.</p>
                   </div>
                 ) : !paymentStep ? (
-                  <form onSubmit={(e) => { e.preventDefault(); setPaymentStep(true); }} className="space-y-4">
+                  <form onSubmit={handlePaymentSubmit} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap Santri</label>
+                      <label className="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
                       <input 
                         required
+                        name="name"
                         type="text" 
-                        defaultValue={isLoggedIn ? userProfile.name : ""}
+                        defaultValue={userProfile.name !== "Santri Ahmad" && userProfile.name !== "Pengurus BSN" && userProfile.name !== "Admin BSN" ? userProfile.name : ""}
                         placeholder="Masukkan nama Anda" 
                         className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none transition-all"
                       />
@@ -2797,16 +3427,17 @@ export default function App() {
                         <label className="block text-sm font-bold text-slate-700 mb-2">Asrama / Alamat</label>
                         <input 
                           required
+                          name="address"
                           type="text" 
-                          defaultValue={isLoggedIn ? userProfile.dorm : ""}
+                          defaultValue={userProfile.dorm !== "Asrama Al-Ihya 3" && userProfile.dorm !== "Manajemen Unit BSN" && userProfile.dorm !== "Operasional Bank Sampah" ? userProfile.dorm : ""}
                           placeholder="Lokasi Anda" 
                           className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">NIS / Identitas</label>
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Identitas (Opsional)</label>
                         <input 
-                          required
+                          name="id_num"
                           type="text" 
                           placeholder="NIS atau No. KTP" 
                           className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
@@ -2819,6 +3450,7 @@ export default function App() {
                         <label className="block text-sm font-bold text-slate-700 mb-2">Nomor WhatsApp</label>
                         <input 
                           required
+                          name="phone"
                           type="tel" 
                           placeholder="0812xxxx" 
                           className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
@@ -2828,6 +3460,7 @@ export default function App() {
                         <label className="block text-sm font-bold text-slate-700 mb-2">Alamat Email</label>
                         <input 
                           required
+                          name="email"
                           type="email" 
                           placeholder="santri@email.com" 
                           className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none"
@@ -2836,6 +3469,7 @@ export default function App() {
                     </div>
 
                     <textarea 
+                      name="notes"
                       placeholder="Pesan / Saran Pendaftaran" 
                       className="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none h-20"
                     ></textarea>
@@ -2854,6 +3488,53 @@ export default function App() {
                       Lanjut ke Pembayaran <ArrowRight size={20} />
                     </button>
                   </form>
+                ) : isConfirmingPayment ? (
+                  <div className="space-y-6">
+                    <div className="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 text-center">
+                      <p className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-1">Total Infaq Pelatihan</p>
+                      <h4 className="text-3xl font-black text-slate-800">
+                        {selectedClass?.price === 0 ? "GRATIS" : `Rp ${selectedClass?.price.toLocaleString("id-ID")}`}
+                      </h4>
+                      <p className="text-[10px] text-slate-400 mt-2">Metode: <span className="font-bold text-slate-600 uppercase">{selectedPaymentMethod}</span></p>
+                    </div>
+
+                    {selectedPaymentMethod.includes('Bank') && (
+                      <div className="p-5 bg-white border-2 border-dashed border-emerald-100 rounded-2xl text-center">
+                        <p className="text-[10px] font-black text-emerald-600 uppercase mb-1">BRI Virtual Account (Pengurus)</p>
+                        <p className="text-2xl font-black text-slate-800 tracking-widest">8801 {userProfile.phone?.replace('08', '') || '1234 5678'}</p>
+                        <p className="text-[10px] text-slate-400">Verifikasi Otomatis Ke BRI BSN</p>
+                      </div>
+                    )}
+
+                    <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 italic text-xs text-slate-500 leading-relaxed text-center">
+                      "Pendaftaran Anda akan dikonfirmasi secara otomatis setelah sistem memverifikasi transaksi. Mohon simpan bukti pembayaran Anda."
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col items-center justify-center gap-3 py-8 bg-emerald-50/50 rounded-3xl border border-emerald-100 shadow-inner overflow-hidden relative">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-emerald-100/50">
+                          <div className="h-full bg-emerald-600 animate-[progress-loading_10s_linear_infinite]"></div>
+                        </div>
+                        <div className="relative">
+                          <div className="w-12 h-12 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-2 h-2 bg-emerald-600 rounded-full animate-ping"></div>
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs font-black text-emerald-700 tracking-widest uppercase">Menunggu Dana Masuk...</p>
+                          <p className="text-[9px] text-emerald-500 font-medium mt-1 italic">"Status akan otomatis terverifikasi tanpa perlu konfirmasi"</p>
+                        </div>
+                      </div>
+                      
+                      <button 
+                        onClick={() => setIsConfirmingPayment(false)}
+                        className="w-full py-3 rounded-2xl font-bold text-slate-400 hover:bg-slate-100 transition-all border border-slate-100"
+                      >
+                        Ganti Metode
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <div className="space-y-6">
                     <div className="text-center mb-6">
@@ -2864,23 +3545,7 @@ export default function App() {
                     <div className="space-y-3">
                       <p className="text-sm font-bold text-slate-700">Pilih Metode Pembayaran:</p>
                       <button 
-                        onClick={handlePaymentSuccess}
-                        className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center">
-                            <Wallet size={20} />
-                          </div>
-                          <div className="text-left">
-                            <p className="font-bold text-slate-800">DANA</p>
-                            <p className="text-[10px] text-slate-400">Pembayaran instan via DANA</p>
-                          </div>
-                        </div>
-                        <ChevronRight className="text-slate-300 group-hover:text-emerald-500" size={20} />
-                      </button>
-
-                      <button 
-                        onClick={handlePaymentSuccess}
+                        onClick={() => { setSelectedPaymentMethod('Saldo Tabungan BSM'); setIsConfirmingPayment(true); }}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -2896,7 +3561,23 @@ export default function App() {
                       </button>
 
                       <button 
-                        onClick={() => openWhatsAppOrder(selectedClassId)}
+                        onClick={() => { setSelectedPaymentMethod('Transfer BRI (VA)'); setIsConfirmingPayment(true); }}
+                        className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center">
+                            <CreditCard size={20} />
+                          </div>
+                          <div className="text-left">
+                            <p className="font-bold text-slate-800">Transfer Virtual Account BRI</p>
+                            <p className="text-[10px] text-slate-400">VA Pengurus BRI BSN (24 Jam)</p>
+                          </div>
+                        </div>
+                        <ChevronRight className="text-slate-300 group-hover:text-emerald-500" size={20} />
+                      </button>
+
+                      <button 
+                        onClick={() => { setSelectedPaymentMethod('WhatsApp Admin'); setIsConfirmingPayment(true); }}
                         className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-2xl transition-all group"
                       >
                         <div className="flex items-center gap-3">
@@ -2959,9 +3640,10 @@ export default function App() {
                 </div>
 
                   <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl mb-6">
-                    <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-2">Default Credentials:</p>
+                    <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-2">Petunjuk Masuk:</p>
                     <div className="space-y-1 text-xs text-emerald-700 font-medium">
-                      <p>• {loginRole === 'pengurus' ? 'Pengurus: pengurus / bsn2026' : 'Admin: admin / bsnops2026'}</p>
+                      {loginRole === 'pengurus' && <p>• Pengurus: <span className="font-bold">pengurus / bsn2026</span></p>}
+                      {loginRole === 'admin' && <p>• Admin: <span className="font-bold">admin / bsnops2026</span></p>}
                     </div>
                   </div>
 
@@ -2987,7 +3669,7 @@ export default function App() {
                         onChange={(e) => setLoginRole(e.target.value)}
                         className="hidden peer" 
                       />
-                      <span className="block py-2.5 rounded-xl text-[10px] font-black peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-sm transition-all text-slate-500">ADMIN (OPS)</span>
+                      <span className="block py-2.5 rounded-xl text-[10px] font-black peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-sm transition-all text-slate-500 uppercase">ADMIN</span>
                     </label>
                   </div>
                   

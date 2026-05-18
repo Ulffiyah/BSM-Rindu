@@ -149,9 +149,3 @@ export const MATERIALS = [
     size: "15:30"
   }
 ];
-
-export const INNOVATIONS = [
-  { name: "Bangku Santri Recycled", desc: "Perabotan kuat dari olahan plastik residu asrama." },
-  { name: "Pupuk Organik Al-Ihya", desc: "Pengolahan limbah organik kantin menjadi nutrisi tanaman." },
-  { name: "Kerajinan Tas Kitab", desc: "Wadah kitab karya santriwati dari kain perca dan plastik." },
-];
